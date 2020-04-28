@@ -1,0 +1,4 @@
+rootProject.name = "dev-mail-server"
+
+include "dev-mail-server-app"
+include "dev-mail-server-core"

@@ -1,0 +1,17 @@
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:2.2.6.RELEASE"
+    }
+    dependencies {
+        dependency "org.subethamail:subethasmtp:3.1.7"
+        dependency "tech.blueglacier:email-mime-parser:1.0.5"
+        dependency "commons-io:commons-io:2.6"
+        dependency "org.webjars.npm:bootswatch:4.4.1"
+        dependency "org.webjars:bootstrap:4.4.1"
+        dependency "org.webjars:jquery:3.4.1"
+        dependency "org.webjars.npm:eventsource:1.0.7"
+        dependency "org.webjars:momentjs:2.24.0"
+        dependency "org.webjars.bowergithub.components:highlightjs:9.16.2"
+        dependency "org.webjars:jquery-template:1.5.7"
+    }
+}

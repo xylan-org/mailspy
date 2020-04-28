@@ -1,0 +1,42 @@
+plugins {
+	id "io.spring.dependency-management" version "1.0.9.RELEASE" apply false
+}
+
+description = "DevMailServer :: Root"
+
+wrapper {
+    gradleVersion = "6.2.2"
+}
+
+repositories {
+	mavenCentral()
+}
+
+allprojects {
+    group = "org.abelk"
+    version = "1.0.0-SNAPSHOT"
+
+    repositories {
+        jcenter()
+    }
+}
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: "eclipse"
+    apply plugin: "io.spring.dependency-management"
+    
+    apply from: "$rootDir/versions.gradle"
+    
+    sourceCompatibility = "11"
+
+    dependencies {
+        implementation "org.slf4j:slf4j-api"
+        implementation "ch.qos.logback:logback-classic"
+        
+        compileOnly "org.projectlombok:lombok"
+        annotationProcessor "org.projectlombok:lombok"
+    }
+
+}
+    

@@ -1,0 +1,21 @@
+plugins {
+    id "application"
+}
+
+description = "DevMailServer :: App"
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+dependencies {
+    runtimeOnly project(":dev-mail-server-core")
+    //implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    //implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+}
