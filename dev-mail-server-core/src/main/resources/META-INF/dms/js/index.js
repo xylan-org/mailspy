@@ -15,6 +15,15 @@ function renderPreviews(row) {
 	renderPlainText(row);
 	renderCalendar(row);
 	renderRaw(row);
+	showFirstEnabled();
+}
+
+function showFirstEnabled() {
+	let $tab = $("#preview-tabs a:not(.disabled)").first(),
+		previewSelector = $tab.attr("href");
+	
+	$tab.addClass("active");
+	$(previewSelector).addClass("show active");
 }
 
 function renderHtml(row) {
@@ -38,7 +47,7 @@ function renderPlainText(row) {
 function renderCalendar(row) {
 	let calendar = row.calendarBody;
 	if (calendar) {
-		//enablePreview("calendar");
+		enablePreview("calendar");
 		// TODO
 	}
 }
