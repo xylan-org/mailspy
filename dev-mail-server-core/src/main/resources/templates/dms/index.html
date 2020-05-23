@@ -7,18 +7,9 @@
 	<meta name="description" content="">
 	<meta name="dms:path" th:content="${model.path}" />
 	<title>DevMailServer</title>
-
-	<link rel="stylesheet" th:href="@{|${model.path}/webjars/bootswatch/4.4.1/dist/${model.theme}/bootstrap.min.css|}" />
-	<link rel="stylesheet" th:href="@{|${model.path}/webjars/highlightjs/styles/default.css|}" />
-	<link rel="stylesheet" th:href="@{|${model.path}/resouces/css/index.css|}" />
 	
-	<script th:src="@{|${model.path}/webjars/jquery/3.4.1/jquery.min.js|}"></script>
-	<script th:src="@{|${model.path}/webjars/jquery-template/1.5.7/jquery.loadTemplate.min.js|}"></script>
-	<script th:src="@{|${model.path}/webjars/bootstrap/4.4.1/js/bootstrap.min.js|}"></script>
-	<script th:src="@{|${model.path}/webjars/eventsource/1.0.7/example/eventsource-polyfill.js|}"></script>
-	<script th:src="@{|${model.path}/webjars/momentjs/2.24.0/min/moment.min.js|}"></script>
-	<script th:src="@{|${model.path}/webjars/highlightjs/highlight.pack.min.js|}"></script>
-	<script th:src="@{|${model.path}/resouces/js/index.js|}"></script>
+	<link rel="stylesheet" th:each="cssResource : ${cssResources}" th:href="@{|${cssResource}|}" />
+	<script th:each="jsResource : ${jsResources}" th:src="@{|${jsResource}|}"></script>
 	
 	<script type="text/html" id="listElement">
 		<a href="#" class="list-group-item list-group-item-action">

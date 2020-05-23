@@ -2,10 +2,12 @@ package org.abelk.devmailserver.core.autoconfig;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.abelk.devmailserver.core.mailserver.EventPublishingMessageHandler;
 import org.abelk.devmailserver.core.web.handlermapping.SimpleUrlHandlerMethodMapping;
+import org.abelk.devmailserver.core.web.resources.WebResourceBundle;
 import org.abelk.devmailserver.core.web.sse.SseSubscriptionController;
 import org.abelk.devmailserver.core.web.ui.WebUiController;
 import org.apache.james.mime4j.codec.DecodeMonitor;
@@ -17,10 +19,12 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -91,6 +95,7 @@ public class DevMailServerAutoConfig {
     @EnableWebMvc
     @Configuration
     @ComponentScan("org.abelk.devmailserver.core.web")
+    @PropertySource("classpath:/META-INF/dms/bundles.properties")
     public static class DevMailServerWebMvcConfigurer implements WebMvcConfigurer {
 
         private final DevMailServerProperties.WebUiProperties properties;
@@ -100,12 +105,18 @@ public class DevMailServerAutoConfig {
             this.properties = properties.getWebUi();
         }
 
+        @Bean
+        @ConfigurationProperties("devmailserver.internal.bundles")
+        public Map<String, WebResourceBundle> webResourceBundles() {
+            return new HashMap<>();
+        }
+
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-            registry.addResourceHandler(properties.getUrl() + "/webjars/**")
-                    .addResourceLocations("classpath:/META-INF/resources/webjars/");
-            registry.addResourceHandler(properties.getUrl() + "/resouces/**")
-                    .addResourceLocations("classpath:/META-INF/dms/");
+            webResourceBundles().entrySet().forEach(entry -> {
+                registry.addResourceHandler(properties.getUrl() + "/" + entry.getKey() + "/**")
+                        .addResourceLocations("classpath:" + entry.getValue().getClasspathPrefix());
+            });
         }
 
         @Bean
@@ -117,7 +128,7 @@ public class DevMailServerAutoConfig {
 
         @Bean
         public WebUiController webUiController() {
-            return new WebUiController(properties);
+            return new WebUiController(properties, webResourceBundles());
         }
 
         @Bean
