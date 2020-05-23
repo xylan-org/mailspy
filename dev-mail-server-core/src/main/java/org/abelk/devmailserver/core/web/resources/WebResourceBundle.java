@@ -1,29 +1,24 @@
 package org.abelk.devmailserver.core.web.resources;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import lombok.Data;
 
+/**
+ * A group of web resources that can be bundled together in a production build.
+ *
+ * In a production build, these objects are replaced by copies in which the
+ * files list is swapped to a singleton list containing only the bundled (i.e.
+ * concatenated, minified, etc.) resource.
+ *
+ */
 @Data
 public class WebResourceBundle {
 
+    private String name;
     private String classpathPrefix;
-    private List<String> js;
-    private List<String> css;
-
-    public List<String> getJsWithPrefix(final String prefix) {
-        return getBundleWithPrefix(js, prefix);
-    }
-
-    public List<String> getCssWithPrefix(final String prefix) {
-        return getBundleWithPrefix(css, prefix);
-    }
-
-    private List<String> getBundleWithPrefix(final List<String> bundle, final String prefix) {
-        return bundle.stream()
-                .map(s -> prefix + s)
-                .collect(Collectors.toList());
-    }
+    private WebResourceType type;
+    private List<String> files;
+    private Integer order;
 
 }

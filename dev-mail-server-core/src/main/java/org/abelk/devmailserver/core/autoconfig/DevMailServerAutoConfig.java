@@ -2,12 +2,15 @@ package org.abelk.devmailserver.core.autoconfig;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.abelk.devmailserver.core.mailserver.EventPublishingMessageHandler;
 import org.abelk.devmailserver.core.web.handlermapping.SimpleUrlHandlerMethodMapping;
+import org.abelk.devmailserver.core.web.resources.WebResource;
 import org.abelk.devmailserver.core.web.resources.WebResourceBundle;
+import org.abelk.devmailserver.core.web.resources.WebResourceBundleProcessor;
 import org.abelk.devmailserver.core.web.sse.SseSubscriptionController;
 import org.abelk.devmailserver.core.web.ui.WebUiController;
 import org.apache.james.mime4j.codec.DecodeMonitor;
@@ -99,23 +102,34 @@ public class DevMailServerAutoConfig {
     public static class DevMailServerWebMvcConfigurer implements WebMvcConfigurer {
 
         private final DevMailServerProperties.WebUiProperties properties;
+        private WebResourceBundleProcessor webResourceBundleProcessor;
 
         @Autowired
         public DevMailServerWebMvcConfigurer(final DevMailServerProperties properties) {
             this.properties = properties.getWebUi();
         }
 
+        @Autowired
+        public void setWebResourceBundleProcessor(final WebResourceBundleProcessor webResourceBundleProcessor) {
+            this.webResourceBundleProcessor = webResourceBundleProcessor;
+        }
+
         @Bean
         @ConfigurationProperties("devmailserver.internal.bundles")
-        public Map<String, WebResourceBundle> webResourceBundles() {
-            return new HashMap<>();
+        public List<WebResourceBundle> webResourceBundles() {
+            return new ArrayList<>();
+        }
+
+        @Bean
+        public List<WebResource> webResources() {
+            return webResourceBundleProcessor.process(webResourceBundles(), properties.getUrl());
         }
 
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-            webResourceBundles().entrySet().forEach(entry -> {
-                registry.addResourceHandler(properties.getUrl() + "/" + entry.getKey() + "/**")
-                        .addResourceLocations("classpath:" + entry.getValue().getClasspathPrefix());
+            webResourceBundles().forEach(bundle -> {
+                registry.addResourceHandler(properties.getUrl() + "/" + bundle.getName() + "/**")
+                        .addResourceLocations("classpath:" + bundle.getClasspathPrefix());
             });
         }
 
@@ -128,7 +142,7 @@ public class DevMailServerAutoConfig {
 
         @Bean
         public WebUiController webUiController() {
-            return new WebUiController(properties, webResourceBundles());
+            return new WebUiController(properties, webResources());
         }
 
         @Bean
