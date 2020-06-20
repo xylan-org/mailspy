@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 
@@ -28,10 +29,20 @@ public class SimpleUrlHandlerMethodMapping extends SimpleUrlHandlerMapping {
         super.setUrlMap(convertUrlMap(urlMap));
     }
 
-    private static Map<String, HandlerMethod> convertUrlMap(final Map<String, ?> urlMap) {
+    private static Map<String, ?> convertUrlMap(final Map<String, ?> urlMap) {
         return urlMap.entrySet()
                 .stream()
-                .collect(toMap(e -> e.getKey(), e -> createHandlerMethod(e.getValue())));
+                .collect(toMap(e -> e.getKey(), e -> processHandler(e.getValue())));
+    }
+
+    private static Object processHandler(final Object handler) {
+        Object result;
+        if (handler instanceof HttpRequestHandler) {
+            result = handler;
+        } else {
+            result = createHandlerMethod(handler);
+        }
+        return result;
     }
 
     private static HandlerMethod createHandlerMethod(final Object bean) {

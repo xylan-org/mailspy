@@ -4,7 +4,14 @@ plugins {
 
 description = "DevMailServer :: Core"
 
+configurations {
+	frontend
+}
+
 dependencies {
+    frontend project(":dev-mail-server-frontend")
+
+    implementation "org.slf4j:slf4j-api"
     implementation "org.subethamail:subethasmtp"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework:spring-context-support"
@@ -24,4 +31,13 @@ dependencies {
     
     compileOnly "jakarta.validation:jakarta.validation-api"
     compileOnly "jakarta.annotation:jakarta.annotation-api"
+    
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+}
+
+jar {
+    from (configurations.frontend.files) {
+        into "META-INF/dms-frontend"
+    }
 }

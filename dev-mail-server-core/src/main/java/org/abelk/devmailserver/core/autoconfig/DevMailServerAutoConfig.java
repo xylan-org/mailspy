@@ -12,6 +12,7 @@ import org.abelk.devmailserver.core.web.resources.WebResource;
 import org.abelk.devmailserver.core.web.resources.WebResourceBundle;
 import org.abelk.devmailserver.core.web.resources.WebResourceBundleProcessor;
 import org.abelk.devmailserver.core.web.sse.SseSubscriptionController;
+import org.abelk.devmailserver.core.web.transformer.BasePathResourceTransformer;
 import org.abelk.devmailserver.core.web.ui.WebUiController;
 import org.apache.james.mime4j.codec.DecodeMonitor;
 import org.apache.james.mime4j.message.DefaultBodyDescriptorBuilder;
@@ -31,6 +32,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -127,16 +129,20 @@ public class DevMailServerAutoConfig {
 
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-            webResourceBundles().forEach(bundle -> {
-                registry.addResourceHandler(properties.getUrl() + "/" + bundle.getName() + "/**")
-                        .addResourceLocations("classpath:" + bundle.getClasspathPrefix());
-            });
+            registry.addResourceHandler(properties.getUrl() + "/resources/**")
+                    .addResourceLocations("classpath:META-INF/dms-frontend/")
+                    .resourceChain(true)
+                    .addTransformer(new BasePathResourceTransformer("index.html", properties.getUrl() + "/resources/"));
         }
 
         @Bean
         public SimpleUrlHandlerMapping devMailServerHandlerMapping() {
             return new SimpleUrlHandlerMethodMapping(Map.of(
-                    properties.getUrl(), webUiController(),
+                    properties.getUrl(), (HttpRequestHandler) (request, response) -> {
+                        request.getServletContext()
+                                .getRequestDispatcher(properties.getUrl() + "/resources/index.html")
+                                .forward(request, response);
+                    },
                     properties.getUrl() + "/subscribe", sseSubscribeController()));
         }
 

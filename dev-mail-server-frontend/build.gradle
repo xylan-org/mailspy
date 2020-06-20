@@ -1,0 +1,23 @@
+plugins {
+	id "org.siouan.frontend" version "3.0.0"
+}
+
+description = "DevMailServer :: Frontend"
+buildDir = "gradle-build"
+
+frontend {
+	nodeVersion = "12.18.1"
+	assembleScript = "run build"
+}
+
+// TODO core does not delegate assemble, clean, etc.
+// TODO implement clean here
+
+assembleFrontend {
+	inputs.files("public", "src")
+	outputs.dir("build")
+}
+
+artifacts {
+	add("default", file("build"))
+}
