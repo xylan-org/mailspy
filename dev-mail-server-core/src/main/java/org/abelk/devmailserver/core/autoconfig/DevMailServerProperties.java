@@ -30,9 +30,6 @@ public class DevMailServerProperties {
         @NotEmpty
         private String url = "/dms";
 
-        @NotEmpty
-        private String theme = "lumen";
-
     }
 
 }

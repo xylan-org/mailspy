@@ -1,20 +1,24 @@
 {
-  "name": "react-hello-world",
-  "version": "1.0.0",
-  "description": "React Hello World",
-  "main": "index.js",
+  "name": "dev-mail-server-frontend",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "Frontend module for DevMailServer",
+  "main": "index.jsx",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "author": "CodeMix",
-  "license": "ISC",
+  "author": "abelk",
+  "license": "MIT",
   "dependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-scripts": "^2.1.5"
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-scripts": "2.1.8",
+    "react-highlight.js": "1.0.7",
+    "react-bootstrap": "1.0.1",
+    "bootstrap": "4.5.0",
+    "moment": "2.27.0"
   },
   "browserslist": [
     ">0.2%",

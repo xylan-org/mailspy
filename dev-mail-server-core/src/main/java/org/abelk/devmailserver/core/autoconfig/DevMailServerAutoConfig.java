@@ -2,18 +2,13 @@ package org.abelk.devmailserver.core.autoconfig;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.abelk.devmailserver.core.mailserver.EventPublishingMessageHandler;
 import org.abelk.devmailserver.core.web.handlermapping.SimpleUrlHandlerMethodMapping;
-import org.abelk.devmailserver.core.web.resources.WebResource;
-import org.abelk.devmailserver.core.web.resources.WebResourceBundle;
-import org.abelk.devmailserver.core.web.resources.WebResourceBundleProcessor;
+import org.abelk.devmailserver.core.web.redirect.RedirectIndexController;
 import org.abelk.devmailserver.core.web.sse.SseSubscriptionController;
 import org.abelk.devmailserver.core.web.transformer.BasePathResourceTransformer;
-import org.abelk.devmailserver.core.web.ui.WebUiController;
 import org.apache.james.mime4j.codec.DecodeMonitor;
 import org.apache.james.mime4j.message.DefaultBodyDescriptorBuilder;
 import org.apache.james.mime4j.parser.MimeStreamParser;
@@ -23,16 +18,13 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -100,31 +92,13 @@ public class DevMailServerAutoConfig {
     @EnableWebMvc
     @Configuration
     @ComponentScan("org.abelk.devmailserver.core.web")
-    @PropertySource("classpath:/META-INF/dms/bundles.properties")
     public static class DevMailServerWebMvcConfigurer implements WebMvcConfigurer {
 
         private final DevMailServerProperties.WebUiProperties properties;
-        private WebResourceBundleProcessor webResourceBundleProcessor;
 
         @Autowired
         public DevMailServerWebMvcConfigurer(final DevMailServerProperties properties) {
             this.properties = properties.getWebUi();
-        }
-
-        @Autowired
-        public void setWebResourceBundleProcessor(final WebResourceBundleProcessor webResourceBundleProcessor) {
-            this.webResourceBundleProcessor = webResourceBundleProcessor;
-        }
-
-        @Bean
-        @ConfigurationProperties("devmailserver.internal.bundles")
-        public List<WebResourceBundle> webResourceBundles() {
-            return new ArrayList<>();
-        }
-
-        @Bean
-        public List<WebResource> webResources() {
-            return webResourceBundleProcessor.process(webResourceBundles(), properties.getUrl());
         }
 
         @Override
@@ -138,17 +112,13 @@ public class DevMailServerAutoConfig {
         @Bean
         public SimpleUrlHandlerMapping devMailServerHandlerMapping() {
             return new SimpleUrlHandlerMethodMapping(Map.of(
-                    properties.getUrl(), (HttpRequestHandler) (request, response) -> {
-                        request.getServletContext()
-                                .getRequestDispatcher(properties.getUrl() + "/resources/index.html")
-                                .forward(request, response);
-                    },
+                    properties.getUrl(), redirectIndexController(),
                     properties.getUrl() + "/subscribe", sseSubscribeController()));
         }
 
         @Bean
-        public WebUiController webUiController() {
-            return new WebUiController(properties, webResources());
+        public RedirectIndexController redirectIndexController() {
+            return new RedirectIndexController(properties.getUrl());
         }
 
         @Bean

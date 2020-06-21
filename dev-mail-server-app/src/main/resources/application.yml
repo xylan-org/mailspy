@@ -1,7 +1,8 @@
 devmailserver:
   enabled: true
   web-ui:
-    theme: lumen
-  mime-types:
-    handle-as-text:
-      application/json: utf-8
+    path: "/dms"
+  app:
+    cors: true
+    
+spring:  resources:    add-mappings: false
