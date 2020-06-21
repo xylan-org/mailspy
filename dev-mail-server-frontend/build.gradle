@@ -10,9 +10,6 @@ frontend {
 	assembleScript = "run build"
 }
 
-// TODO core does not delegate assemble, clean, etc.
-// TODO implement clean here
-
 assembleFrontend {
 	inputs.files("public", "src")
 	outputs.dir("build")
@@ -20,4 +17,8 @@ assembleFrontend {
 
 artifacts {
 	add("default", file("build"))
+}
+
+clean {
+	delete files("build", "node_modules", "node")
 }

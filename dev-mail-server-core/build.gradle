@@ -37,6 +37,7 @@ dependencies {
 }
 
 jar {
+    dependsOn ":dev-mail-server-frontend:assemble"
     from (configurations.frontend.files) {
         into "META-INF/dms-frontend"
     }
