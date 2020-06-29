@@ -1,6 +1,6 @@
 {
-  "short_name": "React Hello World",
-  "name": "Create React Hello World",
+  "short_name": "DevMailServer",
+  "name": "DevMailServer",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,6 +10,6 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#343A40",
   "background_color": "#ffffff"
 }

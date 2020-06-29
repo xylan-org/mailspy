@@ -12,13 +12,14 @@
   "author": "abelk",
   "license": "MIT",
   "dependencies": {
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-scripts": "2.1.8",
-    "react-highlight.js": "1.0.7",
-    "react-bootstrap": "1.0.1",
     "bootstrap": "4.5.0",
-    "moment": "2.27.0"
+    "escape-html": "1.0.3",
+    "highlight.js": "10.1.1",
+    "moment": "2.27.0",
+    "react": "16.13.1",
+    "react-bootstrap": "1.0.1",
+    "react-dom": "16.13.1",
+    "react-scripts": "2.1.8"
   },
   "browserslist": [
     ">0.2%",
