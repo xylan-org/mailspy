@@ -4,37 +4,52 @@ import Highlight from "./Highlight"
 
 class MailPreview extends Component {
 
-	getModel = (mailAttribute) => {
-		let mail = this.props.selectedMail,
-			disabled = mail === null || mail[mailAttribute] === null
-		return {
-			disabled: disabled,
-			content: disabled ? "" : mail[mailAttribute].bodyText
-		};
+	static getDerivedStateFromProps(props, prevState) {
+		let mail = props.selectedMail,
+		    newState = {
+				id: undefined,
+				contents: {
+					html: "",
+					text: "",
+					raw: ""
+				},
+				activeKey: undefined
+			};
+
+		if (mail !== null) {
+			let contents = {
+					html: mail.parsedMail.html,
+					text: mail.parsedMail.text,
+					raw: mail.rawMail
+				},
+				id = mail.parsedMail.messageId,
+				activeKey = prevState.activeKey;
+
+			if (prevState.id !== id || activeKey === undefined) {
+				activeKey = Object.keys(contents).find(key => contents[key]);
+			}
+
+			newState = {
+				id, contents, activeKey
+			};
+		}
+
+		return newState;
 	}
 
 	render() {
-		let mail = this.props.selectedMail,
-			tabModels = {
-				html: this.getModel("htmlBody"),
-				text: this.getModel("plainTextBody"),
-				calendar: this.getModel("calendarBody")
-			}
-
+		let contents = this.state.contents;
 		return (
 			<section id="preview">
-				<Tabs>
-					<Tab eventKey="html" title="HTML" disabled={tabModels.html.disabled}>
-						<iframe title="html" srcDoc={tabModels.html.content} height="100%" width="100%"></iframe>
+				<Tabs activeKey={this.state.activeKey} onSelect={(key) => this.setState({ activeKey: key })}>
+					<Tab eventKey="html" title="HTML" disabled={!contents.html}>
+						<iframe title="html" srcDoc={contents.html ? contents.html : ""} height="100%" width="100%"></iframe>
 					</Tab>
-					<Tab eventKey="text" title="Text" disabled={tabModels.text.disabled}>
-						<Highlight content={tabModels.text.content} />
+					<Tab eventKey="text" title="Text" disabled={!contents.text}>
+						<Highlight content={contents.text ? contents.text : ""} />
 					</Tab>
-					<Tab eventKey="calendar" title="Calendar" disabled={tabModels.calendar.disabled}>
-						{ /* TODO */ }
-					</Tab>
-					<Tab eventKey="raw" title="Raw" disabled={mail === null}>
-						<Highlight content={mail === null ? "" : atob(mail.rawMessage)} />
+					<Tab eventKey="raw" title="Raw" disabled={!contents.raw}>
+						<Highlight content={contents.raw} />
 					</Tab>
 				</Tabs>
 			</section>
