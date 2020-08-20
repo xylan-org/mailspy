@@ -6,7 +6,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.annotation.PreDestroy;
 
-import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -43,11 +42,6 @@ public class SseEmitterRegistry {
 
     @Async
     public void broadcast(final Object object) {
-        broadcast(object, null);
-    }
-
-    @Async
-    public void broadcast(final Object object, final MediaType mediaType) {
         final List<SseEmitter> failedEmitters = new ArrayList<>();
         emitters.forEach(emitter -> {
             try {

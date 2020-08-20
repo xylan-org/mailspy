@@ -18,7 +18,6 @@ dependencies {
     implementation "org.springframework:spring-webmvc"
     implementation "org.thymeleaf:thymeleaf-spring5"
     implementation "jakarta.servlet:jakarta.servlet-api"
-    implementation "tech.blueglacier:email-mime-parser"
     implementation "commons-io:commons-io"
 
     runtimeOnly "org.webjars.npm:bootswatch"

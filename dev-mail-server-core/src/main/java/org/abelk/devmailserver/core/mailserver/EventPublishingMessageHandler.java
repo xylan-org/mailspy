@@ -2,11 +2,10 @@ package org.abelk.devmailserver.core.mailserver;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.ZonedDateTime;
-import java.util.function.Supplier;
 
 import org.abelk.devmailserver.core.domain.DmsEmail;
 import org.abelk.devmailserver.core.domain.EmailReceivedEvent;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.subethamail.smtp.MessageHandler;
@@ -16,29 +15,21 @@ import org.subethamail.smtp.TooMuchDataException;
 public class EventPublishingMessageHandler implements MessageHandler {
 
     private ApplicationEventPublisher applicationEventPublisher;
-    private EmailParser emailParser;
-    private Supplier<ZonedDateTime> dateTimeSupplier = ZonedDateTime::now;
 
     @Autowired
     public void setApplicationEventPublisher(final ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    @Autowired
-    public void setEmailParser(final EmailParser emailParser) {
-        this.emailParser = emailParser;
-    }
-
-    public void setDateTimeSupplier(final Supplier<ZonedDateTime> dateTimeSupplier) {
-        this.dateTimeSupplier = dateTimeSupplier;
-    }
-
     @Override
     public void data(final InputStream messageStream) throws RejectException, TooMuchDataException, IOException {
-        final DmsEmail parseResult = emailParser.parseMessage(messageStream);
-        parseResult.setReceivedTimestamp(dateTimeSupplier.get());
-        final EmailReceivedEvent emailReceivedEvent = new EmailReceivedEvent(parseResult);
-        applicationEventPublisher.publishEvent(emailReceivedEvent);
+        DmsEmail result;
+        try {
+            result = DmsEmail.ofRawMessage(IOUtils.toByteArray(messageStream));
+        } catch (final IOException exception) {
+            result = DmsEmail.ofException(exception);
+        }
+        applicationEventPublisher.publishEvent(new EmailReceivedEvent(result));
     }
 
     @Override

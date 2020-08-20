@@ -17,7 +17,7 @@ public class SseEmailReceivedListener implements ApplicationListener<EmailReceiv
 
     @Override
     public void onApplicationEvent(final EmailReceivedEvent event) {
-        sseEmitterRegistry.broadcast(event.getEmailParseResult());
+        sseEmitterRegistry.broadcast(event.getSource());
     }
 
 }

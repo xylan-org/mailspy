@@ -9,10 +9,6 @@ import org.abelk.devmailserver.core.web.handlermapping.SimpleUrlHandlerMethodMap
 import org.abelk.devmailserver.core.web.redirect.RedirectIndexController;
 import org.abelk.devmailserver.core.web.sse.SseSubscriptionController;
 import org.abelk.devmailserver.core.web.transformer.BasePathResourceTransformer;
-import org.apache.james.mime4j.codec.DecodeMonitor;
-import org.apache.james.mime4j.message.DefaultBodyDescriptorBuilder;
-import org.apache.james.mime4j.parser.MimeStreamParser;
-import org.apache.james.mime4j.stream.MimeConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -31,8 +27,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.server.SMTPServer;
-
-import tech.blueglacier.parser.CustomContentHandler;
 
 @Configuration
 @ConditionalOnProperty(name = "devmailserver.enabled", havingValue = "true")
@@ -55,19 +49,6 @@ public class DevMailServerAutoConfig {
     @Scope(value = SCOPE_PROTOTYPE)
     public MessageHandler messageHandler() {
         return new EventPublishingMessageHandler();
-    }
-
-    @Bean
-    public MimeStreamParser mime4jParser() {
-        final MimeStreamParser mime4jParser = new MimeStreamParser(MimeConfig.DEFAULT, DecodeMonitor.SILENT, new DefaultBodyDescriptorBuilder());
-        mime4jParser.setContentDecoding(true);
-        mime4jParser.setContentHandler(blueglacierContentHandler());
-        return mime4jParser;
-    }
-
-    @Bean
-    public CustomContentHandler blueglacierContentHandler() {
-        return new CustomContentHandler();
     }
 
     @Configuration

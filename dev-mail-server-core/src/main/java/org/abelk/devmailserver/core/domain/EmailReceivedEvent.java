@@ -9,8 +9,4 @@ public class EmailReceivedEvent extends ApplicationEvent {
         super(source);
     }
 
-    public DmsEmail getEmailParseResult() {
-        return (DmsEmail) source;
-    }
-
 }
