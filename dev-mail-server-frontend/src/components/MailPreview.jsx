@@ -18,11 +18,11 @@ class MailPreview extends Component {
 
 		if (mail !== null) {
 			let contents = {
-					html: mail.parsedMail.html,
-					text: mail.parsedMail.text,
-					raw: mail.rawMail
+					html: mail.html,
+					text: mail.text,
+					raw: mail.raw
 				},
-				id = mail.parsedMail.messageId,
+				id = mail.messageId,
 				activeKey = prevState.activeKey;
 
 			if (prevState.id !== id || activeKey === undefined) {

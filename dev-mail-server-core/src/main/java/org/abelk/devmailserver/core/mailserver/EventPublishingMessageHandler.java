@@ -12,6 +12,9 @@ import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.RejectException;
 import org.subethamail.smtp.TooMuchDataException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class EventPublishingMessageHandler implements MessageHandler {
 
     private ApplicationEventPublisher applicationEventPublisher;
@@ -28,6 +31,7 @@ public class EventPublishingMessageHandler implements MessageHandler {
             result = DmsEmail.ofRawMessage(IOUtils.toByteArray(messageStream));
         } catch (final IOException exception) {
             result = DmsEmail.ofException(exception);
+            log.error("Exception thrown while reading mail message.", exception);
         }
         applicationEventPublisher.publishEvent(new EmailReceivedEvent(result));
     }

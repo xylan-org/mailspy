@@ -60,3 +60,12 @@ main {
 iframe {
 	border: 0;
 }
+
+.list-group-item {
+	height: 100px;
+	cursor: pointer;
+}
+
+.list-group-item.list-group-item-danger {
+	cursor: not-allowed;
+}

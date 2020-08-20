@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import MailList from "./MailList";
 import MailPreview from "./MailPreview";
 import { simpleParser } from "mailparser"
+import moment from "moment";
 
 class App extends Component {
 	constructor() {
@@ -16,31 +17,47 @@ class App extends Component {
 	componentDidMount() {
 		let eventSource = new EventSource("http://localhost:8080/dms/subscribe");
 		eventSource.onmessage = (event) => {
-			let rawMail = atob(JSON.parse(event.data).rawMessage);
-			simpleParser(rawMail, {
-				skipHtmlToText: true,
-				skipTextToHtml: true,
-				skipTextLinks: true
-			}).then((parsedMail) => {
-				let mailModel = {
-					rawMail,
-					parsedMail,
-					selected: false
-				};
-				this.setState(prevState => {
-					return {
-						mails: [mailModel, ...prevState.mails]
-					};
+			let response = JSON.parse(event.data),
+				timeReceived = moment().format("DD/MM/YYYY hh:mm:ss A");
+
+			if (response.exception) {
+				this.addMail({
+					timeReceived: timeReceived,
+					selected: false,
+					error: response.exception.message
+				})
+			} else {
+				let rawMail = atob(response.rawMessage);
+				simpleParser(rawMail, {
+					skipHtmlToText: true,
+					skipTextToHtml: true,
+					skipTextLinks: true
+				}).then((parsedMail) => {
+					this.addMail({
+						...parsedMail,
+						raw: rawMail,
+						timeReceived: timeReceived,
+						selected: false,
+						error: ""
+					});
 				});
-			});
+			}
 		};
+	}
+
+	addMail = (mail) => {
+		this.setState(prevState => {
+			return {
+				mails: [mail, ...prevState.mails]
+			};
+		});
 	}
 
 	selectMail = (selectedMail) => {
 		let mails = this.state.mails.map((mail) => {
 			return {
 				...mail,
-				selected: mail.parsedMail.messageId === selectedMail.parsedMail.messageId
+				selected: mail.messageId === selectedMail.messageId
 			}
 		});
 		this.setState({
