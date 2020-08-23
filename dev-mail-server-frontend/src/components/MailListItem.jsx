@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Badge } from "react-bootstrap"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPaperclip } from "@fortawesome/free-solid-svg-icons"
 
 class MailListItem extends Component {
 
@@ -20,6 +23,13 @@ class MailListItem extends Component {
 				</div>
 			);
 		} else {
+			let attachmentBadge = (
+				<Badge variant="primary">
+					<FontAwesomeIcon icon={faPaperclip} />
+					{mail.attachments.length}
+				</Badge>
+			);
+
 			result = (
 				<div
 					className={"list-group-item list-group-item-action " + (mail.selected ? "active" : "")}
@@ -33,9 +43,14 @@ class MailListItem extends Component {
 						<strong>To: </strong>
 						<span>{mail.to.text}</span>
 					</p>
-					<p className="mb-1">
-						<strong>From: </strong>
-						<span>{mail.from.text}</span>
+					<p className="d-flex w-100 justify-content-between">
+						<div className="mb-1">
+							<strong>From: </strong>
+							<span>{mail.from.text}</span>
+						</div>
+						<div>
+							{mail.attachments.length !== 0 ? attachmentBadge : ""}
+						</div>
 					</p>
 				</div>
 			);

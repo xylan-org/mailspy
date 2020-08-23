@@ -4,8 +4,15 @@ import Button from "react-bootstrap/Button";
 import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDownload, faTimes } from "@fortawesome/free-solid-svg-icons"
+import FileSaver from "file-saver"
 
 class MailList extends Component {
+
+	downloadSelectedMail = () => {
+		let mail = this.props.selectedMail,
+			blob = new Blob([mail.raw], { type: "message/rfc822" });
+		FileSaver.saveAs(blob, mail.subject + ".eml");
+	}
 
 	render() {
 		let listItems = this.props.mails.map(mail => {
@@ -30,6 +37,7 @@ class MailList extends Component {
 					</Button>
 					<Button
 						variant="primary"
+						onClick={this.downloadSelectedMail}
 						disabled={this.props.selectedMail === null}>
 						<FontAwesomeIcon icon={faDownload} />
 						Download

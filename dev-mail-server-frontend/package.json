@@ -17,6 +17,7 @@
     "@fortawesome/react-fontawesome": "0.1.11",
     "bootstrap": "4.5.0",
     "escape-html": "1.0.3",
+    "file-saver": "2.0.2",
     "highlight.js": "10.1.1",
     "mailparser": "2.8.1",
     "moment": "2.27.0",

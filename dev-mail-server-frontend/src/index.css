@@ -27,16 +27,11 @@ main {
 }
 
 #list .card-body {
-	flex: 22;
 	display: flex;
 	flex-direction: column;
 	overflow-y: scroll;
 	min-height: 0;
 	padding: 0;
-}
-
-#list .card-header {
-	flex: 1;
 }
 
 #list .card-header button {
@@ -45,23 +40,25 @@ main {
 
 #preview {
 	flex: 2.3;
-	display: flex;
-	flex-direction: column;
 }
 
-#preview .nav {
-	flex: none;
+#preview .card-body {
+	padding: 0;
 }
 
-#preview .tab-content {
-	flex: 1;
-	min-height: 0;
-}
-
-#preview .tab-content div, #preview .tab-content pre, #preview .tab-content code, #preview .tab-content iframe {
+#preview .card-body div, #preview .card-body pre, #preview .card-body code, #preview .card-body iframe {
 	height: 100%;
 	width: 100%;
 	margin: 0;
+}
+
+#preview .card-header {
+	padding-top: 1.3rem;
+}
+
+#preview .card-footer .badge {
+	margin-right: 3px;
+	cursor: pointer;
 }
 
 .footer {
@@ -86,6 +83,6 @@ iframe {
 	cursor: not-allowed;
 }
 
-button svg {
+button svg, .badge svg {
 	margin-right: 3px;
 }

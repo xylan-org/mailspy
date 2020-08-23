@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import Navbar from "./Navbar";
-import MailList from "./MailList";
-import MailPreview from "./MailPreview";
+import React, { Component } from "react"
+import Navbar from "./Navbar"
+import MailList from "./MailList"
+import MailPreview from "./MailPreview"
 import { simpleParser } from "mailparser"
-import moment from "moment";
+import moment from "moment"
 
 class App extends Component {
 	constructor() {
