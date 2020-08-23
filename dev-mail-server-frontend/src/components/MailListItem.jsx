@@ -22,7 +22,7 @@ class MailListItem extends Component {
 		} else {
 			result = (
 				<div
-					className={"list-group-item list-group-item-action " + (mail.selected ? "list-group-item-dark" : "")}
+					className={"list-group-item list-group-item-action " + (mail.selected ? "active" : "")}
 					onClick={() => this.props.selectMail(mail)}>
 
 					<div className="d-flex w-100 justify-content-between">

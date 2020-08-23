@@ -5,8 +5,8 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 import java.util.Map;
 
 import org.abelk.devmailserver.core.mailserver.EventPublishingMessageHandler;
+import org.abelk.devmailserver.core.web.forward.ForwardIndexController;
 import org.abelk.devmailserver.core.web.handlermapping.SimpleUrlHandlerMethodMapping;
-import org.abelk.devmailserver.core.web.redirect.RedirectIndexController;
 import org.abelk.devmailserver.core.web.sse.SseSubscriptionController;
 import org.abelk.devmailserver.core.web.transformer.BasePathResourceTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,8 +98,8 @@ public class DevMailServerAutoConfig {
         }
 
         @Bean
-        public RedirectIndexController redirectIndexController() {
-            return new RedirectIndexController(properties.getUrl());
+        public ForwardIndexController redirectIndexController() {
+            return new ForwardIndexController(properties.getUrl());
         }
 
         @Bean

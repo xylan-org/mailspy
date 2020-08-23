@@ -66,12 +66,24 @@ class App extends Component {
 		});
 	}
 
+	clearMails = () => {
+		this.setState({
+			mails: [],
+			selectedMail: null
+		});
+	}
+
 	render() {
 		return (
 			<div id="container">
 				<Navbar />
 				<main role="main">
-					<MailList mails={this.state.mails} selectMail={this.selectMail} />
+					<MailList
+						mails={this.state.mails}
+						selectMail={this.selectMail}
+						clearMails={this.clearMails}
+						selectedMail={this.state.selectedMail}
+					/>
 					<MailPreview selectedMail={this.state.selectedMail} />
 				</main>
 			</div>
