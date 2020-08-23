@@ -52,6 +52,10 @@ main {
 	margin: 0;
 }
 
+#preview .card-body code {
+	white-space: pre-wrap;
+}
+
 #preview .card-header {
 	padding-top: 1.3rem;
 }
@@ -85,4 +89,11 @@ iframe {
 
 button svg, .badge svg {
 	margin-right: 3px;
+}
+
+.mail-subject, .mail-to, .mail-from {
+	max-width: 70%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }

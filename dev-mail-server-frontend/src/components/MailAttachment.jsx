@@ -6,16 +6,15 @@ import FileSaver from "file-saver"
 
 class MailAttachment extends Component {
 
-	downloadAttachment = (attachment) => {
-		let blob = new Blob([attachment.content], {
-			type: attachment.contentType
-		});
+	downloadAttachment = () => {
+		let attachment = this.props.attachment,
+		    blob = new Blob([attachment.content], { type: attachment.contentType });
 		FileSaver.saveAs(blob, attachment.filename);
 	}
 
 	render() {
 		return (
-			<Badge variant="primary" onClick={() => this.downloadAttachment(this.props.attachment)}>
+			<Badge variant="primary" onClick={() => this.downloadAttachment()}>
 				<FontAwesomeIcon icon={faFile} />
 				{this.props.attachment.filename}
 			</Badge>

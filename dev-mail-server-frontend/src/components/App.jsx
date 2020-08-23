@@ -4,6 +4,7 @@ import MailList from "./MailList"
 import MailPreview from "./MailPreview"
 import { simpleParser } from "mailparser"
 import moment from "moment"
+import { v4 as uuidv4 } from "uuid"
 
 class App extends Component {
 	constructor() {
@@ -18,27 +19,30 @@ class App extends Component {
 		let eventSource = new EventSource("http://localhost:8080/dms/subscribe");
 		eventSource.onmessage = (event) => {
 			let response = JSON.parse(event.data),
-				timeReceived = moment().format("DD/MM/YYYY hh:mm:ss A");
+				timeReceived = moment().format("DD/MM/YYYY hh:mm:ss A"),
+				id = uuidv4();
 
 			if (response.exception) {
 				this.addMail({
 					timeReceived: timeReceived,
 					selected: false,
-					error: response.exception.message
+					error: response.exception.message,
+					id: id
 				})
 			} else {
-				let rawMail = atob(response.rawMessage);
-				simpleParser(rawMail, {
+				let mailBuffer = new Buffer(response.rawMessage, "base64");
+				simpleParser(mailBuffer, {
 					skipHtmlToText: true,
 					skipTextToHtml: true,
 					skipTextLinks: true
 				}).then((parsedMail) => {
 					this.addMail({
 						...parsedMail,
-						raw: rawMail,
+						raw: mailBuffer.toString(),
 						timeReceived: timeReceived,
 						selected: false,
-						error: ""
+						error: "",
+						id: id
 					});
 				});
 			}
@@ -57,7 +61,7 @@ class App extends Component {
 		let mails = this.state.mails.map((mail) => {
 			return {
 				...mail,
-				selected: mail.messageId === selectedMail.messageId
+				selected: mail.id === selectedMail.id
 			}
 		});
 		this.setState({

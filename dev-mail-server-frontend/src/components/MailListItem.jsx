@@ -36,15 +36,15 @@ class MailListItem extends Component {
 					onClick={() => this.props.selectMail(mail)}>
 
 					<div className="d-flex w-100 justify-content-between">
-						<h5 className="mb-1">{mail.subject}</h5>
+						<h5 className="mb-1 mail-subject">{mail.subject}</h5>
 						<small>{mail.timeReceived}</small>
 					</div>
-					<p className="mb-1">
+					<p className="mb-1 mail-to">
 						<strong>To: </strong>
 						<span>{mail.to.text}</span>
 					</p>
 					<p className="d-flex w-100 justify-content-between">
-						<div className="mb-1">
+						<div className="mb-1 mail-from">
 							<strong>From: </strong>
 							<span>{mail.from.text}</span>
 						</div>

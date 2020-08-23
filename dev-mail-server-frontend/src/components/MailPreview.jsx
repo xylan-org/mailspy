@@ -23,7 +23,7 @@ class MailPreview extends Component {
 					text: mail.text,
 					raw: mail.raw
 				},
-				id = mail.messageId,
+				id = mail.id,
 				activeKey = prevState.activeKey;
 
 			if (prevState.id !== id || activeKey === undefined) {

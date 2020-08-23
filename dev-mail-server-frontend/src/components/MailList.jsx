@@ -18,7 +18,7 @@ class MailList extends Component {
 		let listItems = this.props.mails.map(mail => {
 			return (
 				<MailListItem
-					key={mail.messageId}
+					key={mail.id}
 					mail={mail}
 					selectMail={this.props.selectMail}
 				/>
