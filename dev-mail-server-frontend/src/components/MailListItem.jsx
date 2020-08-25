@@ -12,7 +12,7 @@ class MailListItem extends Component {
 		if (mail.error) {
 			result = (
 				<div className="list-group-item list-group-item-action list-group-item-danger">
-					<div className="d-flex w-100 justify-content-between">
+					<div className="d-flex w-100 justify-content-between text-max-70">
 						<h5 className="mb-1 font-italic">Failed to receive mail</h5>
 						<small>{mail.timeReceived}</small>
 					</div>
@@ -36,22 +36,22 @@ class MailListItem extends Component {
 					onClick={() => this.props.selectMail(mail)}>
 
 					<div className="d-flex w-100 justify-content-between">
-						<h5 className="mb-1 mail-subject">{mail.subject}</h5>
+						<h5 className="mb-1 text-max-70">{mail.subject}</h5>
 						<small>{mail.timeReceived}</small>
 					</div>
-					<p className="mb-1 mail-to">
+					<div className="mb-1 text-max-70">
 						<strong>To: </strong>
 						<span>{mail.to.text}</span>
-					</p>
-					<p className="d-flex w-100 justify-content-between">
-						<div className="mb-1 mail-from">
+					</div>
+					<div className="d-flex w-100 justify-content-between">
+						<div className="mb-1 text-max-70">
 							<strong>From: </strong>
 							<span>{mail.from.text}</span>
 						</div>
 						<div>
 							{mail.attachments.length !== 0 ? attachmentBadge : ""}
 						</div>
-					</p>
+					</div>
 				</div>
 			);
 		}

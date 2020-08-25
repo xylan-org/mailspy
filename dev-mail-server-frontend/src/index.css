@@ -56,10 +56,6 @@ main {
 	white-space: pre-wrap;
 }
 
-#preview .card-header {
-	padding-top: 1.3rem;
-}
-
 #preview .card-footer .badge {
 	margin-right: 3px;
 	cursor: pointer;
@@ -91,8 +87,15 @@ button svg, .badge svg {
 	margin-right: 3px;
 }
 
-.mail-subject, .mail-to, .mail-from {
+.text-max-70 {
 	max-width: 70%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.text-max-100 {
+	max-width: 100%;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
