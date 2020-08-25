@@ -53,16 +53,16 @@ class MailPreview extends Component {
 				<Card id="preview">
 					<Card.Header>
 						<div>
-							<h4 className="mb-1 text-max-100">{mail.subject}</h4>
-							<p className={"mb-1 text-max-100"}>
+							<h4 className="mb-1 text-shorten">{mail.subject}</h4>
+							<div className={"mb-1 text-shorten"}>
 								<strong>Received: </strong>
 								<span>{mail.timeReceived}</span>
-							</p>
-							<p className="mb-1 text-max-100">
+							</div>
+							<div className="mb-1 text-shorten">
 								<strong>To: </strong>
 								<span>{mail.to.text}</span>
-							</p>
-							<div className="mb-1 text-max-100">
+							</div>
+							<div className="mb-1 text-shorten">
 								<strong>From: </strong>
 								<span>{mail.from.text}</span>
 							</div>

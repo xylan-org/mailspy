@@ -87,16 +87,18 @@ button svg, .badge svg {
 	margin-right: 3px;
 }
 
-.text-max-70 {
-	max-width: 70%;
+.text-shorten {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
 }
 
-.text-max-100 {
-	max-width: 100%;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
+.subject {
+	font-size: 1.1em;
+}
+
+.attachment-badge {
+	position: absolute;
+	bottom: 0;
+	right: 14px;
 }
