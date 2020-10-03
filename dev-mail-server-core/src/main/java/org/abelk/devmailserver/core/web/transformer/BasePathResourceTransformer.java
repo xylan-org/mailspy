@@ -29,7 +29,7 @@ public class BasePathResourceTransformer implements ResourceTransformer {
         final Resource resource = transformerChain.transform(request, originalResource);
         if (resource.getFilename().equals(fileName)) {
             final byte[] bytes = readToString(resource.getInputStream())
-                    .replaceFirst("^(.*<head>)(.*)$", "$1<base href=\"" + basePath + "\">$2")
+                    .replaceFirst("<base href=\".*?\">", "<base href=\"" + basePath + "\">")
                     .getBytes();
             result = new TransformedResource(resource, bytes);
         } else {
