@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Nav, Card } from "react-bootstrap"
-import Highlight from "./Highlight"
 import MailAttachment from "./MailAttachment";
 
 class MailPreview extends Component {
@@ -44,9 +43,9 @@ class MailPreview extends Component {
 			if (activeKey === "html") {
 				body = <iframe title="html" srcDoc={mail.html} height="100%" width="100%"></iframe>
 			} else if (activeKey === "text") {
-				body = <Highlight content={mail.text} />
+				body = <pre><code dangerouslySetInnerHTML={{ __html: mail.text }}/></pre>
 			} else if (activeKey === "raw") {
-				body = <Highlight content={mail.raw} />
+				body = <pre><code dangerouslySetInnerHTML={{ __html: mail.raw }}/></pre>
 			}
 
 			result = (

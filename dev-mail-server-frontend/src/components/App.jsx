@@ -5,6 +5,7 @@ import MailPreview from "./MailPreview"
 import { simpleParser } from "mailparser"
 import moment from "moment"
 import { v4 as uuidv4 } from "uuid"
+import escapeHtml from "escape-html";
 
 class App extends Component {
 	constructor() {
@@ -38,7 +39,8 @@ class App extends Component {
 				}).then((parsedMail) => {
 					this.addMail({
 						...parsedMail,
-						raw: mailBuffer.toString(),
+						text: escapeHtml(parsedMail.text),
+						raw: escapeHtml(mailBuffer.toString()),
 						timeReceived: timeReceived,
 						selected: false,
 						error: "",
