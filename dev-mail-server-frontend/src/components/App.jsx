@@ -17,7 +17,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		let eventSource = new EventSource("http://localhost:8080/dms/subscribe");
+		let eventSource = new EventSource(this.getBackendRoot() + "/subscribe");
 		eventSource.onmessage = (event) => {
 			let response = JSON.parse(event.data),
 				timeReceived = moment().format("DD/MM/YYYY hh:mm:ss A"),
@@ -49,6 +49,16 @@ class App extends Component {
 				});
 			}
 		};
+	}
+
+	getBackendRoot = () => {
+		let result;
+		if (process.env.NODE_ENV === "development") {
+			result = process.env.REACT_APP_BACKEND_ROOT;
+		} else {
+			result = window.location.origin + window.location.pathname;
+		}
+		return result;
 	}
 
 	addMail = (mail) => {

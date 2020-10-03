@@ -6,3 +6,7 @@ devmailserver:
     cors: true
     
 spring:  resources:    add-mappings: false
+    
+server:
+  port: 8099
+ 
