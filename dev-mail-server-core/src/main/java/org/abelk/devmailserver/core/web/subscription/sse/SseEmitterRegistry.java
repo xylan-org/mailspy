@@ -1,5 +1,6 @@
-package org.abelk.devmailserver.core.web.sse;
+package org.abelk.devmailserver.core.web.subscription.sse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -9,6 +10,7 @@ import javax.annotation.PreDestroy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +29,15 @@ public class SseEmitterRegistry {
     public SseEmitter createEmitter() {
         final SseEmitter emitter = new SseEmitter();
         registerEventHandlers(emitter);
-        emitters.add(emitter);
+        try {
+            emitter.send(SseEmitter.event()
+                    .data("connected")
+                    .name("connected"));
+            emitters.add(emitter);
+        } catch (final IOException exception) {
+            emitter.completeWithError(exception);
+            log.error(exception.getMessage(), exception);
+        }
         return emitter;
     }
 
@@ -41,15 +51,19 @@ public class SseEmitterRegistry {
     }
 
     @Async
-    public void broadcast(final Object object) {
+    public void broadcast(final String eventType, final Object object) {
         final List<SseEmitter> failedEmitters = new ArrayList<>();
         emitters.forEach(emitter -> {
             try {
-                emitter.send(object);
-            } catch (final Exception e) {
-                emitter.completeWithError(e);
+                final SseEventBuilder builder = SseEmitter.event().name(eventType);
+                if (object != null) {
+                    builder.data(object);
+                }
+                emitter.send(builder);
+            } catch (final Exception exception) {
+                emitter.completeWithError(exception);
                 failedEmitters.add(emitter);
-                log.error(e.getMessage(), e);
+                log.error(exception.getMessage(), exception);
             }
         });
         emitters.removeAll(failedEmitters);

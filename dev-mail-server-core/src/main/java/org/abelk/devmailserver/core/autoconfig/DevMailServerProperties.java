@@ -22,6 +22,7 @@ public class DevMailServerProperties {
     @NotNull
     private InetAddress bindAddress = InetAddress.getLoopbackAddress();
 
+    @NotNull
     private WebUiProperties webUi = new WebUiProperties();
 
     @Data
@@ -29,6 +30,9 @@ public class DevMailServerProperties {
 
         @NotEmpty
         private String url = "/dms";
+        
+        @Min(1)
+        private int retainEmails = 10;
 
     }
 

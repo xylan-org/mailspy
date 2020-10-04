@@ -1,4 +1,4 @@
-package org.abelk.devmailserver.core.mailserver;
+package org.abelk.devmailserver.core.subetha;
 
 import java.io.IOException;
 import java.io.InputStream;

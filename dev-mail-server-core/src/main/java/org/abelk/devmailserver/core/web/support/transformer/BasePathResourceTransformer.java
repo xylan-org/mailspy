@@ -1,4 +1,4 @@
-package org.abelk.devmailserver.core.web.transformer;
+package org.abelk.devmailserver.core.web.support.transformer;
 
 import java.io.IOException;
 import java.io.InputStream;

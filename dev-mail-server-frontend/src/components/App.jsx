@@ -17,38 +17,51 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		let eventSource = new EventSource(this.getBackendRoot() + "/subscribe");
-		eventSource.onmessage = (event) => {
-			let response = JSON.parse(event.data),
-				timeReceived = moment().format("DD/MM/YYYY hh:mm:ss A"),
-				id = uuidv4();
+		fetch(this.getBackendRoot() + "/mails/history")
+			.then((response) => response.json())
+			.then((mails) => {
+				mails.forEach((mail) => this.processMail(mail));
+				
+				let eventSource = new EventSource(this.getBackendRoot() + "/mails/subscribe");
+				eventSource.addEventListener("connected", () => {
+					console.log("connected")
+				});
+				eventSource.addEventListener("mail", (event) => {
+					this.processMail(JSON.parse(event.data));
+				});
+			});
+	}
 
-			if (response.exception) {
+	processMail = (mail) => {
+		let response = mail,
+			timeReceived = moment().format("DD/MM/YYYY hh:mm:ss A"),
+			id = uuidv4();
+
+		if (response.exception) {
+			this.addMail({
+				timeReceived: timeReceived,
+				selected: false,
+				error: response.exception.message,
+				id: id
+			})
+		} else {
+			let mailBuffer = new Buffer(response.rawMessage, "base64");
+			simpleParser(mailBuffer, {
+				skipHtmlToText: true,
+				skipTextToHtml: true,
+				skipTextLinks: true
+			}).then((parsedMail) => {
 				this.addMail({
+					...parsedMail,
+					text: escapeHtml(parsedMail.text),
+					raw: escapeHtml(mailBuffer.toString()),
 					timeReceived: timeReceived,
 					selected: false,
-					error: response.exception.message,
+					error: "",
 					id: id
-				})
-			} else {
-				let mailBuffer = new Buffer(response.rawMessage, "base64");
-				simpleParser(mailBuffer, {
-					skipHtmlToText: true,
-					skipTextToHtml: true,
-					skipTextLinks: true
-				}).then((parsedMail) => {
-					this.addMail({
-						...parsedMail,
-						text: escapeHtml(parsedMail.text),
-						raw: escapeHtml(mailBuffer.toString()),
-						timeReceived: timeReceived,
-						selected: false,
-						error: "",
-						id: id
-					});
 				});
-			}
-		};
+			});
+		}
 	}
 
 	getBackendRoot = () => {

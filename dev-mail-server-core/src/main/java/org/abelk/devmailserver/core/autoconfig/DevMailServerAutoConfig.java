@@ -4,11 +4,12 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 
 import java.util.Map;
 
-import org.abelk.devmailserver.core.mailserver.EventPublishingMessageHandler;
+import org.abelk.devmailserver.core.subetha.EventPublishingMessageHandler;
 import org.abelk.devmailserver.core.web.forward.ForwardIndexController;
-import org.abelk.devmailserver.core.web.handlermapping.SimpleUrlHandlerMethodMapping;
-import org.abelk.devmailserver.core.web.sse.SseSubscriptionController;
-import org.abelk.devmailserver.core.web.transformer.BasePathResourceTransformer;
+import org.abelk.devmailserver.core.web.history.controller.MailsHistoryController;
+import org.abelk.devmailserver.core.web.subscription.controller.MailsSubscriptionController;
+import org.abelk.devmailserver.core.web.support.handlermapping.SimpleUrlHandlerMethodMapping;
+import org.abelk.devmailserver.core.web.support.transformer.BasePathResourceTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -31,7 +32,7 @@ import org.subethamail.smtp.server.SMTPServer;
 @Configuration
 @ConditionalOnProperty(name = "devmailserver.enabled", havingValue = "true")
 @EnableConfigurationProperties(DevMailServerProperties.class)
-@ComponentScan("org.abelk.devmailserver.core.mailserver")
+@ComponentScan("org.abelk.devmailserver.core")
 public class DevMailServerAutoConfig {
 
     @Autowired
@@ -72,39 +73,41 @@ public class DevMailServerAutoConfig {
 
     @EnableWebMvc
     @Configuration
-    @ComponentScan("org.abelk.devmailserver.core.web")
     public static class DevMailServerWebMvcConfigurer implements WebMvcConfigurer {
 
-        private final DevMailServerProperties.WebUiProperties properties;
+        @Autowired
+        private ForwardIndexController forwardIndexController;
+
+        @Autowired
+        private MailsSubscriptionController mailsSubscriptionController;
+
+        @Autowired
+        private MailsHistoryController mailsHistoryController;
+
+        private final String basePath;
 
         @Autowired
         public DevMailServerWebMvcConfigurer(final DevMailServerProperties properties) {
-            this.properties = properties.getWebUi();
+            basePath = properties.getWebUi().getUrl();
         }
 
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-            registry.addResourceHandler(properties.getUrl() + "/resources/**")
+            registry.setOrder(0)
+                    .addResourceHandler(basePath + "/resources/**")
                     .addResourceLocations("classpath:META-INF/dms-frontend/")
                     .resourceChain(true)
-                    .addTransformer(new BasePathResourceTransformer("index.html", properties.getUrl() + "/resources/"));
+                    .addTransformer(new BasePathResourceTransformer("index.html", basePath + "/resources/"));
         }
 
         @Bean
         public SimpleUrlHandlerMapping devMailServerHandlerMapping() {
-            return new SimpleUrlHandlerMethodMapping(Map.of(
-                    properties.getUrl(), redirectIndexController(),
-                    properties.getUrl() + "/subscribe", sseSubscribeController()));
-        }
-
-        @Bean
-        public ForwardIndexController redirectIndexController() {
-            return new ForwardIndexController(properties.getUrl());
-        }
-
-        @Bean
-        public SseSubscriptionController sseSubscribeController() {
-            return new SseSubscriptionController();
+            final SimpleUrlHandlerMethodMapping handlerMapping = new SimpleUrlHandlerMethodMapping(Map.of(
+                    basePath, forwardIndexController,
+                    basePath + "/mails/subscribe", mailsSubscriptionController,
+                    basePath + "/mails/history", mailsHistoryController));
+            handlerMapping.setOrder(1);
+            return handlerMapping;
         }
 
     }

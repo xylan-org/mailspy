@@ -1,4 +1,4 @@
-package org.abelk.devmailserver.core.web.handlermapping;
+package org.abelk.devmailserver.core.web.support.handlermapping;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

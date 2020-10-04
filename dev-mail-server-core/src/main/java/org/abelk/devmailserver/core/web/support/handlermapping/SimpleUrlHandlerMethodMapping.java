@@ -1,4 +1,4 @@
-package org.abelk.devmailserver.core.web.handlermapping;
+package org.abelk.devmailserver.core.web.support.handlermapping;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -51,7 +51,7 @@ public class SimpleUrlHandlerMethodMapping extends SimpleUrlHandlerMapping {
 
     private static Method getFirstAnnotatedMethod(final Object bean) {
         return Arrays.stream(bean.getClass().getMethods())
-                .filter(b -> b.getAnnotation(org.abelk.devmailserver.core.web.handlermapping.HandlerMethod.class) != null)
+                .filter(b -> b.getAnnotation(org.abelk.devmailserver.core.web.support.handlermapping.HandlerMethod.class) != null)
                 .findFirst()
                 .orElseThrow();
     }

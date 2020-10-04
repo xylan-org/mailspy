@@ -1,4 +1,4 @@
-package org.abelk.devmailserver.core.web.sse;
+package org.abelk.devmailserver.core.web.subscription.sse;
 
 import org.abelk.devmailserver.core.domain.EmailReceivedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class SseEmailReceivedListener implements ApplicationListener<EmailReceivedEvent> {
 
-    private SseEmitterRegistry sseEmitterRegistry;
-
     @Autowired
-    public void setSseEmitterRegistry(final SseEmitterRegistry sseEmitterRegistry) {
-        this.sseEmitterRegistry = sseEmitterRegistry;
-    }
+    private SseEmitterRegistry sseEmitterRegistry;
 
     @Override
     public void onApplicationEvent(final EmailReceivedEvent event) {
-        sseEmitterRegistry.broadcast(event.getSource());
+        sseEmitterRegistry.broadcast("mail", event.getSource());
     }
 
 }

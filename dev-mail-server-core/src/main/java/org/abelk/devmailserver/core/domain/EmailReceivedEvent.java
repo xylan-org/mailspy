@@ -9,4 +9,9 @@ public class EmailReceivedEvent extends ApplicationEvent {
         super(source);
     }
 
+    @Override
+    public DmsEmail getSource() {
+        return (DmsEmail) source;
+    }
+
 }
