@@ -2,14 +2,8 @@ package org.abelk.devmailserver.core.autoconfig;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
-import java.util.Map;
-
 import org.abelk.devmailserver.core.subetha.EventPublishingMessageHandler;
-import org.abelk.devmailserver.core.web.forward.ForwardIndexController;
-import org.abelk.devmailserver.core.web.history.controller.MailsHistoryController;
-import org.abelk.devmailserver.core.web.subscription.controller.MailsSubscriptionController;
-import org.abelk.devmailserver.core.web.support.handlermapping.SimpleUrlHandlerMethodMapping;
-import org.abelk.devmailserver.core.web.support.transformer.BasePathResourceTransformer;
+import org.abelk.devmailserver.core.web.support.BasePathResourceTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -22,10 +16,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.server.SMTPServer;
 
@@ -75,15 +70,6 @@ public class DevMailServerAutoConfig {
     @Configuration
     public static class DevMailServerWebMvcConfigurer implements WebMvcConfigurer {
 
-        @Autowired
-        private ForwardIndexController forwardIndexController;
-
-        @Autowired
-        private MailsSubscriptionController mailsSubscriptionController;
-
-        @Autowired
-        private MailsHistoryController mailsHistoryController;
-
         private final String basePath;
 
         @Autowired
@@ -93,21 +79,15 @@ public class DevMailServerAutoConfig {
 
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-            registry.setOrder(0)
-                    .addResourceHandler(basePath + "/resources/**")
+            registry.addResourceHandler(basePath + "/resources/**")
                     .addResourceLocations("classpath:META-INF/dms-frontend/")
                     .resourceChain(true)
                     .addTransformer(new BasePathResourceTransformer("index.html", basePath + "/resources/"));
         }
 
-        @Bean
-        public SimpleUrlHandlerMapping devMailServerHandlerMapping() {
-            final SimpleUrlHandlerMethodMapping handlerMapping = new SimpleUrlHandlerMethodMapping(Map.of(
-                    basePath, forwardIndexController,
-                    basePath + "/mails/subscribe", mailsSubscriptionController,
-                    basePath + "/mails/history", mailsHistoryController));
-            handlerMapping.setOrder(1);
-            return handlerMapping;
+        @Override
+        public void configurePathMatch(final PathMatchConfigurer configurer) {
+            configurer.addPathPrefix(basePath, HandlerTypePredicate.forBasePackage("org.abelk.devmailserver.core"));
         }
 
     }

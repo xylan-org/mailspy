@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 public class StoringEmailReceivedListener implements ApplicationListener<EmailReceivedEvent> {
 
     @Autowired
-    private MailHistoryStorage mailHistoryStorage;
+    private MailsHistoryStorage mailsHistoryStorage;
 
     @Override
     public void onApplicationEvent(final EmailReceivedEvent event) {
-        mailHistoryStorage.addEmail(event.getSource());
+        mailsHistoryStorage.addEmail(event.getSource());
     }
 
 }
