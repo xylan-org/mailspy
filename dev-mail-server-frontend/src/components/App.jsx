@@ -6,7 +6,7 @@ import { simpleParser } from "mailparser"
 import moment from "moment"
 import { v4 as uuidv4 } from "uuid"
 import escapeHtml from "escape-html";
-import Cookies from "js-cookie";
+import backendApi from "../modules/BackendApi";
 
 class App extends Component {
 	constructor() {
@@ -18,12 +18,12 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		fetch(this.getBackendRoot() + "/mails/history")
+		backendApi.fetch("/mails/history")
 			.then((response) => response.json())
 			.then((mails) => {
 				mails.forEach((mail) => this.processMail(mail));
-				
-				let eventSource = new EventSource(this.getBackendRoot() + "/mails/subscribe");
+
+				let eventSource = new EventSource(backendApi.getBackendRoot() + "/mails/subscribe");
 				eventSource.addEventListener("connected", () => {
 					console.log("connected")
 				});
@@ -65,16 +65,6 @@ class App extends Component {
 		}
 	}
 
-	getBackendRoot = () => {
-		let result;
-		if (process.env.NODE_ENV === "development") {
-			result = process.env.REACT_APP_BACKEND_ROOT;
-		} else {
-			result = (window.location.origin + window.location.pathname).replace(/\/$/, "");
-		}
-		return result;
-	}
-
 	addMail = (mail) => {
 		this.setState(prevState => {
 			return {
@@ -97,21 +87,14 @@ class App extends Component {
 	}
 
 	clearMails = () => {
-		this.setState({
-			mails: [],
-			selectedMail: null
+		backendApi.fetch("/mails/history", {
+			method: "DELETE"
+		}).then(() => {
+			this.setState({
+				mails: [],
+				selectedMail: null
+			});
 		});
-		let csrfToken = Cookies.get("XSRF-TOKEN"),
-			headers = {};
-		if (csrfToken !== undefined) {
-			headers = {
-				"X-XSRF-TOKEN": csrfToken
-			};
-		}
-		fetch(this.getBackendRoot() + "/mails/history", {
-			method: "DELETE",
-			headers
-		})
 	}
 
 	render() {
