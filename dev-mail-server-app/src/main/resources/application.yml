@@ -1,12 +1,11 @@
 devmailserver:
   enabled: true
   web-ui:
-    path: "/dms"
-  app:
-    cors: true
+    path: /dms
+    enable-cors: true
+    enable-csrf-protection: false
     
 spring:  resources:    add-mappings: false
     
 server:
   port: 8099
- 

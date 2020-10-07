@@ -35,4 +35,10 @@ public class MailsHistoryStorage {
         }
     }
 
+    public void clearHistory() {
+        synchronized (mailQueue) {
+            mailQueue.clear();
+        }
+    }
+
 }

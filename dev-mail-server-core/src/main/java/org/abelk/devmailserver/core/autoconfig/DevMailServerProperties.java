@@ -33,6 +33,10 @@ public class DevMailServerProperties {
         
         @Min(1)
         private int retainEmails = 10;
+        
+        private boolean enableCors = false;
+        
+        private boolean enableCsrfProtection = false;
 
     }
 

@@ -2,8 +2,10 @@ package org.abelk.devmailserver.core.autoconfig;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
+import java.util.List;
+
 import org.abelk.devmailserver.core.subetha.EventPublishingMessageHandler;
-import org.abelk.devmailserver.core.web.support.BasePathResourceTransformer;
+import org.abelk.devmailserver.core.web.support.IndexPageResourceTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,6 +18,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -70,24 +77,49 @@ public class DevMailServerAutoConfig {
     @Configuration
     public static class DevMailServerWebMvcConfigurer implements WebMvcConfigurer {
 
-        private final String basePath;
+        @Autowired
+        private IndexPageResourceTransformer indexPageResourceTransformer;
 
         @Autowired
-        public DevMailServerWebMvcConfigurer(final DevMailServerProperties properties) {
-            basePath = properties.getWebUi().getUrl();
-        }
+        private DevMailServerProperties properties;
 
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-            registry.addResourceHandler(basePath + "/resources/**")
+            registry.addResourceHandler(properties.getWebUi().getUrl() + "/resources/**")
                     .addResourceLocations("classpath:META-INF/dms-frontend/")
                     .resourceChain(true)
-                    .addTransformer(new BasePathResourceTransformer("index.html", basePath + "/resources/"));
+                    .addTransformer(indexPageResourceTransformer);
         }
 
         @Override
         public void configurePathMatch(final PathMatchConfigurer configurer) {
-            configurer.addPathPrefix(basePath, HandlerTypePredicate.forBasePackage("org.abelk.devmailserver.core"));
+            configurer.addPathPrefix(properties.getWebUi().getUrl(),
+                    HandlerTypePredicate.forBasePackage("org.abelk.devmailserver.core"));
+        }
+
+    }
+
+    @EnableWebSecurity
+    @Configuration
+    public class DevMailServerWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
+
+        @Autowired
+        private DevMailServerProperties properties;
+
+        @Override
+        protected void configure(final HttpSecurity http) throws Exception {
+            http.antMatcher(properties.getWebUi().getUrl() + "/**");
+            if (properties.getWebUi().isEnableCors()) {
+                final CorsConfiguration corsConfiguration = new CorsConfiguration();
+                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "HEAD", "DELETE"));
+                corsConfiguration.applyPermitDefaultValues();
+                http.cors().configurationSource(request -> corsConfiguration);
+            }
+            if (properties.getWebUi().isEnableCsrfProtection()) {
+                http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+            } else {
+                http.csrf().disable();
+            }
         }
 
     }

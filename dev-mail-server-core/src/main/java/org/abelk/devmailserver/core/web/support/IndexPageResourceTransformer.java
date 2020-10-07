@@ -7,29 +7,30 @@ import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.abelk.devmailserver.core.autoconfig.DevMailServerProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.resource.ResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
 
-public class BasePathResourceTransformer implements ResourceTransformer {
+@Component
+public class IndexPageResourceTransformer implements ResourceTransformer {
 
-    private final String fileName;
-    private final String basePath;
+    private static final String INDEX_PAGE_FILENAME = "index.html";
 
-    public BasePathResourceTransformer(final String fileName, final String basePath) {
-        this.fileName = fileName;
-        this.basePath = basePath;
-    }
+    @Autowired
+    private DevMailServerProperties properties;
 
     @Override
     public Resource transform(final HttpServletRequest request, final Resource originalResource, final ResourceTransformerChain transformerChain) throws IOException {
         Resource result;
 
         final Resource resource = transformerChain.transform(request, originalResource);
-        if (resource.getFilename().equals(fileName)) {
+        if (resource.getFilename().equals(INDEX_PAGE_FILENAME)) {
             final byte[] bytes = readToString(resource.getInputStream())
-                    .replaceFirst("<base href=\".*?\">", "<base href=\"" + basePath + "\">")
+                    .replaceFirst("<base href=\".*?\">", "<base href=\"" + properties.getWebUi().getUrl() + "/resources/\">")
                     .getBytes();
             result = new TransformedResource(resource, bytes);
         } else {

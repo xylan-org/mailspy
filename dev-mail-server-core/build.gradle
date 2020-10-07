@@ -16,6 +16,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework:spring-context-support"
     implementation "org.springframework:spring-webmvc"
+    implementation "org.springframework.security:spring-security-config"
+    implementation "org.springframework.security:spring-security-web"
     implementation "jakarta.servlet:jakarta.servlet-api"
     implementation "commons-io:commons-io"
 

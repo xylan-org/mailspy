@@ -50,6 +50,10 @@ main {
 	padding: 0;
 }
 
+#preview .card-body pre {
+	padding: 15px;
+}
+
 #preview .card-body div, #preview .card-body pre, #preview .card-body code, #preview .card-body iframe {
 	height: 100%;
 	width: 100%;

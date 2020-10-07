@@ -6,6 +6,7 @@ import { simpleParser } from "mailparser"
 import moment from "moment"
 import { v4 as uuidv4 } from "uuid"
 import escapeHtml from "escape-html";
+import Cookies from "js-cookie";
 
 class App extends Component {
 	constructor() {
@@ -69,7 +70,7 @@ class App extends Component {
 		if (process.env.NODE_ENV === "development") {
 			result = process.env.REACT_APP_BACKEND_ROOT;
 		} else {
-			result = window.location.origin + window.location.pathname;
+			result = (window.location.origin + window.location.pathname).replace(/\/$/, "");
 		}
 		return result;
 	}
@@ -100,6 +101,17 @@ class App extends Component {
 			mails: [],
 			selectedMail: null
 		});
+		let csrfToken = Cookies.get("XSRF-TOKEN"),
+			headers = {};
+		if (csrfToken !== undefined) {
+			headers = {
+				"X-XSRF-TOKEN": csrfToken
+			};
+		}
+		fetch(this.getBackendRoot() + "/mails/history", {
+			method: "DELETE",
+			headers
+		})
 	}
 
 	render() {
