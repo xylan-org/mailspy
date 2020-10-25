@@ -3,12 +3,17 @@ import Navbar from "./Navbar"
 import MailList from "./MailList"
 import MailPreview from "./MailPreview"
 import LoadingToast from "./LoadingToast"
+import ErrorToast from "./ErrorToast"
 import { simpleParser } from "mailparser"
 import moment from "moment"
 import { v4 as uuidv4 } from "uuid"
 import escapeHtml from "escape-html";
 import backendApi from "../modules/BackendApi";
 import ReconnectingEventSource from "../modules/ReconnectingEventSource"
+
+const FETCH_OK = 0;
+const FETCH_LOADING = 1;
+const FETCH_ERROR = 2;
 
 class App extends Component {
 
@@ -17,21 +22,25 @@ class App extends Component {
 		this.state = {
 			mails: [],
 			selectedMail: null,
-			connecting: false
+			fetchState: FETCH_OK
 		};
 	}
 
 	componentDidMount() {
-		this.setState({ connecting: true });
+		this.fetchMails();
+	}
+
+	fetchMails = () => {
+		this.setState({ fetchState: FETCH_LOADING });
 		backendApi.fetch("/mails/history")
 			.then((response) => this.createEventSource().connectAsPromise(response))
 			.then((response) => response.json())
 			.then((mails) => this.setMails(mails))
-			.catch(() => {
-				console.error("Initial request failed.");
+			.then(() => {
+				this.setState({ fetchState: FETCH_OK });
 			})
-			.finally(() => {
-				this.setState({ connecting: false });
+			.catch(() => {
+				this.setState({ fetchState: FETCH_ERROR });
 			});
 	}
 
@@ -131,7 +140,8 @@ class App extends Component {
 					/>
 					<MailPreview selectedMail={this.state.selectedMail} />
 				</main>
-				<LoadingToast show={this.state.connecting} />
+				<LoadingToast show={this.state.fetchState === FETCH_LOADING} />
+				<ErrorToast show={this.state.fetchState === FETCH_ERROR} retry={this.fetchMails} />
 			</div>
 		);
 	}

@@ -6,7 +6,7 @@ class LoadingToast extends Component {
 
 	render() {
 		return (
-			<Toast id="loading-toast" style={{display: this.props.show ? "block" : "none"}}>
+			<Toast style={{display: this.props.show ? "block" : "none"}}>
 				<Toast.Body>
 					<Spinner animation="border" />
 					<span>Connecting...</span>

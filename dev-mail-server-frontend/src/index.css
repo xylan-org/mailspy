@@ -111,19 +111,29 @@ button svg, .badge svg {
 	right: 14px;
 }
 
-#loading-toast {
+.toast {
 	position: absolute;
 	bottom: 0;
 	right: 0;
 	margin: 15px;
 }
 
-#loading-toast .toast-body {
+.toast .spinner-border {
+	vertical-align: middle;
+}
+
+.toast-body {
 	padding: 15px;
 }
 
-#loading-toast .toast-body > span {
+.toast-body > span {
 	margin-left: 8px;
 	font-size: 1.2em;
-	vertical-align: text-bottom;
+	position: relative;
+	top: 2px;
+}
+
+.toast-body a {
+	font-weight: bold;
+	color: white;
 }
