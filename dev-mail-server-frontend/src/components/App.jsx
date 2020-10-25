@@ -48,13 +48,17 @@ class App extends Component {
 		eventSource.onCustomEvent("mail", (event) => {
 			this.addMail(JSON.parse(event.data));
 		});
+		eventSource.onError(() => {
+			this.setState({ fetchState: FETCH_ERROR });
+		});
 		return eventSource;
 	}
 
 	setMails = (mails) => {
 		Promise.all(mails.map(this.processMail)).then((processedMails) => {
 			this.setState({
-				mails: processedMails
+				mails: processedMails,
+				selectedMail: null
 			});
 		});
 	}
@@ -135,6 +139,7 @@ class App extends Component {
 						mails={this.state.mails}
 						selectMail={this.selectMail}
 						clearMails={this.clearMails}
+						canClearMails={this.state.fetchState === FETCH_OK}
 						selectedMail={this.state.selectedMail}
 					/>
 					<MailPreview selectedMail={this.state.selectedMail} />

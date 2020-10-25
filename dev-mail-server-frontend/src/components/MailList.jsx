@@ -31,7 +31,7 @@ class MailList extends Component {
 					<Button
 						variant="primary"
 						onClick={this.props.clearMails}
-						disabled={this.props.mails.length === 0}>
+						disabled={!this.props.canClearMails || this.props.mails.length === 0}>
 						<FontAwesomeIcon icon={faTimes} />
 						Clear
 					</Button>
