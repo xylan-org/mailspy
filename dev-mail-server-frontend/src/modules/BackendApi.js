@@ -6,7 +6,12 @@ class BackendApi {
 
 	fetch = (url, config) => {
 		config = config || {};
-		return fetch(this.getBackendRoot() + url, this.addCsrfTokenIfNeeded(config));
+		return fetch(this.getBackendRoot() + url, this.addCsrfTokenIfNeeded(config)).then((response) => {
+			if (!response.ok) {
+				throw new Error("Received non-2xx response!");
+			}
+			return response;
+		});
 	}
 
 	addCsrfTokenIfNeeded = (config) => {

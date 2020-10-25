@@ -33,7 +33,7 @@ class MailListItem extends Component {
 			result = (
 				<div
 					className={"list-group-item list-group-item-action overflow-hidden " + (mail.selected ? "active" : "")}
-					onClick={() => this.props.selectMail(mail)}>
+					onClick={() => this.props.selectMail(mail.id)}>
 
 					<div className="row">
 						<div className="col-sm-8">
