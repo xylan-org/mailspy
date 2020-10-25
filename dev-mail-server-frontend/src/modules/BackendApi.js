@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import ReconnectingEventSource from "../modules/ReconnectingEventSource"
 
 const STATE_MUTATING_METHODS = ["PATCH", "POST", "PUT", "DELETE"];
 
@@ -12,6 +13,10 @@ class BackendApi {
 			}
 			return response;
 		});
+	}
+
+	createEventSource = () => {
+		return new ReconnectingEventSource(this.getBackendRoot() + "/mails/subscribe");
 	}
 
 	addCsrfTokenIfNeeded = (config) => {

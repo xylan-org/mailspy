@@ -9,7 +9,6 @@ import moment from "moment"
 import { v4 as uuidv4 } from "uuid"
 import escapeHtml from "escape-html";
 import backendApi from "../modules/BackendApi";
-import ReconnectingEventSource from "../modules/ReconnectingEventSource"
 
 const FETCH_OK = 0;
 const FETCH_LOADING = 1;
@@ -45,7 +44,7 @@ class App extends Component {
 	}
 
 	createEventSource = () => {
-		let eventSource = new ReconnectingEventSource(backendApi.getBackendRoot() + "/mails/subscribe");
+		let eventSource = backendApi.createEventSource();
 		eventSource.onCustomEvent("mail", (event) => {
 			this.addMail(JSON.parse(event.data));
 		});
