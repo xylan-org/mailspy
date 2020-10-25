@@ -1,14 +1,13 @@
 import React, { Component } from "react"
+
 import Navbar from "./Navbar"
 import MailList from "./MailList"
 import MailPreview from "./MailPreview"
 import LoadingToast from "./LoadingToast"
 import ErrorToast from "./ErrorToast"
-import { simpleParser } from "mailparser"
-import moment from "moment"
-import { v4 as uuidv4 } from "uuid"
-import escapeHtml from "escape-html";
+
 import backendApi from "../modules/BackendApi";
+import mailParser from "../modules/MailParser";
 
 const FETCH_OK = 0;
 const FETCH_LOADING = 1;
@@ -55,56 +54,24 @@ class App extends Component {
 	}
 
 	setMails = (mails) => {
-		Promise.all(mails.map(this.processMail)).then((processedMails) => {
-			this.setState({
-				mails: processedMails,
-				selectedMail: null
+		mailParser.parseMails(mails)
+			.then((processedMails) => {
+				this.setState({
+					mails: processedMails,
+					selectedMail: null
+				});
 			});
-		});
 	}
 
 	addMail = (mail) => {
-		this.processMail(mail).then((processedMail) => {
-			this.setState((prevState) => {
-				return {
-					mails: [processedMail, ...prevState.mails]
-				};
-			});
-		});
-	}
-
-	processMail = (mail) => {
-		let response = mail,
-			timeReceived = moment().format("DD/MM/YYYY hh:mm:ss A"),
-			id = uuidv4();
-
-		return new Promise((resolve) => {
-			if (response.exception) {
-				resolve({
-					timeReceived: timeReceived,
-					selected: false,
-					error: response.exception.message,
-					id: id
-				})
-			} else {
-				let mailBuffer = new Buffer(response.rawMessage, "base64");
-				simpleParser(mailBuffer, {
-					skipHtmlToText: true,
-					skipTextToHtml: true,
-					skipTextLinks: true
-				}).then((parsedMail) => {
-					resolve({
-						...parsedMail,
-						text: escapeHtml(parsedMail.text),
-						raw: escapeHtml(mailBuffer.toString()),
-						timeReceived: timeReceived,
-						selected: false,
-						error: "",
-						id: id
-					});
+		mailParser.parseMail(mail)
+			.then((processedMail) => {
+				this.setState((prevState) => {
+					return {
+						mails: [processedMail, ...prevState.mails]
+					};
 				});
-			}
-		});
+			});
 	}
 
 	selectMail = (mailId) => {
@@ -145,7 +112,10 @@ class App extends Component {
 					<MailPreview selectedMail={this.state.selectedMail} />
 				</main>
 				<LoadingToast show={this.state.fetchState === FETCH_LOADING} />
-				<ErrorToast show={this.state.fetchState === FETCH_ERROR} retry={this.fetchMails} />
+				<ErrorToast
+					show={this.state.fetchState === FETCH_ERROR}
+					retry={this.fetchMails}
+				/>
 			</div>
 		);
 	}
