@@ -1,139 +1,157 @@
-html, body, #root {
-	height: 100%;
-	margin: 0;
-	overflow-y: hidden;
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    overflow-y: hidden;
 }
 
 #container {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
-	flex: none;
+    flex: none;
 }
 
 main {
-	flex: 6;
-	display: flex;
-	flex-direction: row;
-	min-height: 0;
+    flex: 6;
+    display: flex;
+    flex-direction: row;
+    min-height: 0;
 }
 
 #list {
-	flex: 1;
-	min-height: 0;
+    flex: 1;
+    min-height: 0;
 }
 
 #list .card-body {
-	display: flex;
-	flex-direction: column;
-	overflow-y: scroll;
-	min-height: 0;
-	padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    min-height: 0;
+    padding: 0;
 }
 
 #list .card-body .list-group-item {
-	min-height: 100px;
+    min-height: 100px;
 }
 
 #list .card-header button {
-	margin-right: 5px;
+    margin-right: 5px;
 }
 
 #preview {
-	flex: 2.3;
+    flex: 2.3;
 }
 
 #preview .card-body {
-	padding: 0;
+    padding: 0;
 }
 
 #preview .card-body pre {
-	padding: 15px;
+    padding: 15px;
 }
 
-#preview .card-body div, #preview .card-body pre, #preview .card-body code, #preview .card-body iframe {
-	height: 100%;
-	width: 100%;
-	margin: 0;
+#preview .card-body div,
+#preview .card-body pre,
+#preview .card-body code,
+#preview .card-body iframe {
+    height: 100%;
+    width: 100%;
+    margin: 0;
 }
 
 #preview .card-body code {
-	white-space: pre-wrap;
+    white-space: pre-wrap;
 }
 
 #preview .card-footer .badge {
-	margin-right: 3px;
-	cursor: pointer;
+    margin-right: 3px;
+    cursor: pointer;
 }
 
 .footer {
-	background-color: #f5f5f5;
+    background-color: #f5f5f5;
 }
 
-.footer > .container {
-	padding-right: 15px;
-	padding-left: 15px;
+.footer>.container {
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 iframe {
-	border: 0;
+    border: 0;
 }
 
 .list-group-item {
-	height: 100px;
-	cursor: pointer;
+    height: 100px;
+    cursor: pointer;
 }
 
 .list-group-item.list-group-item-danger {
-	cursor: not-allowed;
+    cursor: not-allowed;
 }
 
-button svg, .badge svg {
-	margin-right: 3px;
+button svg,
+.badge svg {
+    margin-right: 3px;
 }
 
 .text-shorten {
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .subject {
-	font-size: 1.1em;
+    font-size: 1.1em;
 }
 
 .attachment-badge {
-	position: absolute;
-	bottom: 0;
-	right: 14px;
+    position: absolute;
+    bottom: 0;
+    right: 14px;
 }
 
 .toast {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	margin: 15px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 15px;
 }
 
 .toast .spinner-border {
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 .toast-body {
-	padding: 15px;
+    padding: 15px;
 }
 
-.toast-body > span {
-	margin-left: 8px;
-	font-size: 1.2em;
-	position: relative;
-	top: 2px;
+.toast-body>span {
+    margin-left: 8px;
+    font-size: 1.2em;
+    position: relative;
+    top: 2px;
 }
 
-.toast-body a {
+.link-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline;
+    margin: 0;
+	padding: 0;
 	font-weight: bold;
-	color: white;
+    color: white;
+}
+
+.link-button:hover,
+.link-button:focus {
+    text-decoration: underline;
 }

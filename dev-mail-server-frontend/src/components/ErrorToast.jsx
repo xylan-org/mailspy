@@ -5,17 +5,12 @@ import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 
 class ErrorToast extends Component {
 
-	retry = (event) => {
-		event.preventDefault();
-		this.props.retry();
-	}
-
 	render() {
 		return (
 			<Toast style={{display: this.props.show ? "block" : "none"}}>
 				<Toast.Body className="bg-danger text-white">
 					<FontAwesomeIcon icon={faExclamationTriangle} size="lg" />
-					<span>Connection failed. <a href="#" onClick={this.retry}>Retry</a></span>
+					<span>Connection failed. <button className="link-button" onClick={this.props.retry}>Retry</button></span>
 				</Toast.Body>
 			</Toast>
 		)

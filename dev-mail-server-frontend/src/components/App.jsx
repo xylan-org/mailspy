@@ -118,7 +118,7 @@ class App extends Component {
 	clearMails = () => {
 		backendApi.fetch("/mails/history", {
 			method: "DELETE"
-		}).then(() => {
+		}).finally(() => {
 			this.setState({
 				mails: [],
 				selectedMail: null
