@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import ReconnectingEventSource from "../modules/ReconnectingEventSource"
 
 const STATE_MUTATING_METHODS = ["PATCH", "POST", "PUT", "DELETE"];
@@ -7,12 +6,13 @@ class BackendApi {
 
 	fetch = (url, config) => {
 		config = config || {};
-		return fetch(this.getBackendRoot() + url, this.addCsrfTokenIfNeeded(config)).then((response) => {
-			if (!response.ok) {
-				throw new Error("Received non-2xx response!");
-			}
-			return response;
-		});
+		return fetch(this.getBackendRoot() + url, this.addCsrfTokenIfNeeded(config))
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Received non-2xx response!");
+				}
+				return response;
+			});
 	}
 
 	createEventSource = () => {
@@ -20,11 +20,11 @@ class BackendApi {
 	}
 
 	addCsrfTokenIfNeeded = (config) => {
-		let csrfToken = Cookies.get("XSRF-TOKEN"),
+		let csrfToken = document.querySelector("meta[name=csrf_token]"),
 			headers = {};
-		if (csrfToken !== undefined && STATE_MUTATING_METHODS.includes(config.method)) {
+		if (csrfToken !== null && STATE_MUTATING_METHODS.includes(config.method)) {
 			headers = {
-				"X-XSRF-TOKEN": csrfToken
+				"X-CSRF-TOKEN": csrfToken.content
 			};
 		}
 		return {

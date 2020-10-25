@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.abelk.devmailserver.core.autoconfig.DevMailServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.resource.ResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
@@ -23,6 +26,10 @@ public class IndexPageResourceTransformer implements ResourceTransformer {
     @Autowired
     private DevMailServerProperties properties;
 
+    @Qualifier("dmsCsrfTokenRepository")
+    @Autowired
+    private CsrfTokenRepository csrfRepository;
+
     @Override
     public Resource transform(final HttpServletRequest request, final Resource originalResource, final ResourceTransformerChain transformerChain) throws IOException {
         Resource result;
@@ -31,6 +38,8 @@ public class IndexPageResourceTransformer implements ResourceTransformer {
         if (resource.getFilename().equals(INDEX_PAGE_FILENAME)) {
             final byte[] bytes = readToString(resource.getInputStream())
                     .replaceFirst("<base href=\".*?\">", "<base href=\"" + properties.getWebUi().getUrl() + "/resources/\">")
+                    .replaceFirst("<meta name=\"csrf_token\" content=\".*?\">",
+                            "<meta name=\"csrf_token\" content=\"" + createAndSaveCsrfToken(request) + "\">")
                     .getBytes();
             result = new TransformedResource(resource, bytes);
         } else {
@@ -38,6 +47,12 @@ public class IndexPageResourceTransformer implements ResourceTransformer {
         }
 
         return result;
+    }
+
+    private String createAndSaveCsrfToken(final HttpServletRequest request) {
+        final CsrfToken token = csrfRepository.generateToken(request);
+        csrfRepository.saveToken(token, request, null);
+        return token.getToken();
     }
 
     private String readToString(final InputStream inputStream) {

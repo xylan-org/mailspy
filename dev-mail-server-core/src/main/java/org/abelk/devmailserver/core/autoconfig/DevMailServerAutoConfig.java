@@ -21,7 +21,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -108,7 +108,7 @@ public class DevMailServerAutoConfig {
 
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
-            http.antMatcher(properties.getWebUi().getUrl() + "/**");
+            http.regexMatcher(properties.getWebUi().getUrl() + "(/.*)?");
             if (properties.getWebUi().isEnableCors()) {
                 final CorsConfiguration corsConfiguration = new CorsConfiguration();
                 corsConfiguration.setAllowedMethods(List.of("GET", "POST", "HEAD", "DELETE"));
@@ -116,10 +116,15 @@ public class DevMailServerAutoConfig {
                 http.cors().configurationSource(request -> corsConfiguration);
             }
             if (properties.getWebUi().isEnableCsrfProtection()) {
-                http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                http.csrf().csrfTokenRepository(dmsCsrfTokenRepository());
             } else {
                 http.csrf().disable();
             }
+        }
+
+        @Bean
+        public HttpSessionCsrfTokenRepository dmsCsrfTokenRepository() {
+            return new HttpSessionCsrfTokenRepository();
         }
 
     }
