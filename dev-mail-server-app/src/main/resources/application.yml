@@ -2,8 +2,8 @@ devmailserver:
   enabled: true
   web-ui:
     path: /dms
-    enable-cors: true
-    enable-csrf-protection: false
+    enable-cors: false
+    enable-csrf-protection: true
     
 spring:  resources:    add-mappings: false
     

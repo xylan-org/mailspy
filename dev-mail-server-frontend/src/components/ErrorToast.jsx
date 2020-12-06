@@ -10,7 +10,10 @@ class ErrorToast extends Component {
 			<Toast style={{display: this.props.show ? "block" : "none"}}>
 				<Toast.Body className="bg-danger text-white">
 					<FontAwesomeIcon icon={faExclamationTriangle} size="lg" />
-					<span>Connection failed. <button className="link-button" onClick={this.props.retry}>Retry</button></span>
+					<span>
+						{this.props.message} 
+						{this.props.retry !== undefined ? <button className="link-button" onClick={this.props.retry}>Retry</button> : ""}
+					</span>
 				</Toast.Body>
 			</Toast>
 		)

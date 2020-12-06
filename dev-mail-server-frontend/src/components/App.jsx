@@ -9,9 +9,9 @@ import ErrorToast from "./ErrorToast"
 import backendApi from "../modules/BackendApi";
 import mailParser from "../modules/MailParser";
 
-const FETCH_OK = 0;
-const FETCH_LOADING = 1;
-const FETCH_ERROR = 2;
+const STATUS_OK = 0;
+const STATUS_LOADING = 1;
+const STATUS_ERROR = 2;
 
 class App extends Component {
 
@@ -20,7 +20,8 @@ class App extends Component {
 		this.state = {
 			mails: [],
 			selectedMail: null,
-			fetchState: FETCH_OK
+			fetchState: STATUS_OK,
+			clearState: STATUS_OK
 		};
 	}
 
@@ -29,16 +30,16 @@ class App extends Component {
 	}
 
 	fetchMails = () => {
-		this.setState({ fetchState: FETCH_LOADING });
+		this.setState({ fetchState: STATUS_LOADING });
 		backendApi.fetch("/mails/history")
 			.then((response) => this.createEventSource().connectAsPromise(response))
 			.then((response) => response.json())
 			.then((mails) => this.setMails(mails))
 			.then(() => {
-				this.setState({ fetchState: FETCH_OK });
+				this.setState({ fetchState: STATUS_OK });
 			})
 			.catch(() => {
-				this.setState({ fetchState: FETCH_ERROR });
+				this.setState({ fetchState: STATUS_ERROR });
 			});
 	}
 
@@ -48,7 +49,7 @@ class App extends Component {
 			this.addMail(JSON.parse(event.data));
 		});
 		eventSource.onError(() => {
-			this.setState({ fetchState: FETCH_ERROR });
+			this.setState({ fetchState: STATUS_ERROR });
 		});
 		return eventSource;
 	}
@@ -89,11 +90,20 @@ class App extends Component {
 	clearMails = () => {
 		backendApi.fetch("/mails/history", {
 			method: "DELETE"
-		}).finally(() => {
+		}).then(() => {
 			this.setState({
 				mails: [],
 				selectedMail: null
 			});
+		}).catch(() => {
+			this.setState({
+				clearState: STATUS_ERROR
+			});
+			setTimeout(() => {
+				this.setState({
+					clearState: STATUS_OK
+				})
+			}, 3000);
 		});
 	}
 
@@ -106,15 +116,20 @@ class App extends Component {
 						mails={this.state.mails}
 						selectMail={this.selectMail}
 						clearMails={this.clearMails}
-						canClearMails={this.state.fetchState === FETCH_OK}
+						canClearMails={this.state.fetchState === STATUS_OK}
 						selectedMail={this.state.selectedMail}
 					/>
 					<MailPreview selectedMail={this.state.selectedMail} />
 				</main>
-				<LoadingToast show={this.state.fetchState === FETCH_LOADING} />
+				<LoadingToast show={this.state.fetchState === STATUS_LOADING} />
 				<ErrorToast
-					show={this.state.fetchState === FETCH_ERROR}
+					show={this.state.fetchState === STATUS_ERROR}
 					retry={this.fetchMails}
+					message="Connection failed."
+				/>
+				<ErrorToast
+					show={this.state.clearState === STATUS_ERROR}
+					message="Action failed. Check console."
 				/>
 			</div>
 		);

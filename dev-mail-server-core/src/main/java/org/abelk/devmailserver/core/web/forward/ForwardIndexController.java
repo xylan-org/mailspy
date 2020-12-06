@@ -17,7 +17,7 @@ public class ForwardIndexController {
     @Autowired
     private DevMailServerProperties properties;
 
-    @RequestMapping(path = "/")
+    @RequestMapping
     public void forwardIndexRequest(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         request.getServletContext()
                 .getRequestDispatcher(properties.getWebUi().getUrl() + "/resources/index.html")
