@@ -1,4 +1,4 @@
-package org.abelk.devmailserver.core.autoconfig;
+package org.abelk.devmailserver.core.config;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
@@ -43,7 +43,7 @@ public class DevMailServerAutoConfig {
     @Bean(initMethod = "start", destroyMethod = "stop")
     public SMTPServer smtpServer() {
         final SMTPServer smtpServer = new SMTPServer(context -> messageHandler());
-        smtpServer.setPort(properties.getPort());
+        smtpServer.setPort(properties.getSmtpPort());
         smtpServer.setBindAddress(properties.getBindAddress());
         return smtpServer;
     }
@@ -67,7 +67,7 @@ public class DevMailServerAutoConfig {
         public JavaMailSenderImpl mailSender() {
             final JavaMailSenderImpl sender = new JavaMailSenderImpl();
             sender.setHost(properties.getBindAddress().getHostAddress());
-            sender.setPort(properties.getPort());
+            sender.setPort(properties.getSmtpPort());
             return sender;
         }
 
@@ -85,7 +85,7 @@ public class DevMailServerAutoConfig {
 
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-            registry.addResourceHandler(properties.getWebUi().getUrl() + "/resources/**")
+            registry.addResourceHandler(properties.getPathNoTrailingSlash() + "/resources/**")
                     .addResourceLocations("classpath:META-INF/dms-frontend/")
                     .resourceChain(true)
                     .addTransformer(indexPageResourceTransformer);
@@ -93,7 +93,7 @@ public class DevMailServerAutoConfig {
 
         @Override
         public void configurePathMatch(final PathMatchConfigurer configurer) {
-            configurer.addPathPrefix(properties.getWebUi().getUrl(),
+            configurer.addPathPrefix(properties.getPathNoTrailingSlash(),
                     HandlerTypePredicate.forBasePackage("org.abelk.devmailserver.core"));
         }
 
@@ -108,14 +108,14 @@ public class DevMailServerAutoConfig {
 
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
-            http.regexMatcher(properties.getWebUi().getUrl() + "(/.*)?");
-            if (properties.getWebUi().isEnableCors()) {
+            http.regexMatcher(properties.getPathNoTrailingSlash() + "(/.*)?");
+            if (properties.isEnableCors()) {
                 final CorsConfiguration corsConfiguration = new CorsConfiguration();
                 corsConfiguration.setAllowedMethods(List.of("GET", "POST", "HEAD", "DELETE"));
                 corsConfiguration.applyPermitDefaultValues();
                 http.cors().configurationSource(request -> corsConfiguration);
             }
-            if (properties.getWebUi().isEnableCsrfProtection()) {
+            if (properties.isEnableCsrfProtection()) {
                 http.csrf().csrfTokenRepository(dmsCsrfTokenRepository());
             } else {
                 http.csrf().disable();

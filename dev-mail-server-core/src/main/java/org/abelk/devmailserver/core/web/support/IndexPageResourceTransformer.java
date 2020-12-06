@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.abelk.devmailserver.core.autoconfig.DevMailServerProperties;
+import org.abelk.devmailserver.core.config.DevMailServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -37,7 +37,7 @@ public class IndexPageResourceTransformer implements ResourceTransformer {
         final Resource resource = transformerChain.transform(request, originalResource);
         if (resource.getFilename().equals(INDEX_PAGE_FILENAME)) {
             final byte[] bytes = readToString(resource.getInputStream())
-                    .replaceFirst("<base href=\".*?\">", "<base href=\"" + properties.getWebUi().getUrl() + "/resources/\">")
+                    .replaceFirst("<base href=\".*?\">", "<base href=\"" + properties.getPathNoTrailingSlash() + "/resources/\">")
                     .replaceFirst("<meta name=\"csrf_token\" content=\".*?\">",
                             "<meta name=\"csrf_token\" content=\"" + createAndSaveCsrfToken(request) + "\">")
                     .getBytes();

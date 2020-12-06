@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.abelk.devmailserver.core.autoconfig.DevMailServerAutoConfig
+org.abelk.devmailserver.core.config.DevMailServerAutoConfig

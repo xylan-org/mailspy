@@ -1,6 +1,6 @@
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:2.2.6.RELEASE"
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
     }
     dependencies {
         dependency "org.subethamail:subethasmtp:3.1.7"

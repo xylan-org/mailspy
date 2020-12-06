@@ -1,4 +1,4 @@
-package org.abelk.devmailserver.core.autoconfig;
+package org.abelk.devmailserver.core.config;
 
 import java.net.InetAddress;
 
@@ -17,27 +17,23 @@ public class DevMailServerProperties {
 
     @Min(1024)
     @Max(65535)
-    private int port = 2525;
+    private int smtpPort = 2525;
 
     @NotNull
     private InetAddress bindAddress = InetAddress.getLoopbackAddress();
 
-    @NotNull
-    private WebUiProperties webUi = new WebUiProperties();
+    @NotEmpty
+    private String path = "/dms";
 
-    @Data
-    public static class WebUiProperties {
+    @Min(1)
+    private int retainEmails = 10;
 
-        @NotEmpty
-        private String url = "/dms";
-        
-        @Min(1)
-        private int retainEmails = 10;
-        
-        private boolean enableCors = false;
-        
-        private boolean enableCsrfProtection = false;
+    private boolean enableCors = false;
 
+    private boolean enableCsrfProtection = false;
+
+    public String getPathNoTrailingSlash() {
+        return path.replaceAll("/$", "");
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-import org.abelk.devmailserver.core.autoconfig.DevMailServerProperties;
+import org.abelk.devmailserver.core.config.DevMailServerProperties;
 import org.abelk.devmailserver.core.domain.DmsEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class MailsHistoryStorage {
     private final Queue<DmsEmail> mailQueue = new LinkedList<>();
 
     public void addEmail(final DmsEmail mail) {
-        final int limit = properties.getWebUi().getRetainEmails();
+        final int limit = properties.getRetainEmails();
         synchronized (mailQueue) {
             mailQueue.add(mail);
             if (mailQueue.size() > limit) {
