@@ -1,6 +1,15 @@
-class ReconnectingEventSource {
+export class ReconnectingEventSource {
 
-	constructor(url) {
+	private url: string;
+	private connected: boolean;
+	private errorHandlers: (() => void)[];
+	private connectedHandlers: ((event: Event) => void)[];
+	private customEventHandlers: {
+		name: string;
+		callback: (event: Event) => void;
+	}[];
+
+	constructor(url: string) {
 		this.url = url;
 		this.connected = false;
 		this.errorHandlers = [];
@@ -8,9 +17,9 @@ class ReconnectingEventSource {
 		this.customEventHandlers = [];
 	}
 
-	connect = () => {
-		let eventSource = new EventSource(this.url);
-		let timeoutId = setTimeout(() => {
+	public connect() {
+		const eventSource = new EventSource(this.url);
+		const timeoutId = setTimeout(() => {
 			eventSource.close();
 			this.errorHandlers.forEach((handler) => handler());
 		}, 1500);
@@ -30,26 +39,24 @@ class ReconnectingEventSource {
 		});
 	}
 
-	connectAsPromise = (response) => {
+	public connectAsPromise<T>(response: T): Promise<T> {
 		this.connect();
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve: (response: T) => void, reject: () => void) => {
 			this.onConnected(() => resolve(response));
-			this.onError(reject)
+			this.onError(reject);
 		});
 	}
 
-	onError = (callback) => {
+	public onError(callback: () => void) {
 		this.errorHandlers.push(callback);
 	}
 
-	onConnected = (callback) => {
+	public onConnected(callback: (event: Event) => void) {
 		this.connectedHandlers.push(callback);
 	}
 
-	onCustomEvent = (name, callback) => {
+	public onCustomEvent(name: string, callback: (event: any) => void) {
 		this.customEventHandlers.push({name, callback})
 	}
 
 }
-
-export default ReconnectingEventSource;

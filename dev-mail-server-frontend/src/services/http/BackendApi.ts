@@ -1,13 +1,13 @@
-import ReconnectingEventSource from "../modules/ReconnectingEventSource"
+import { ReconnectingEventSource } from "./ReconnectingEventSource"
 
 const STATE_MUTATING_METHODS = ["PATCH", "POST", "PUT", "DELETE"];
 
-class BackendApi {
+export class BackendApi {
 
-	fetch = (url, config) => {
+	public fetch(url: string, config?: RequestInit): Promise<Response> {
 		config = config || {};
 		return fetch(this.getBackendRoot() + url, this.addCsrfTokenIfNeeded(config))
-			.then((response) => {
+			.then((response: Response) => {
 				if (!response.ok) {
 					throw new Error("Received non-2xx response!");
 				}
@@ -15,13 +15,13 @@ class BackendApi {
 			});
 	}
 
-	createEventSource = () => {
+	public createEventSource(): ReconnectingEventSource {
 		return new ReconnectingEventSource(this.getBackendRoot() + "/mails/subscribe");
 	}
 
-	addCsrfTokenIfNeeded = (config) => {
-		let csrfToken = document.querySelector("meta[name=csrf_token]"),
-			headers = {};
+	private addCsrfTokenIfNeeded(config: RequestInit): RequestInit {
+		const csrfToken: HTMLMetaElement = document.querySelector("meta[name=csrf_token]");
+		let headers: HeadersInit = {};
 		if (csrfToken !== null && STATE_MUTATING_METHODS.includes(config.method)) {
 			headers = {
 				"X-CSRF-TOKEN": csrfToken.content
@@ -33,8 +33,8 @@ class BackendApi {
 		};
 	}
 
-	getBackendRoot = () => {
-		let result;
+	private getBackendRoot(): string {
+		let result: string;
 		if (process.env.NODE_ENV === "development") {
 			result = process.env.REACT_APP_BACKEND_ROOT;
 		} else {
@@ -44,5 +44,3 @@ class BackendApi {
 	}
 
 }
-
-export default new BackendApi();

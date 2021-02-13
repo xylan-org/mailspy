@@ -2,7 +2,7 @@
   "name": "dev-mail-server-frontend",
   "version": "1.0.0-SNAPSHOT",
   "description": "Frontend module for DevMailServer",
-  "main": "index.jsx",
+  "main": "index.tsx",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -15,6 +15,16 @@
     "@fortawesome/fontawesome-svg-core": "1.2.32",
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.13",
+    "@types/escape-html": "1.0.0",
+    "@types/jest": "26.0.20",
+    "@types/mailparser": "3.0.1",
+    "@types/node": "14.14.27",
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.1",
+    "@types/uuid": "8.3.0",
+    "@typescript-eslint/eslint-plugin": "4.15.0",
+    "@typescript-eslint/parser": "4.15.0",
+    "autobind-decorator": "^2.4.0",
     "bootstrap": "4.5.3",
     "escape-html": "1.0.3",
     "file-saver": "2.0.5",
@@ -24,6 +34,7 @@
     "react-bootstrap": "1.4.0",
     "react-dom": "17.0.1",
     "react-scripts": "4.0.1",
+    "typescript": "4.1.5",
     "uuid": "8.3.1"
   },
   "browserslist": [

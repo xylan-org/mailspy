@@ -1,17 +1,17 @@
-import { simpleParser } from "mailparser"
-import moment from "moment"
+import moment, { Moment } from "moment"
 import { v4 as uuidv4 } from "uuid"
 import escapeHtml from "escape-html";
+import { Mail } from "./domain/Mail";
+import { RawMail } from "../http/domain/RawMail";
+import { simpleParser } from "mailparser";
 
-const DATE_TIME_FORMAT = "DD/MM/YYYY hh:mm:ss A";
+export class MailParser {
 
-class MailParser {
+	public parseMail(rawMail: RawMail): Promise<Mail> {
+		const timeReceived: Moment = moment();
+		const id: string = uuidv4();
 
-	parseMail = (rawMail) => {
-		let timeReceived = moment().format(DATE_TIME_FORMAT),
-			id = uuidv4();
-
-		return new Promise((resolve) => {
+		return new Promise<Mail>((resolve: (value: Mail) => void) => {
 			if (rawMail.exception) {
 				resolve({
 					timeReceived: timeReceived,
@@ -20,12 +20,12 @@ class MailParser {
 					id: id
 				})
 			} else {
-				let mailBuffer = new Buffer(rawMail.rawMessage, "base64");
+				const mailBuffer = Buffer.from(rawMail.rawMessage, "base64");
 				simpleParser(mailBuffer, {
 					skipHtmlToText: true,
 					skipTextToHtml: true,
 					skipTextLinks: true
-				}).then((parsedMail) => {
+				}).then((parsedMail: any) => {
 					resolve({
 						...parsedMail,
 						text: escapeHtml(parsedMail.text),
@@ -40,10 +40,8 @@ class MailParser {
 		});
 	}
 
-	parseMails = (rawMails) => {
+	public parseMails(rawMails: RawMail[]): Promise<Mail[]> {
 		return Promise.all(rawMails.map(this.parseMail));
 	}
 
 }
-
-export default new MailParser();
