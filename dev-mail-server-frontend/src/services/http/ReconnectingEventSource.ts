@@ -1,3 +1,7 @@
+import autobind from "autobind-decorator";
+import { CustomEvent } from "./domain/CustomEvent";
+
+@autobind
 export class ReconnectingEventSource {
 
 	private url: string;
@@ -6,10 +10,10 @@ export class ReconnectingEventSource {
 	private connectedHandlers: ((event: Event) => void)[];
 	private customEventHandlers: {
 		name: string;
-		callback: (event: Event) => void;
+		callback: (event: CustomEvent) => void;
 	}[];
 
-	constructor(url: string) {
+	public constructor(url: string) {
 		this.url = url;
 		this.connected = false;
 		this.errorHandlers = [];
@@ -17,7 +21,7 @@ export class ReconnectingEventSource {
 		this.customEventHandlers = [];
 	}
 
-	public connect() {
+	public connect(): void {
 		const eventSource = new EventSource(this.url);
 		const timeoutId = setTimeout(() => {
 			eventSource.close();
@@ -35,7 +39,7 @@ export class ReconnectingEventSource {
 			this.connect();
 		});
 		this.customEventHandlers.forEach((eventHandler) => {
-			eventSource.addEventListener(eventHandler.name, eventHandler.callback);
+			eventSource.addEventListener(eventHandler.name, eventHandler.callback as EventListener);
 		});
 	}
 
@@ -47,15 +51,15 @@ export class ReconnectingEventSource {
 		});
 	}
 
-	public onError(callback: () => void) {
+	public onError(callback: () => void): void {
 		this.errorHandlers.push(callback);
 	}
 
-	public onConnected(callback: (event: Event) => void) {
+	public onConnected(callback: (event: Event) => void): void {
 		this.connectedHandlers.push(callback);
 	}
 
-	public onCustomEvent(name: string, callback: (event: any) => void) {
+	public onCustomEvent(name: string, callback: (event: CustomEvent) => void): void {
 		this.customEventHandlers.push({name, callback})
 	}
 

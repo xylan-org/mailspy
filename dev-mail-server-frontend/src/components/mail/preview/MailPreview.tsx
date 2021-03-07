@@ -1,19 +1,23 @@
+import autobind from "autobind-decorator";
 import React, { Component } from "react";
 import { Nav, Card } from "react-bootstrap"
-import MailAttachment from "./MailAttachment";
+import { MailAttachment } from "../attachment/MailAttachment";
+import { MailPreviewProps } from "./domain/MailPreviewProps";
+import { MailPreviewState } from "./domain/MailPreviewState";
 
 const DATE_TIME_FORMAT = "DD/MM/YYYY hh:mm:ss A";
 
-class MailPreview extends Component {
+@autobind
+export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
 
-    constructor() {
-        super();
+    public constructor(props: MailPreviewProps) {
+        super(props);
         this.state = {}
     }
 
-    static getDerivedStateFromProps(props, prevState) {
-        let mail = props.selectedMail,
-            newState = {}
+    public static getDerivedStateFromProps(props: MailPreviewProps, prevState: MailPreviewState): MailPreviewState {
+        const mail = props.selectedMail;
+        let newState = {};
 
         if (mail !== null) {
             let activeKey = prevState.activeKey;
@@ -31,17 +35,17 @@ class MailPreview extends Component {
         return newState;
     }
 
-    render() {
-        let mail = this.props.selectedMail,
-            result;
-
+    public render(): JSX.Element {
+        const mail = this.props.selectedMail;
+        
+        let result: JSX.Element;
         if (mail === null) {
             result = <div id="preview" />
         } else {
-            let attachments = mail.attachments.map((attachment) => <MailAttachment attachment={attachment} />),
-                activeKey = this.state.activeKey,
-                body = "";
-
+            const attachments = mail.attachments.map((attachment) => <MailAttachment attachment={attachment} />),
+                  activeKey = this.state.activeKey;
+            
+            let body: JSX.Element = null;
             if (activeKey === "html") {
                 body = <iframe title="html" srcDoc={mail.html} height="100%" width="100%"></iframe>
             } else if (activeKey === "text") {
@@ -90,5 +94,3 @@ class MailPreview extends Component {
     }
 
 }
-
-export default MailPreview;

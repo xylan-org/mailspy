@@ -3,8 +3,10 @@ import { v4 as uuidv4 } from "uuid"
 import escapeHtml from "escape-html";
 import { Mail } from "./domain/Mail";
 import { RawMail } from "../http/domain/RawMail";
-import { simpleParser } from "mailparser";
+import { ParsedMail, simpleParser } from "mailparser";
+import autobind from "autobind-decorator";
 
+@autobind
 export class MailParser {
 
 	public parseMail(rawMail: RawMail): Promise<Mail> {
@@ -25,7 +27,7 @@ export class MailParser {
 					skipHtmlToText: true,
 					skipTextToHtml: true,
 					skipTextLinks: true
-				}).then((parsedMail: any) => {
+				}).then((parsedMail: ParsedMail) => {
 					resolve({
 						...parsedMail,
 						text: escapeHtml(parsedMail.text),

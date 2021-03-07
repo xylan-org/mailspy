@@ -1,11 +1,10 @@
 import React, { Component } from "react"
 
-import Navbar from "../Navbar"
-import MailList from "../MailList"
-import MailPreview from "../MailPreview"
-import LoadingToast from "../LoadingToast"
-import ErrorToast from "../ErrorToast"
-
+import { Navbar } from "../navbar/Navbar"
+import { MailList } from "../mail/list/MailList"
+import { MailPreview } from "../mail/preview/MailPreview"
+import { LoadingToast } from "../loading/LoadingToast"
+import { ErrorToast } from "../error/ErrorToast"
 import { BackendApi } from "services/http/BackendApi";
 import { MailParser } from "services/mailparser/MailParser";
 import { AppState } from "./domain/AppState"
@@ -14,6 +13,7 @@ import { RawMail } from "services/http/domain/RawMail"
 import { ReconnectingEventSource } from "services/http/ReconnectingEventSource"
 import { Mail } from "services/mailparser/domain/Mail"
 import autobind from "autobind-decorator"
+import { CustomEvent } from "services/http/domain/CustomEvent"
 
 @autobind
 export class App extends Component<Empty, AppState> {
@@ -21,8 +21,8 @@ export class App extends Component<Empty, AppState> {
 	private mailParser: MailParser = new MailParser();
 	private backendApi: BackendApi = new BackendApi();
 
-	constructor() {
-		super({});
+	public constructor(props: Empty) {
+		super(props);
 		this.state = {
 			mails: [],
 			selectedMail: null,
@@ -51,7 +51,7 @@ export class App extends Component<Empty, AppState> {
 
 	private createEventSource(): ReconnectingEventSource {
 		const eventSource = this.backendApi.createEventSource();
-		eventSource.onCustomEvent("mail", (event: { data: string }) => {
+		eventSource.onCustomEvent("mail", (event: CustomEvent) => {
 			this.addMail(JSON.parse(event.data));
 		});
 		eventSource.onError(() => {

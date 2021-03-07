@@ -1,9 +1,11 @@
+import autobind from "autobind-decorator";
 import React, { Component } from "react";
 import BsNavbar from "react-bootstrap/Navbar";
 
-class Navbar extends Component {
+@autobind
+export class Navbar extends Component<Empty, Empty> {
 
-	render() {
+	public render(): JSX.Element {
 		return (
 			<header>
 				<BsNavbar bg="dark" variant="dark">
@@ -14,5 +16,3 @@ class Navbar extends Component {
 	}
 
 }
-
-export default Navbar;

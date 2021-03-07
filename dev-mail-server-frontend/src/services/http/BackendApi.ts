@@ -1,7 +1,9 @@
+import autobind from "autobind-decorator";
 import { ReconnectingEventSource } from "./ReconnectingEventSource"
 
 const STATE_MUTATING_METHODS = ["PATCH", "POST", "PUT", "DELETE"];
 
+@autobind
 export class BackendApi {
 
 	public fetch(url: string, config?: RequestInit): Promise<Response> {

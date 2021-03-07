@@ -2,14 +2,17 @@ import React, { Component } from "react";
 import { Badge } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons"
+import autobind from "autobind-decorator";
+import { MailListItemProps } from "./domain/MailListItemProps";
 
 const DATE_TIME_FORMAT = "DD/MM/YYYY hh:mm:ss A";
 
-class MailListItem extends Component {
+@autobind
+export class MailListItem extends Component<MailListItemProps, Empty> {
 
-	render() {
-		let mail = this.props.mail,
-			result;
+	public render(): JSX.Element {
+		const mail = this.props.mail;
+		let result: JSX.Element;
 
 		if (mail.error) {
 			result = (
@@ -25,7 +28,7 @@ class MailListItem extends Component {
 				</div>
 			);
 		} else {
-			let attachmentBadge = (
+			const attachmentBadge = (
 				<Badge variant="primary" className="attachment-badge">
 					<FontAwesomeIcon icon={faPaperclip} />
 					{mail.attachments.length}
@@ -58,5 +61,3 @@ class MailListItem extends Component {
 	}
 
 }
-
-export default MailListItem;

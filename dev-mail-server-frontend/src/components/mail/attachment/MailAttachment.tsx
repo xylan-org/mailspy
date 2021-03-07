@@ -3,16 +3,13 @@ import { Badge } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFile } from "@fortawesome/free-solid-svg-icons"
 import FileSaver from "file-saver"
+import autobind from "autobind-decorator";
+import { MailAttachmentProps } from "./domain/MailAttachmentProps";
 
-class MailAttachment extends Component {
+@autobind
+export class MailAttachment extends Component<MailAttachmentProps, Empty> {
 
-    downloadAttachment = () => {
-        let attachment = this.props.attachment,
-            blob = new Blob([attachment.content], { type: attachment.contentType });
-        FileSaver.saveAs(blob, attachment.filename);
-    }
-
-    render() {
+    public render(): JSX.Element {
         return (
             <Badge variant="primary" onClick={() => this.downloadAttachment()}>
                 <FontAwesomeIcon icon={faFile} />
@@ -21,6 +18,10 @@ class MailAttachment extends Component {
         );
     }
 
-}
+    private downloadAttachment(): void {
+        const attachment = this.props.attachment,
+              blob = new Blob([attachment.content], { type: attachment.contentType });
+        FileSaver.saveAs(blob, attachment.filename);
+    }
 
-export default MailAttachment;
+}
