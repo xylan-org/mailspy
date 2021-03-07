@@ -1,4 +1,4 @@
-import { Mail } from "services/mailparser/domain/Mail";
+import { Mail } from "services/mail/domain/Mail";
 import { LoadingStatus } from "./LoadingStatus";
 
 export interface AppState {

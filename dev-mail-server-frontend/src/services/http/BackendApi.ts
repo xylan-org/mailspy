@@ -6,19 +6,24 @@ const STATE_MUTATING_METHODS = ["PATCH", "POST", "PUT", "DELETE"];
 @autobind
 export class BackendApi {
 
-	public fetch(url: string, config?: RequestInit): Promise<Response> {
+	public fetch<T>(url: string, config?: RequestInit): Promise<T> {
 		config = config || {};
 		return fetch(this.getBackendRoot() + url, this.addCsrfTokenIfNeeded(config))
 			.then((response: Response) => {
+				let result: Promise<T>;
 				if (!response.ok) {
 					throw new Error("Received non-2xx response!");
 				}
-				return response;
+				const contentType = response.headers.get("content-type");
+				if (contentType?.includes("application/json")) {
+					result = response.json();
+				}
+				return result;
 			});
 	}
 
-	public createEventSource(): ReconnectingEventSource {
-		return new ReconnectingEventSource(this.getBackendRoot() + "/mails/subscribe");
+	public createEventSource(url: string): ReconnectingEventSource {
+		return new ReconnectingEventSource(this.getBackendRoot() + url);
 	}
 
 	private addCsrfTokenIfNeeded(config: RequestInit): RequestInit {

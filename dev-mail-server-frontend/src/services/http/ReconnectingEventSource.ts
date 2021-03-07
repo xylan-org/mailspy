@@ -51,16 +51,19 @@ export class ReconnectingEventSource {
 		});
 	}
 
-	public onError(callback: () => void): void {
+	public onError(callback: () => void): ReconnectingEventSource {
 		this.errorHandlers.push(callback);
+		return this;
 	}
 
-	public onConnected(callback: (event: Event) => void): void {
+	public onConnected(callback: (event: Event) => void): ReconnectingEventSource {
 		this.connectedHandlers.push(callback);
+		return this;
 	}
 
-	public onCustomEvent(name: string, callback: (event: CustomEvent) => void): void {
-		this.customEventHandlers.push({name, callback})
+	public onCustomEvent(name: string, callback: (event: CustomEvent) => void): ReconnectingEventSource {
+		this.customEventHandlers.push({name, callback});
+		return this;
 	}
 
 }

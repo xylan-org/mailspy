@@ -1,4 +1,4 @@
-import { Mail } from "services/mailparser/domain/Mail";
+import { Mail } from "services/mail/domain/Mail";
 
 export interface MailListItemProps {
     mail: Mail;

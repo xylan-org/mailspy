@@ -5,21 +5,17 @@ import { MailList } from "../mail/list/MailList"
 import { MailPreview } from "../mail/preview/MailPreview"
 import { LoadingToast } from "../loading/LoadingToast"
 import { ErrorToast } from "../error/ErrorToast"
-import { BackendApi } from "services/http/BackendApi";
-import { MailParser } from "services/mailparser/MailParser";
 import { AppState } from "./domain/AppState"
 import { LoadingStatus } from "./domain/LoadingStatus"
-import { RawMail } from "services/http/domain/RawMail"
 import { ReconnectingEventSource } from "services/http/ReconnectingEventSource"
-import { Mail } from "services/mailparser/domain/Mail"
+import { Mail } from "services/mail/domain/Mail"
 import autobind from "autobind-decorator"
-import { CustomEvent } from "services/http/domain/CustomEvent"
+import { MailService } from "services/mail/MailService"
 
 @autobind
 export class App extends Component<Empty, AppState> {
 
-	private mailParser: MailParser = new MailParser();
-	private backendApi: BackendApi = new BackendApi();
+	private mailService: MailService = new MailService();
 
 	public constructor(props: Empty) {
 		super(props);
@@ -37,10 +33,14 @@ export class App extends Component<Empty, AppState> {
 
 	private fetchMails(): void {
 		this.setState({ fetchState: LoadingStatus.STATUS_LOADING });
-		this.backendApi.fetch("/mails/history")
-			.then((response: Response) => this.createEventSource().connectAsPromise(response))
-			.then((response: Response) => response.json())
-			.then((mails: RawMail[]) => this.setMails(mails))
+		this.mailService.getMails()
+			.then((mails: Mail[]) => this.createEventSource().connectAsPromise(mails))
+			.then((processedMails: Mail[]) => {
+				this.setState({
+					mails: processedMails,
+					selectedMail: null
+				});
+			})
 			.then(() => {
 				this.setState({ fetchState: LoadingStatus.STATUS_OK });
 			})
@@ -50,35 +50,18 @@ export class App extends Component<Empty, AppState> {
 	}
 
 	private createEventSource(): ReconnectingEventSource {
-		const eventSource = this.backendApi.createEventSource();
-		eventSource.onCustomEvent("mail", (event: CustomEvent) => {
-			this.addMail(JSON.parse(event.data));
-		});
-		eventSource.onError(() => {
-			this.setState({ fetchState: LoadingStatus.STATUS_ERROR });
-		});
-		return eventSource;
+		return this.mailService.subscribeMails(this.addMail)
+            .onError(() => {
+                this.setState({ fetchState: LoadingStatus.STATUS_ERROR });
+            });
 	}
 
-	private setMails(mails: RawMail[]): void {
-		this.mailParser.parseMails(mails)
-			.then((processedMails: Mail[]) => {
-				this.setState({
-					mails: processedMails,
-					selectedMail: null
-				});
-			});
-	}
-
-	private addMail(mail: RawMail): void {
-		this.mailParser.parseMail(mail)
-			.then((processedMail: Mail) => {
-				this.setState((prevState) => {
-					return {
-						mails: [processedMail, ...prevState.mails]
-					};
-				});
-			});
+	private addMail(mail: Mail): void {
+        this.setState((prevState) => {
+            return {
+                mails: [mail, ...prevState.mails]
+            };
+        });
 	}
 
 	private selectMail(mailId: string): void {
@@ -94,23 +77,20 @@ export class App extends Component<Empty, AppState> {
 	}
 
 	private clearMails(): void {
-		this.backendApi.fetch("/mails/history", {
-			method: "DELETE"
-		}).then(() => {
-			this.setState({
-				mails: [],
-				selectedMail: null
-			});
-		}).catch(() => {
-			this.setState({
-				clearState: LoadingStatus.STATUS_ERROR
-			});
-			setTimeout(() => {
-				this.setState({
-					clearState: LoadingStatus.STATUS_OK
-				})
-			}, 3000);
-		});
+        this.setState({ clearState: LoadingStatus.STATUS_LOADING });
+		this.mailService.clearMails()
+            .then(() => {
+                this.setState({
+                    mails: [],
+                    selectedMail: null
+                });
+            })
+            .catch(() => {
+                this.setState({  clearState: LoadingStatus.STATUS_ERROR });
+                setTimeout(() => {
+                    this.setState({ clearState: LoadingStatus.STATUS_OK });
+                }, 3000);
+            });
 	}
 
 	public render(): JSX.Element {

@@ -2,12 +2,12 @@ import moment, { Moment } from "moment"
 import { v4 as uuidv4 } from "uuid"
 import escapeHtml from "escape-html";
 import { Mail } from "./domain/Mail";
-import { RawMail } from "../http/domain/RawMail";
+import { RawMail } from "./domain/RawMail";
 import { ParsedMail, simpleParser } from "mailparser";
 import autobind from "autobind-decorator";
 
 @autobind
-export class MailParser {
+export class MailParserService {
 
 	public parseMail(rawMail: RawMail): Promise<Mail> {
 		const timeReceived: Moment = moment();
