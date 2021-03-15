@@ -1,6 +1,7 @@
 import autobind from "autobind-decorator";
 import React, { Component } from "react";
 import { Nav, Card } from "react-bootstrap"
+import { Attachment } from "services/mail/domain/Attachment";
 import { MailAttachment } from "../attachment/MailAttachment";
 import { MailPreviewProps } from "./domain/MailPreviewProps";
 import { MailPreviewState } from "./domain/MailPreviewState";
@@ -42,7 +43,7 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
         if (mail === null) {
             result = <div id="preview" />
         } else {
-            const attachments = mail.attachments.map((attachment) => <MailAttachment attachment={attachment} />),
+            const attachments = mail.attachments.map((attachment: Attachment, index: number) => <MailAttachment key={index} attachment={attachment} />),
                   activeKey = this.state.activeKey;
             
             let body: JSX.Element = null;

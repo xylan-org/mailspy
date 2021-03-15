@@ -13,7 +13,7 @@ export class MailAttachment extends Component<MailAttachmentProps, Empty> {
         return (
             <Badge variant="primary" onClick={() => this.downloadAttachment()}>
                 <FontAwesomeIcon icon={faFile} />
-                {this.props.attachment.filename}
+                {this.props.attachment.filename ?? <i>untitled</i>}
             </Badge>
         );
     }
@@ -21,7 +21,7 @@ export class MailAttachment extends Component<MailAttachmentProps, Empty> {
     private downloadAttachment(): void {
         const attachment = this.props.attachment,
               blob = new Blob([attachment.content], { type: attachment.contentType });
-        FileSaver.saveAs(blob, attachment.filename);
+        FileSaver.saveAs(blob, attachment.filename ?? "untitled");
     }
 
 }
