@@ -11,11 +11,13 @@ import { ReconnectingEventSource } from "services/http/ReconnectingEventSource"
 import { Mail } from "services/mail/domain/Mail"
 import autobind from "autobind-decorator"
 import { MailService } from "services/mail/MailService"
+import { resolve } from "inversify-react";
 
 @autobind
 export class App extends Component<Empty, AppState> {
 
-	private mailService: MailService = new MailService();
+	@resolve(MailService)
+	private mailService: MailService;
 
 	public constructor(props: Empty) {
 		super(props);

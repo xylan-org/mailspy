@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
     "types": [
-      "node"
+      "node",
+      "reflect-metadata"
     ],
     "esModuleInterop": true,
     "baseUrl": "./src",
     "jsx": "react-jsx",
     "target": "es5",
     "lib": [
+      "es6",
       "dom",
       "dom.iterable",
       "esnext"
@@ -24,7 +26,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "strictNullChecks": false,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "src"

@@ -1,10 +1,12 @@
 import autobind from "autobind-decorator";
+import { injectable } from "inversify";
 import { ReconnectingEventSource } from "./ReconnectingEventSource"
 
 const STATE_MUTATING_METHODS = ["PATCH", "POST", "PUT", "DELETE"];
 
 @autobind
-export class BackendApi {
+@injectable()
+export class HttpService {
 
 	public fetch<T>(url: string, config?: RequestInit): Promise<T> {
 		config = config || {};

@@ -1,16 +1,21 @@
 import autobind from "autobind-decorator";
-import { BackendApi } from "services/http/BackendApi";
+import { HttpService } from "services/http/HttpService";
 import { RawMail } from "services/mail/domain/RawMail";
 import { Mail } from "services/mail/domain/Mail";
 import { MailParserService } from "services/mail/MailParserService";
 import { ReconnectingEventSource } from "services/http/ReconnectingEventSource";
 import { CustomEvent } from "services/http/domain/CustomEvent";
+import { inject, injectable } from "inversify";
 
 @autobind
+@injectable()
 export class MailService {
 
-    private httpService: BackendApi = new BackendApi();
-    private mailParserService: MailParserService = new MailParserService();
+    @inject(HttpService)
+    private httpService: HttpService;
+
+    @inject(MailParserService)
+    private mailParserService: MailParserService;
 
     public getMails(): Promise<Mail[]> {
         return this.httpService.fetch<RawMail[]>("/mails/history")

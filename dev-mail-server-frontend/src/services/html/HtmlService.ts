@@ -1,11 +1,16 @@
 import autobind from "autobind-decorator";
 import escapeHtml from "escape-html";
+import { inject, injectable } from "inversify";
 
 @autobind
+@injectable()
 export class HtmlService {
 
-    private domParser: DOMParser = new DOMParser();
-    private xmlSerializer: XMLSerializer = new XMLSerializer();
+    @inject(DOMParser)
+    private domParser: DOMParser;
+
+    @inject(XMLSerializer)
+    private xmlSerializer: XMLSerializer;
 
     public replaceLinksTarget(html: string): string {
         let result = null;

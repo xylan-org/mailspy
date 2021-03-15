@@ -4,11 +4,14 @@ import { RawMail } from "./domain/RawMail";
 import { ParsedMail, simpleParser } from "mailparser";
 import autobind from "autobind-decorator";
 import { HtmlService } from "services/html/HtmlService";
+import { inject, injectable } from "inversify";
 
 @autobind
+@injectable()
 export class MailParserService {
 
-	private htmlService: HtmlService = new HtmlService();
+	@inject(HtmlService)
+	private htmlService: HtmlService;
 
 	public parseMail(rawMail: RawMail): Promise<Mail> {
 		return new Promise<Mail>((resolve: (value: Mail) => void) => {
