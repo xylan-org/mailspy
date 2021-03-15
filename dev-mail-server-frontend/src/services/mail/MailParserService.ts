@@ -1,5 +1,4 @@
-import moment, { Moment } from "moment"
-import { v4 as uuidv4 } from "uuid"
+import moment from "moment"
 import escapeHtml from "escape-html";
 import { Mail } from "./domain/Mail";
 import { RawMail } from "./domain/RawMail";
@@ -10,16 +9,13 @@ import autobind from "autobind-decorator";
 export class MailParserService {
 
 	public parseMail(rawMail: RawMail): Promise<Mail> {
-		const timeReceived: Moment = moment();
-		const id: string = uuidv4();
-
 		return new Promise<Mail>((resolve: (value: Mail) => void) => {
 			if (rawMail.exception) {
 				resolve({
-					timeReceived: timeReceived,
+					timeReceived: moment(rawMail.timestamp),
 					selected: false,
 					error: rawMail.exception.message,
-					id: id
+					id: rawMail.id
 				})
 			} else {
 				const mailBuffer = Buffer.from(rawMail.rawMessage, "base64");
@@ -32,10 +28,10 @@ export class MailParserService {
 						...parsedMail,
 						text: escapeHtml(parsedMail.text),
 						raw: escapeHtml(mailBuffer.toString()),
-						timeReceived: timeReceived,
+						timeReceived: moment(rawMail.timestamp),
 						selected: false,
 						error: "",
-						id: id
+						id: rawMail.id
 					});
 				});
 			}

@@ -2,8 +2,14 @@ package org.abelk.devmailserver.core.subetha;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Clock;
+import java.time.Instant;
+import java.util.UUID;
+import java.util.function.Supplier;
 
+import lombok.Setter;
 import org.abelk.devmailserver.core.domain.DmsEmail;
+import org.abelk.devmailserver.core.domain.DmsEmail.DmsEmailBuilder;
 import org.abelk.devmailserver.core.domain.EmailReceivedEvent;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +23,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EventPublishingMessageHandler implements MessageHandler {
 
+    @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
-    @Autowired
-    public void setApplicationEventPublisher(final ApplicationEventPublisher applicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher;
-    }
+    @Setter
+    private Supplier<UUID> uuidSupplier = UUID::randomUUID;
+
+    @Setter
+    private Clock clock = Clock.systemUTC();
 
     @Override
     public void data(final InputStream messageStream) throws RejectException, TooMuchDataException, IOException {
-        DmsEmail result;
+        DmsEmailBuilder builder = DmsEmail.builder();
         try {
-            result = DmsEmail.ofRawMessage(IOUtils.toByteArray(messageStream));
+            builder.rawMessage(IOUtils.toByteArray(messageStream));
         } catch (final IOException exception) {
-            result = DmsEmail.ofException(exception);
+            builder.exception(exception);
             log.error("Exception thrown while reading mail message.", exception);
         }
-        applicationEventPublisher.publishEvent(new EmailReceivedEvent(result));
+        builder.id(uuidSupplier.get().toString())
+                .timestamp(Instant.now(clock));
+        applicationEventPublisher.publishEvent(new EmailReceivedEvent(builder.build()));
     }
 
     @Override

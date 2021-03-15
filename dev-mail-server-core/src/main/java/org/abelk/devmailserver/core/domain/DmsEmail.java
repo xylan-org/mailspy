@@ -1,24 +1,18 @@
 package org.abelk.devmailserver.core.domain;
 
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+import java.time.Instant;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DmsEmail {
 
+    private String id;
+    private Instant timestamp;
     private Exception exception;
     private byte[] rawMessage;
-
-    public static DmsEmail ofException(final Exception exception) {
-        final DmsEmail result = new DmsEmail();
-        result.exception = exception;
-        result.rawMessage = new byte[] {};
-        return result;
-    }
-
-    public static DmsEmail ofRawMessage(final byte[] rawMessage) {
-        final DmsEmail result = new DmsEmail();
-        result.rawMessage = rawMessage;
-        return result;
-    }
 
 }
