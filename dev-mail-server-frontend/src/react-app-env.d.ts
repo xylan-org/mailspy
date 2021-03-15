@@ -6,6 +6,7 @@ declare type Empty = Record<string, never>
 declare module "mailparser" {
    export interface ParsedMail {
       text: string;
+      html: string;
    }
    export function simpleParser(source: Source, options?: Record<string, any>): Promise<ParsedMail>;
 }

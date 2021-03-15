@@ -4,9 +4,12 @@ import { Mail } from "./domain/Mail";
 import { RawMail } from "./domain/RawMail";
 import { ParsedMail, simpleParser } from "mailparser";
 import autobind from "autobind-decorator";
+import { HtmlService } from "services/html/HtmlService";
 
 @autobind
 export class MailParserService {
+
+	private htmlService: HtmlService = new HtmlService();
 
 	public parseMail(rawMail: RawMail): Promise<Mail> {
 		return new Promise<Mail>((resolve: (value: Mail) => void) => {
@@ -26,6 +29,7 @@ export class MailParserService {
 				}).then((parsedMail: ParsedMail) => {
 					resolve({
 						...parsedMail,
+						html: this.htmlService.replaceLinksTarget(parsedMail.html),
 						text: escapeHtml(parsedMail.text),
 						raw: escapeHtml(mailBuffer.toString()),
 						timeReceived: moment(rawMail.timestamp),
