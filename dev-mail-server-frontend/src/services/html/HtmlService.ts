@@ -1,4 +1,5 @@
 import autobind from "autobind-decorator";
+import escapeHtml from "escape-html";
 
 @autobind
 export class HtmlService {
@@ -14,6 +15,14 @@ export class HtmlService {
                 anchor.target = "_blank";
             })
             result = this.xmlSerializer.serializeToString(dom);
+        }
+        return result;
+    }
+
+    public escapeHtml(text: string): string {
+        let result = null;
+        if (text) {
+            result = escapeHtml(text);
         }
         return result;
     }

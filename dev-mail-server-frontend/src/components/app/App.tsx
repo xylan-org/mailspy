@@ -35,9 +35,9 @@ export class App extends Component<Empty, AppState> {
 		this.setState({ fetchState: LoadingStatus.STATUS_LOADING });
 		this.mailService.getMails()
 			.then((mails: Mail[]) => this.createEventSource().connectAsPromise(mails))
-			.then((processedMails: Mail[]) => {
+			.then((mails: Mail[]) => {
 				this.setState({
-					mails: processedMails,
+					mails: mails,
 					selectedMail: null
 				});
 			})

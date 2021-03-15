@@ -1,5 +1,4 @@
 import moment from "moment"
-import escapeHtml from "escape-html";
 import { Mail } from "./domain/Mail";
 import { RawMail } from "./domain/RawMail";
 import { ParsedMail, simpleParser } from "mailparser";
@@ -30,8 +29,8 @@ export class MailParserService {
 					resolve({
 						...parsedMail,
 						html: this.htmlService.replaceLinksTarget(parsedMail.html),
-						text: escapeHtml(parsedMail.text),
-						raw: escapeHtml(mailBuffer.toString()),
+						text: this.htmlService.escapeHtml(parsedMail.text),
+						raw: this.htmlService.escapeHtml(mailBuffer.toString()),
 						timeReceived: moment(rawMail.timestamp),
 						selected: false,
 						error: "",
