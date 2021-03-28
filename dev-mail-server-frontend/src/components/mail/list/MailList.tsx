@@ -26,6 +26,7 @@ export class MailList extends Component<MailListProps, Empty> {
             <Card id="list">
                 <Card.Header>
                     <Button
+                        className="mail-list-clear-button"
                         variant="primary"
                         onClick={this.props.clearMails}
                         disabled={!this.props.canClearMails || this.props.mails.length === 0}>
@@ -33,6 +34,7 @@ export class MailList extends Component<MailListProps, Empty> {
                         Clear
                     </Button>
                     <Button
+                        className="mail-list-download-button"
                         variant="primary"
                         onClick={this.downloadSelectedMail}
                         disabled={this.props.selectedMail === null}>
@@ -40,7 +42,7 @@ export class MailList extends Component<MailListProps, Empty> {
                         Download
                     </Button>
                 </Card.Header>
-                <Card.Body>
+                <Card.Body className="mail-list-items">
                     {listItems}
                 </Card.Body>
             </Card>
