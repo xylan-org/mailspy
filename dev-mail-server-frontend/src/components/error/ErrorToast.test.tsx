@@ -3,7 +3,7 @@ import { Toast } from "react-bootstrap";
 import { ErrorToast } from "./ErrorToast";
 
 describe("ErrorToast", () => {
-    it("should be have block display when 'show' prop is true", () => {
+    it("should have block display when 'show' prop is true", () => {
         // GIVEN
         const underTest = shallow(
             <ErrorToast show={true} message="" />
@@ -37,7 +37,7 @@ describe("ErrorToast", () => {
         // WHEN rendered
 
         // THEN
-        expect(underTest.find(".error-toast-message").contains(message));
+        expect(underTest.find(".error-toast-message").text()).toEqual(message);
     });
 
     it("should display retry button when 'retry' function is defined", () => {

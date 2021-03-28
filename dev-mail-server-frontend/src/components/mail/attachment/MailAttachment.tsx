@@ -13,7 +13,9 @@ export class MailAttachment extends Component<MailAttachmentProps, Empty> {
         return (
             <Badge variant="primary" onClick={() => this.downloadAttachment()}>
                 <FontAwesomeIcon icon={faFile} />
-                {this.props.attachment.filename ?? <i>untitled</i>}
+                <span className="mail-attachment-name">
+                    {this.props.attachment.filename ?? <i>untitled</i>}
+                </span>
             </Badge>
         );
     }
