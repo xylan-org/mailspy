@@ -1,3 +1,3 @@
-export interface LoadingProps {
+export interface LoadingToastProps {
     show: boolean;
 }

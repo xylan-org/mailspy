@@ -1,4 +1,4 @@
-export interface ErrorProps {
+export interface ErrorToastProps {
     show: boolean;
     message: string;
     retry?: () => void;
