@@ -6,7 +6,8 @@ import { Component, ComponentClass, ComponentState } from "react";
 
 type TestBedInit<P, S> = {
     component: ComponentClass<P, S>,
-    dependencies: TestBedDependency<any>[]
+    dependencies?: TestBedDependency<any>[]
+    props?: P
 }
 
 type TestBedDependency<T> = {
@@ -26,10 +27,11 @@ export class TestBed<
 
     private constructor() {}
 
-    public static create<T extends Component<P, S>, P = T["props"], S = T["state"]>({ component, dependencies }: TestBedInit<P, S>): TestBed<T, P, S> {
+    public static create<T extends Component<P, S>, P = T["props"], S = T["state"]>({ component, dependencies, props }: TestBedInit<P, S>): TestBed<T, P, S> {
         let testBed = new TestBed<T, P, S>();
         testBed.componentType = component;
-        testBed.container = TestBed.initContainer(dependencies);
+        testBed.container = TestBed.initContainer(dependencies || []);
+        testBed.props = props;
         return testBed;
     }
 
