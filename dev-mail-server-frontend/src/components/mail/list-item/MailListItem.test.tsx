@@ -1,6 +1,5 @@
 import { shallow } from "enzyme"
 import moment from "moment";
-import { truncate } from "node:fs";
 import { Mail } from "services/mail/domain/Mail";
 import { MailListItem } from "./MailListItem";
 

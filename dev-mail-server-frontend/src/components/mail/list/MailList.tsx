@@ -4,12 +4,16 @@ import Button from "react-bootstrap/Button";
 import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDownload, faTimes } from "@fortawesome/free-solid-svg-icons"
-import FileSaver from "file-saver"
 import { MailListProps } from "./domain/MailListProps";
 import autobind from "autobind-decorator";
+import { FileDownloadService } from "services/download/FileDownloadService";
+import { resolve } from "inversify-react";
 
 @autobind
 export class MailList extends Component<MailListProps, Empty> {
+
+    @resolve(FileDownloadService)
+    private fileDownloadService: FileDownloadService;
 
     public render(): JSX.Element {
         const listItems = this.props.mails.map(mail => {
@@ -50,9 +54,12 @@ export class MailList extends Component<MailListProps, Empty> {
     }
 
     private downloadSelectedMail(): void {
-        const mail = this.props.selectedMail,
-              blob = new Blob([mail.raw], { type: "message/rfc822" });
-        FileSaver.saveAs(blob, mail.subject + ".eml");
+        const mail = this.props.selectedMail;
+        this.fileDownloadService.downloadFile({
+            name: mail.subject + ".eml",
+            contentType: "message/rfc822",
+            content: mail.raw,
+        });
     }
 
 }

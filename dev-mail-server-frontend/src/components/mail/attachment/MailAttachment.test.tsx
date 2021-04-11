@@ -1,92 +1,81 @@
-import { shallow } from "enzyme";
+import { mock } from "jest-mock-extended";
 import { Badge } from "react-bootstrap";
-import { Attachment } from "services/mail/domain/Attachment";
+import { FileDownloadService } from "services/download/FileDownloadService";
+import { ComponentBlueprint } from "test-util/ComponentBlueprint";
+import { MailAttachmentProps } from "./domain/MailAttachmentProps";
 import { MailAttachment } from "./MailAttachment";
-import FileSaver from "file-saver";
 
 describe("MailAttachment", () => {
+
+    let fileDownloadService: FileDownloadService;
+    let blueprint: ComponentBlueprint<MailAttachmentProps, Empty, MailAttachment, typeof MailAttachment>;
+
+    beforeEach(() => {
+        fileDownloadService = mock<FileDownloadService>();
+        blueprint = ComponentBlueprint
+            .create(MailAttachment)
+            .dependencies([
+                {
+                    identifier: FileDownloadService,
+                    value: fileDownloadService
+                }
+            ]);
+    });
+
     it("should display the attachment name", () => {
         // GIVEN
         const filename = "filename";
-        const attachment: Attachment = {
-            filename,
-            contentType: "text/plain",
-            content: ""
-        };
-        const underTest = shallow(
-            <MailAttachment attachment={attachment} />  
-        );
+        blueprint.props({
+            attachment: {
+                filename,
+                contentType: "text/plain",
+                content: ""
+            }
+        });
 
-        // WHEN rendered
+        // WHEN
+        const result = blueprint.render();
 
         // THEN
-        expect(underTest.find(".mail-attachment-name").text()).toEqual(filename);
+        expect(result.find(".mail-attachment-name").text()).toEqual(filename);
     });
 
     it("should display 'untitled' when the attachment name is falsy", () => {
         // GIVEN
-        const attachment: Attachment = {
-            filename: null,
-            contentType: "text/plain",
-            content: ""
-        };
-        const underTest = shallow(
-            <MailAttachment attachment={attachment} />  
-        );
+        blueprint.props({
+            attachment: {
+                filename: null,
+                contentType: "text/plain",
+                content: ""
+            }
+        });
 
-        // WHEN rendered
+        // WHEN
+        const result = blueprint.render();
 
         // THEN
-        expect(underTest.find(".mail-attachment-name").text()).toEqual("untitled");
+        expect(result.find(".mail-attachment-name").text()).toEqual("untitled");
     });
 
-    describe("file download", () => {
-        let saveAsMock: jest.SpyInstance;
+    it("should download attachment when clicked", () => {
+        // GIVEN
+        const filename = "filename";
+        const contentType = "text/plain";
+        const content = "abcd";
+        
+        const result = blueprint
+            .props({
+                attachment: {
+                    filename, contentType, content
+                }
+            })
+            .render();
 
-        beforeEach(() => {
-            jest.spyOn(global, "Blob").mockImplementation((blobParts?: BlobPart[], options?: BlobPropertyBag) => {
-                return { blobParts, options } as unknown as Blob;
-            });
-            saveAsMock = jest.spyOn(FileSaver, "saveAs").mockImplementation(() => {});
-        });
+        // WHEN
+        result.find(Badge).simulate("click");
 
-        it("should download attachment with attachment name when clicked and has filename", () => {
-            // GIVEN
-            const content = "content",
-                  contentType = "contentType",
-                  filename = "filename";
-            const underTest = shallow(
-                <MailAttachment attachment={{ 
-                    filename,
-                    contentType,
-                    content
-                }} />  
-            );
-
-            // WHEN
-            underTest.find(Badge).simulate("click");
-
-            // THEN
-            expect(saveAsMock).toHaveBeenCalledWith({ blobParts: [content], options: { type: contentType } }, filename);
-        });
-
-        it("should download attachment with 'untitled' name when clicked and has no filename", () => {
-            // GIVEN
-            const content = "content",
-                  contentType = "contentType";
-            const underTest = shallow(
-                <MailAttachment attachment={{ 
-                    filename: null,
-                    contentType,
-                    content
-                }} />  
-            );
-
-            // WHEN
-            underTest.find(Badge).simulate("click");
-
-            // THEN
-            expect(saveAsMock).toHaveBeenCalledWith({ blobParts: [content], options: { type: contentType } }, 'untitled');
-        });
+        // THEN
+        expect(fileDownloadService.downloadFile).toHaveBeenCalledWith(({ name: filename, contentType, content }));
     });
+
 });

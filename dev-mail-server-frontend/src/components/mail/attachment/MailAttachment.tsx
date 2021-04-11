@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import { Badge } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFile } from "@fortawesome/free-solid-svg-icons"
-import FileSaver from "file-saver"
 import autobind from "autobind-decorator";
 import { MailAttachmentProps } from "./domain/MailAttachmentProps";
+import { resolve } from "inversify-react";
+import { FileDownloadService } from "services/download/FileDownloadService";
 
 @autobind
 export class MailAttachment extends Component<MailAttachmentProps, Empty> {
+
+    @resolve(FileDownloadService)
+    private fileDownloadService: FileDownloadService;
 
     public render(): JSX.Element {
         return (
@@ -21,9 +25,12 @@ export class MailAttachment extends Component<MailAttachmentProps, Empty> {
     }
 
     private downloadAttachment(): void {
-        const attachment = this.props.attachment,
-              blob = new Blob([attachment.content], { type: attachment.contentType });
-        FileSaver.saveAs(blob, attachment.filename ?? "untitled");
+        const attachment = this.props.attachment;
+        this.fileDownloadService.downloadFile({
+            name: attachment.filename,
+            contentType: attachment.contentType,
+            content: attachment.content
+        });
     }
 
 }
