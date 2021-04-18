@@ -24,7 +24,7 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
             let activeKey = prevState.activeKey;
 
             if (prevState.mailId !== mail.id || activeKey === undefined) {
-                activeKey = ["html", "text", "raw"].find((key) => mail[key]);
+                activeKey = ["html", "text", "raw"].find((key: string) => mail[key]);
             }
 
             newState = {
@@ -48,40 +48,40 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
             
             let body: JSX.Element = null;
             if (activeKey === "html") {
-                body = <iframe title="html" srcDoc={mail.html} height="100%" width="100%"></iframe>
+                body = <iframe id="html-body" title="html" srcDoc={mail.html} height="100%" width="100%"></iframe>
             } else if (activeKey === "text") {
-                body = <pre><code dangerouslySetInnerHTML={{ __html: mail.text }}/></pre>
+                body = <pre id="text-body"><code dangerouslySetInnerHTML={{ __html: mail.text }}/></pre>
             } else if (activeKey === "raw") {
-                body = <pre><code dangerouslySetInnerHTML={{ __html: mail.raw }}/></pre>
+                body = <pre id="raw-body"><code dangerouslySetInnerHTML={{ __html: mail.raw }}/></pre>
             }
 
             result = (
                 <Card id="preview">
                     <Card.Header>
                         <div>
-                            <h4 className="mb-1 text-shorten">{mail.subject}</h4>
-                            <div className={"mb-1 text-shorten"}>
+                            <h4 className="mb-1 text-shorten mail-subject">{mail.subject}</h4>
+                            <div className="mb-1 text-shorten mail-date">
                                 <strong>Received: </strong>
                                 <span>{mail.timeReceived.format(DATE_TIME_FORMAT)}</span>
                             </div>
-                            <div className="mb-1 text-shorten">
+                            <div className="mb-1 text-shorten mail-to">
                                 <strong>To: </strong>
                                 <span>{mail.to.text}</span>
                             </div>
-                            <div className="mb-1 text-shorten">
+                            <div className="mb-1 text-shorten mail-from">
                                 <strong>From: </strong>
                                 <span>{mail.from.text}</span>
                             </div>
                         </div>
                         <Nav variant="tabs" activeKey={activeKey} onSelect={(key) => this.setState({ activeKey: key })}>
                             <Nav.Item>
-                                <Nav.Link eventKey="html" disabled={!mail.html}>HTML</Nav.Link>
+                                <Nav.Link id="html-link" eventKey="html" disabled={!mail.html}>HTML</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="text" disabled={!mail.text}>Text</Nav.Link>
+                                <Nav.Link id="text-link" eventKey="text" disabled={!mail.text}>Text</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="raw" disabled={!mail.raw}>Raw</Nav.Link>
+                                <Nav.Link id="raw-link" eventKey="raw" disabled={!mail.raw}>Raw</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Card.Header>
