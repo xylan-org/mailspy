@@ -1,5 +1,6 @@
 import moment from "moment";
 import { Card, Nav } from "react-bootstrap";
+import { Attachment } from "services/mail/domain/Attachment";
 import { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
 import { MailAttachment } from "../attachment/MailAttachment";
@@ -231,11 +232,11 @@ describe("MailPreview", () => {
 
         it("should be correctly displayed", () => {
             // GIVEN
-            let expectedAttachment = {
+            let expectedAttachment: Attachment = {
                 filename: "attachment.txt",
                 contentType: "text/plain",
                 content: "content"
-            }
+            };
             mail.attachments = [ expectedAttachment ];
             testBed.setProps({
                 selectedMail: mail

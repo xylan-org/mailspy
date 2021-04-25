@@ -15,6 +15,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.32",
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.13",
+    "@sinonjs/fake-timers": "7.0.5",
     "@types/enzyme": "3.10.8",
     "@types/escape-html": "1.0.0",
     "@types/file-saver": "2.0.1",

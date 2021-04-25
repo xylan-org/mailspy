@@ -27,7 +27,7 @@ export class ReconnectingEventSource {
 			eventSource.close();
 			this.errorHandlers.forEach((handler) => handler());
 		}, 1500);
-		eventSource.addEventListener("connected", (event) => {
+		eventSource.addEventListener("connected", (event: Event) => {
 			clearTimeout(timeoutId);
 			if (!this.connected) {
 				this.connectedHandlers.forEach((handler) => handler(event));
@@ -40,14 +40,6 @@ export class ReconnectingEventSource {
 		});
 		this.customEventHandlers.forEach((eventHandler) => {
 			eventSource.addEventListener(eventHandler.name, eventHandler.callback as EventListener);
-		});
-	}
-
-	public connectAsPromise<T>(response: T): Promise<T> {
-		this.connect();
-		return new Promise((resolve: (response: T) => void, reject: () => void) => {
-			this.onConnected(() => resolve(response));
-			this.onError(reject);
 		});
 	}
 
