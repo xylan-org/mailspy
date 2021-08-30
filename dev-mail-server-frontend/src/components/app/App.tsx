@@ -69,7 +69,7 @@ export class App extends Component<Empty, AppState> {
 	}
 
 	private selectMail(mailId: string): void {
-		let updatedMails = this.state.mails.map((mail: Mail) => {
+		const updatedMails = this.state.mails.map((mail: Mail) => {
 			return {
 				...mail,
 				selected: mail.id === mailId

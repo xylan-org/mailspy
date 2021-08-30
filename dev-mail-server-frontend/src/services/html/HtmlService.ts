@@ -6,11 +6,11 @@ import { inject, injectable } from "inversify";
 @injectable()
 export class HtmlService {
 
-    @inject(DOMParser)
-    private domParser: DOMParser;
-
-    @inject(XMLSerializer)
-    private xmlSerializer: XMLSerializer;
+    public constructor(
+        @inject(DOMParser) private domParser: DOMParser,
+        @inject(XMLSerializer) private xmlSerializer: XMLSerializer,
+        private doEscapeHtml: (arg: string) => string = escapeHtml
+    ) {}
 
     public replaceLinksTarget(html: string): string {
         let result = null;
@@ -27,7 +27,7 @@ export class HtmlService {
     public escapeHtml(text: string): string {
         let result = null;
         if (text) {
-            result = escapeHtml(text);
+            result = this.doEscapeHtml(text);
         }
         return result;
     }

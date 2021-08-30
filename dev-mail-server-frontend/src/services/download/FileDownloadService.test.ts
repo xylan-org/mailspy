@@ -3,8 +3,8 @@ import { FileDownloadService } from "./FileDownloadService";
 
 describe("FileDownloadService", () => {
 
-    let underTest: FileDownloadService;
     let saveAsMock: jest.SpyInstance;
+    let underTest: FileDownloadService;
 
     beforeEach(() => {
         jest.spyOn(global, "Blob").mockImplementation((blobParts?: BlobPart[], options?: BlobPropertyBag) => {
