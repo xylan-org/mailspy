@@ -91,7 +91,7 @@ export class App extends Component<Empty, AppState> {
                 });
             })
             .catch(() => {
-                this.setState({  clearState: LoadingStatus.STATUS_ERROR });
+                this.setState({ clearState: LoadingStatus.STATUS_ERROR });
                 setTimeout(() => {
                     this.setState({ clearState: LoadingStatus.STATUS_OK });
                 }, 3000);

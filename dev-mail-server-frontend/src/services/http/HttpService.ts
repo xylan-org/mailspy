@@ -8,9 +8,16 @@ const STATE_MUTATING_METHODS = ["PATCH", "POST", "PUT", "DELETE"];
 @injectable()
 export class HttpService {
 
+	public constructor(
+		private doFetch: (input: RequestInfo, init?: RequestInit) => Promise<Response> = fetch,
+		private getCsrfMeta: () => Element = document.querySelector.bind(document, "meta[name=csrf_token]"),
+		private environment: Record<string, string> = process.env,
+		private window: Partial<Window> = global.window
+	) {}
+
 	public fetch<T>(url: string, config?: RequestInit): Promise<T> {
 		config = config || {};
-		return fetch(this.getBackendRoot() + url, this.addCsrfTokenIfNeeded(config))
+		return this.doFetch(this.getBackendRoot() + url, this.addCsrfTokenIfNeeded(config))
 			.then((response: Response) => {
 				let result: Promise<T>;
 				if (!response.ok) {
@@ -29,7 +36,7 @@ export class HttpService {
 	}
 
 	private addCsrfTokenIfNeeded(config: RequestInit): RequestInit {
-		const csrfToken: HTMLMetaElement = document.querySelector("meta[name=csrf_token]");
+		const csrfToken: HTMLMetaElement = this.getCsrfMeta() as HTMLMetaElement;
 		let headers: HeadersInit = {};
 		if (csrfToken !== null && STATE_MUTATING_METHODS.includes(config.method)) {
 			headers = {
@@ -44,10 +51,10 @@ export class HttpService {
 
 	private getBackendRoot(): string {
 		let result: string;
-		if (process.env.NODE_ENV === "development") {
-			result = process.env.REACT_APP_BACKEND_ROOT;
+		if (this.environment.NODE_ENV === "development") {
+			result = this.environment.REACT_APP_BACKEND_ROOT;
 		} else {
-			result = (window.location.origin + window.location.pathname).replace(/\/$/, "");
+			result = (this.window.location.origin + this.window.location.pathname).replace(/\/$/, "");
 		}
 		return result;
 	}
