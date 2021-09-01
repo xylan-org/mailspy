@@ -11,11 +11,10 @@ import { inject, injectable } from "inversify";
 @injectable()
 export class MailService {
 
-    @inject(HttpService)
-    private httpService: HttpService;
-
-    @inject(MailParserService)
-    private mailParserService: MailParserService;
+    public constructor(
+        @inject(HttpService) private httpService: HttpService,
+        @inject(MailParserService) private mailParserService: MailParserService
+    ) {}
 
     public getMails(): Promise<Mail[]> {
         return this.httpService.fetch<RawMail[]>("/mails/history")
