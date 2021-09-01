@@ -10,8 +10,11 @@ import { inject, injectable } from "inversify";
 @injectable()
 export class MailParserService {
 
-	@inject(HtmlService)
-	private htmlService: HtmlService;
+	public constructor(
+		@inject(HtmlService) private htmlService: HtmlService,
+		private doParseMail: (source: any, options?: Record<string, any>) => Promise<ParsedMail> = simpleParser,
+		private readBase64: (base64: string) => Buffer = (base64: string) => Buffer.from(base64, "base64")
+	) {}
 
 	public parseMail(rawMail: RawMail): Promise<Mail> {
 		return new Promise<Mail>((resolve: (value: Mail) => void) => {
@@ -21,10 +24,10 @@ export class MailParserService {
 					selected: false,
 					error: rawMail.exception.message,
 					id: rawMail.id
-				})
+				});
 			} else {
-				const mailBuffer = Buffer.from(rawMail.rawMessage, "base64");
-				simpleParser(mailBuffer, {
+				const mailBuffer = this.readBase64(rawMail.rawMessage);
+				this.doParseMail(mailBuffer, {
 					skipHtmlToText: true,
 					skipTextToHtml: true,
 					skipTextLinks: true
