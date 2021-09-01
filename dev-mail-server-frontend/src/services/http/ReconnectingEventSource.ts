@@ -12,17 +12,19 @@ export class ReconnectingEventSource {
 		name: string;
 		callback: (event: CustomEvent) => void;
 	}[];
+	private createEventSource: (url: string) => EventSource;
 
-	public constructor(url: string) {
+	public constructor(url: string, createEventSource = (url: string) => new EventSource(url)) {
 		this.url = url;
 		this.connected = false;
 		this.errorHandlers = [];
 		this.connectedHandlers = [];
 		this.customEventHandlers = [];
+		this.createEventSource = createEventSource;
 	}
 
 	public connect(): void {
-		const eventSource = new EventSource(this.url);
+		const eventSource = this.createEventSource(this.url);
 		const timeoutId = setTimeout(() => {
 			eventSource.close();
 			this.errorHandlers.forEach((handler) => handler());
