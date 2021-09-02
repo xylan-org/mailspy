@@ -28,7 +28,7 @@ subprojects {
     
     apply from: "$rootDir/versions.gradle"
 }
-    
+
 dependencyCheck {
 	suppressionFile "${rootDir}/owasp/suppressions.xml"
 }

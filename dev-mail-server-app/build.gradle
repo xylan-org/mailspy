@@ -4,7 +4,7 @@ plugins {
 }
 
 description = "DevMailServer :: App"
-sourceCompatibility = "11"
+sourceCompatibility = "${sourceCompatibility}"
 
 configurations {
     developmentOnly

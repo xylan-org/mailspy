@@ -9,12 +9,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Controller
 public class MailsSubscriptionController {
 
-    private SseEmitterRegistry sseEmitterRegistry;
-
     @Autowired
-    public void setSseEmitterRegistry(final SseEmitterRegistry sseEmitterRegistry) {
-        this.sseEmitterRegistry = sseEmitterRegistry;
-    }
+    private SseEmitterRegistry sseEmitterRegistry;
 
     @RequestMapping(path = "/mails/subscribe")
     public SseEmitter createSseEmitter() {

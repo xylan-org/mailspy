@@ -3,6 +3,7 @@ plugins {
 }
 
 description = "DevMailServer :: Core"
+sourceCompatibility = "${sourceCompatibility}"
 
 configurations {
 	frontend
@@ -23,8 +24,12 @@ dependencies {
 
     compileOnly "jakarta.validation:jakarta.validation-api"
     compileOnly "jakarta.annotation:jakarta.annotation-api"
-    
     compileOnly "org.projectlombok:lombok"
+
+    testImplementation "org.testng:testng"
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.mockito:mockito-testng"
+
     annotationProcessor "org.projectlombok:lombok"
 }
 
@@ -33,4 +38,8 @@ jar {
     from (configurations.frontend.files) {
         into "META-INF/dms-frontend"
     }
+}
+
+test {
+    useTestNG()
 }

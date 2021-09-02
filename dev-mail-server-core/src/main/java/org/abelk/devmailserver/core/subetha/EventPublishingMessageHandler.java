@@ -30,10 +30,10 @@ public class EventPublishingMessageHandler implements MessageHandler {
     private Supplier<UUID> uuidSupplier = UUID::randomUUID;
 
     @Setter
-    private Clock clock = Clock.systemUTC();
+    private Supplier<Instant> nowSupplier = Instant::now;
 
     @Override
-    public void data(final InputStream messageStream) throws RejectException, TooMuchDataException, IOException {
+    public void data(final InputStream messageStream) {
         DmsEmailBuilder builder = DmsEmail.builder();
         try {
             builder.rawMessage(IOUtils.toByteArray(messageStream));
@@ -42,17 +42,17 @@ public class EventPublishingMessageHandler implements MessageHandler {
             log.error("Exception thrown while reading mail message.", exception);
         }
         builder.id(uuidSupplier.get().toString())
-                .timestamp(Instant.now(clock));
+                .timestamp(nowSupplier.get());
         applicationEventPublisher.publishEvent(new EmailReceivedEvent(builder.build()));
     }
 
     @Override
-    public void from(final String from) throws RejectException {
+    public void from(final String from) {
         // ignored
     }
 
     @Override
-    public void recipient(final String recipient) throws RejectException {
+    public void recipient(final String recipient) {
         // ignored
     }
 

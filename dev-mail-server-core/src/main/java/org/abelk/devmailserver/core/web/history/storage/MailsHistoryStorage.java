@@ -1,10 +1,12 @@
 package org.abelk.devmailserver.core.web.history.storage;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
+import lombok.Setter;
 import org.abelk.devmailserver.core.config.DevMailServerProperties;
 import org.abelk.devmailserver.core.domain.DmsEmail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailsHistoryStorage {
 
+    @Setter
     @Autowired
     private DevMailServerProperties properties;
 
@@ -30,8 +33,7 @@ public class MailsHistoryStorage {
 
     public List<DmsEmail> getHistory() {
         synchronized (mailQueue) {
-            return mailQueue.stream()
-                    .collect(Collectors.toList());
+            return new ArrayList<>(mailQueue);
         }
     }
 
