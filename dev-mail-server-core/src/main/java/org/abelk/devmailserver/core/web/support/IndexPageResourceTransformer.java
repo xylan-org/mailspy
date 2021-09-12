@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.Setter;
 import org.abelk.devmailserver.core.config.DevMailServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,6 +24,7 @@ public class IndexPageResourceTransformer implements ResourceTransformer {
 
     private static final String INDEX_PAGE_FILENAME = "index.html";
 
+    @Setter
     @Autowired
     private DevMailServerProperties properties;
 

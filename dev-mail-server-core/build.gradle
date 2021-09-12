@@ -29,6 +29,7 @@ dependencies {
     testImplementation "org.testng:testng"
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.mockito:mockito-testng"
+    testCompileOnly "org.projectlombok:lombok"
 
     annotationProcessor "org.projectlombok:lombok"
 }

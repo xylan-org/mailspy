@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Supplier;
 
 import javax.annotation.PreDestroy;
 
+import lombok.Setter;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -26,8 +28,11 @@ public class SseEmitterRegistry {
 
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
+    @Setter
+    private Supplier<SseEmitter> sseEmitterSupplier = SseEmitter::new;
+
     public SseEmitter createEmitter() {
-        final SseEmitter emitter = new SseEmitter();
+        final SseEmitter emitter = sseEmitterSupplier.get();
         registerEventHandlers(emitter);
         try {
             emitter.send(SseEmitter.event()
