@@ -7,6 +7,7 @@ sourceCompatibility = "${sourceCompatibility}"
 
 configurations {
 	frontend
+    testImplementation.extendsFrom compileOnly
 }
 
 dependencies {
@@ -14,14 +15,14 @@ dependencies {
 
     implementation "org.slf4j:slf4j-api"
     implementation "org.subethamail:subethasmtp"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.springframework:spring-context-support"
-    implementation "org.springframework:spring-webmvc"
-    implementation "org.springframework.security:spring-security-config"
-    implementation "org.springframework.security:spring-security-web"
-    implementation "jakarta.servlet:jakarta.servlet-api"
     implementation "commons-io:commons-io"
 
+    compileOnly "org.springframework.boot:spring-boot-autoconfigure"
+    compileOnly "org.springframework:spring-context-support"
+    compileOnly "org.springframework:spring-webmvc"
+    compileOnly "org.springframework.security:spring-security-config"
+    compileOnly "org.springframework.security:spring-security-web"
+    compileOnly "jakarta.servlet:jakarta.servlet-api"
     compileOnly "jakarta.validation:jakarta.validation-api"
     compileOnly "jakarta.annotation:jakarta.annotation-api"
     compileOnly "org.projectlombok:lombok"
@@ -32,6 +33,7 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok"
 
     annotationProcessor "org.projectlombok:lombok"
+    testAnnotationProcessor "org.projectlombok:lombok"
 }
 
 jar {
