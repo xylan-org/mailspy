@@ -1,5 +1,5 @@
-rootProject.name = "dev-mail-server"
+rootProject.name = "mailspy"
 
-include "dev-mail-server-app"
-include "dev-mail-server-core"
-include "dev-mail-server-frontend"
+include "mailspy-app"
+include "mailspy-core"
+include "mailspy-frontend"

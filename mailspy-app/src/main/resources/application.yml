@@ -1,0 +1,9 @@
+mailspy:
+  enabled: true
+
+spring:
+  resources:
+    add-mappings: false
+
+server:
+  port: 8099

@@ -3,7 +3,7 @@ plugins {
     id "org.owasp.dependencycheck" version "6.0.3"
 }
 
-description = "DevMailServer :: Root"
+description = "MailSpy :: Root"
 
 wrapper {
     gradleVersion = "6.7.1"

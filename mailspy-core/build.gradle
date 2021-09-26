@@ -1,0 +1,46 @@
+plugins {
+	id "java-library"
+}
+
+description = "MailSpy :: Core"
+sourceCompatibility = "${sourceCompatibility}"
+
+configurations {
+	frontend
+}
+
+dependencies {
+    frontend project(":mailspy-frontend")
+
+    implementation "org.slf4j:slf4j-api"
+    implementation "org.subethamail:subethasmtp"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.springframework:spring-context-support"
+    implementation "org.springframework:spring-webmvc"
+    implementation "org.springframework.security:spring-security-config"
+    implementation "org.springframework.security:spring-security-web"
+    implementation "jakarta.servlet:jakarta.servlet-api"
+    implementation "commons-io:commons-io"
+
+    compileOnly "jakarta.validation:jakarta.validation-api"
+    compileOnly "jakarta.annotation:jakarta.annotation-api"
+    compileOnly "org.projectlombok:lombok"
+
+    testImplementation "org.testng:testng"
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.mockito:mockito-testng"
+    testCompileOnly "org.projectlombok:lombok"
+
+    annotationProcessor "org.projectlombok:lombok"
+}
+
+jar {
+    dependsOn ":mailspy-frontend:assemble"
+    from (configurations.frontend.files) {
+        into "META-INF/mailspy-frontend"
+    }
+}
+
+test {
+    useTestNG()
+}
