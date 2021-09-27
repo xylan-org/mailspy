@@ -4,13 +4,12 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.resource.ResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
 import org.xylan.mailspy.core.config.MailSpyProperties;
+import org.xylan.mailspy.core.web.support.csrf.CsrfTokenRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
             final byte[] bytes = readToString(resource.getInputStream())
                     .replaceFirst("<base href=\".*?\">", "<base href=\"" + properties.getPathNoTrailingSlash() + "/resources/\">")
                     .replaceFirst("<meta name=\"csrf_token\" content=\".*?\">",
-                            "<meta name=\"csrf_token\" content=\"" + createAndSaveCsrfToken(request) + "\">")
+                            "<meta name=\"csrf_token\" content=\"" + csrfTokenRepository.getCsrfToken(request) + "\">")
                     .getBytes();
             result = new TransformedResource(resource, bytes);
         } else {
@@ -48,12 +47,6 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
         }
 
         return result;
-    }
-
-    private String createAndSaveCsrfToken(final HttpServletRequest request) {
-        final CsrfToken token = csrfTokenRepository.generateToken(request);
-        csrfTokenRepository.saveToken(token, request, null);
-        return token.getToken();
     }
 
     private String readToString(final InputStream inputStream) {

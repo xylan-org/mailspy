@@ -29,7 +29,8 @@ import org.xylan.mailspy.core.config.condition.ConditionalOnMissingSpringWebSecu
 import org.xylan.mailspy.core.config.condition.ConditionalOnSpringWebSecurity;
 import org.xylan.mailspy.core.subetha.EventPublishingMessageHandler;
 import org.xylan.mailspy.core.web.support.MailSpyIndexPageResourceTransformer;
-import org.xylan.mailspy.core.web.support.NoOpCsrfTokenRepository;
+import org.xylan.mailspy.core.web.support.csrf.NoOpCsrfTokenRepository;
+import org.xylan.mailspy.core.web.support.csrf.SpringSecurityCsrfTokenRepository;
 
 import java.util.List;
 
@@ -107,42 +108,51 @@ public class MailSpyAutoConfiguration {
     @Configuration
     @ConditionalOnSpringWebSecurity
     @AutoConfigureAfter(SecurityAutoConfiguration.class)
-    public static class MailSpyWebSecurityConfigurer extends WebSecurityConfigurerAdapter implements Ordered {
+    public static class MailSpyWebSecurityConfiguration {
 
-        @Autowired
-        private MailSpyProperties properties;
-
-        @Override
-        public int getOrder() {
-            return properties.getSecurityOrder();
-        }
-
-        @Override
-        protected void configure(final HttpSecurity http) throws Exception {
-            http.regexMatcher(properties.getPathNoTrailingSlash() + "(/.*)?");
-            if (properties.isEnableCors()) {
-                final CorsConfiguration corsConfiguration = new CorsConfiguration();
-                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "HEAD", "DELETE"));
-                corsConfiguration.applyPermitDefaultValues();
-                http.cors().configurationSource(request -> corsConfiguration);
-            }
-            if (properties.isEnableCsrfProtection()) {
-                http.csrf().csrfTokenRepository(mailSpyCsrfTokenRepository());
-            } else {
-                http.csrf().disable();
-            }
+        @Bean
+        public SpringSecurityCsrfTokenRepository mailSpyCsrfTokenRepository() {
+            SpringSecurityCsrfTokenRepository csrfTokenRepository = new SpringSecurityCsrfTokenRepository();
+            csrfTokenRepository.setDelegateCsrfRepository(new HttpSessionCsrfTokenRepository());
+            return csrfTokenRepository;
         }
 
         @Bean
-        public HttpSessionCsrfTokenRepository mailSpyCsrfTokenRepository() {
-            return new HttpSessionCsrfTokenRepository();
+        public MailSpyWebSecurityConfigurer mailSpyWebSecurityConfigurer() {
+            return new MailSpyWebSecurityConfigurer();
         }
 
+        public class MailSpyWebSecurityConfigurer extends WebSecurityConfigurerAdapter implements Ordered {
+
+            @Autowired
+            private MailSpyProperties properties;
+
+            @Override
+            public int getOrder() {
+                return properties.getSecurityOrder();
+            }
+
+            @Override
+            protected void configure(final HttpSecurity http) throws Exception {
+                http.regexMatcher(properties.getPathNoTrailingSlash() + "(/.*)?");
+                if (properties.isEnableCors()) {
+                    final CorsConfiguration corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "HEAD", "DELETE"));
+                    corsConfiguration.applyPermitDefaultValues();
+                    http.cors().configurationSource(request -> corsConfiguration);
+                }
+                if (properties.isEnableCsrfProtection()) {
+                    http.csrf().csrfTokenRepository(mailSpyCsrfTokenRepository().getDelegateCsrfRepository());
+                } else {
+                    http.csrf().disable();
+                }
+            }
+        }
     }
 
     @Configuration
     @ConditionalOnMissingSpringWebSecurity
-    public static class MailSpyNoOpWebSecurityConfigurer {
+    public static class MailSpyNoOpWebSecurityConfiguration {
 
         @Bean
         public NoOpCsrfTokenRepository mailSpyCsrfTokenRepository() {

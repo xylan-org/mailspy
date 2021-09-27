@@ -1,12 +1,12 @@
 package org.xylan.mailspy.core.web.forward;
 
-import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.xylan.mailspy.core.config.MailSpyProperties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

@@ -1,12 +1,12 @@
 package org.xylan.mailspy.core.web.history.controller;
 
-import org.xylan.mailspy.core.domain.MailSpyEmail;
-import org.xylan.mailspy.core.web.history.storage.MailSpyHistoryStorage;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.xylan.mailspy.core.domain.MailSpyEmail;
+import org.xylan.mailspy.core.web.history.storage.MailSpyHistoryStorage;
 
 import java.util.List;
 

@@ -19,7 +19,6 @@ import java.util.Iterator;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 @Listeners(MockitoTestNGListener.class)
 public class SseEmitterRegistryTest {

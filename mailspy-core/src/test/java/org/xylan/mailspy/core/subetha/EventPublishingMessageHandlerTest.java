@@ -1,7 +1,5 @@
 package org.xylan.mailspy.core.subetha;
 
-import org.xylan.mailspy.core.domain.MailSpyEmail;
-import org.xylan.mailspy.core.domain.EmailReceivedEvent;
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -10,6 +8,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.xylan.mailspy.core.domain.EmailReceivedEvent;
+import org.xylan.mailspy.core.domain.MailSpyEmail;
 
 import java.io.IOException;
 import java.io.InputStream;

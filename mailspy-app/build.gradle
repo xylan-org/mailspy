@@ -15,15 +15,16 @@ configurations {
 
 dependencies {
     runtimeOnly project(":mailspy-core")
-    
-    implementation "org.slf4j:slf4j-api"
+
     implementation "ch.qos.logback:logback-classic"
     implementation "org.springframework.boot:spring-boot-starter"
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-security"
+
     implementation "jakarta.mail:jakarta.mail-api" // TODO remove
     implementation "com.sun.mail:jakarta.mail" // TODO remove
     implementation "org.springframework:spring-context-support" // TODO remove
+
     developmentOnly "org.springframework.boot:spring-boot-devtools"
 
     compileOnly "org.projectlombok:lombok"

@@ -1,7 +1,6 @@
 package org.xylan.mailspy.core.web.support;
 
 import lombok.SneakyThrows;
-import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,6 +15,7 @@ import org.springframework.web.servlet.resource.TransformedResource;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.xylan.mailspy.core.config.MailSpyProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
