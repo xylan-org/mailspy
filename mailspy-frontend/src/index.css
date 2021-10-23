@@ -78,7 +78,7 @@ main {
     background-color: #f5f5f5;
 }
 
-.footer>.container {
+.footer > .container {
     padding-right: 15px;
     padding-left: 15px;
 }
@@ -132,7 +132,7 @@ button svg,
     padding: 15px;
 }
 
-.toast-body>span {
+.toast-body > span {
     margin-left: 8px;
     font-size: 1.2em;
     position: relative;
@@ -155,4 +155,12 @@ button svg,
 .link-button:hover,
 .link-button:focus {
     text-decoration: underline;
+}
+
+.navbar-brand svg {
+    width: 35px;
+    height: 35px;
+    margin-right: 5px;
+    margin-top: -2px;
+    fill: white;
 }
