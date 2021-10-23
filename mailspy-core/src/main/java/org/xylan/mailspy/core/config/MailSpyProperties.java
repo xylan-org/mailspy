@@ -30,7 +30,7 @@ public class MailSpyProperties {
 
     private boolean enableCors = false;
 
-    private boolean enableCsrfProtection = false;
+    private boolean enableCsrfProtection = true;
 
     public String getPathNoTrailingSlash() {
         return path.replaceAll("/$", "");
