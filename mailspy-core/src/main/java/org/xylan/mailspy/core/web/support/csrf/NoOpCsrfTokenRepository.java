@@ -8,4 +8,5 @@ public class NoOpCsrfTokenRepository implements CsrfTokenRepository {
     public String getCsrfToken(final HttpServletRequest request) {
         return "";
     }
+
 }

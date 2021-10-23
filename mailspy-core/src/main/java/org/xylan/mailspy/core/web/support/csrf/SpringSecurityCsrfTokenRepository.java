@@ -18,4 +18,5 @@ public class SpringSecurityCsrfTokenRepository implements CsrfTokenRepository {
         delegateCsrfRepository.saveToken(token, request, null);
         return token.getToken();
     }
+
 }

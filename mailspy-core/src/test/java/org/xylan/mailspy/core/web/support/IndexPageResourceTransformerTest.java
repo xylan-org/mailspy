@@ -8,7 +8,6 @@ import org.mockito.Mockito;
 import org.mockito.testng.MockitoTestNGListener;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.DefaultCsrfToken;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
@@ -16,6 +15,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyProperties;
+import org.xylan.mailspy.core.web.support.csrf.CsrfTokenRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
@@ -65,7 +65,7 @@ public class IndexPageResourceTransformerTest {
     @SneakyThrows
     public void testTransformShouldReplaceBaseTagAndCsrfTokenInContentWhenFileIsIndexHtml() {
         // GIVEN
-        DefaultCsrfToken csrfToken = new DefaultCsrfToken("csrfHeader", "csrfParameter", "testCsrfToken");
+        String csrfToken = "testCsrfToken";
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         ResourceTransformerChain transformerChain = Mockito.mock(ResourceTransformerChain.class);
         Resource resource = new InputStreamResource(IOUtils.toInputStream(
@@ -85,7 +85,7 @@ public class IndexPageResourceTransformerTest {
                 "<meta name=\"csrf_token\" content=\"testCsrfToken\">";
         TransformedResource expected = new TransformedResource(resource, expectedContent.getBytes(StandardCharsets.UTF_8));
 
-        given(csrfTokenRepository.generateToken(request)).willReturn(csrfToken);
+        given(csrfTokenRepository.getCsrfToken(request)).willReturn(csrfToken);
         given(transformerChain.transform(request, resource)).willReturn(resource);
 
         // WHEN
@@ -93,7 +93,6 @@ public class IndexPageResourceTransformerTest {
 
         // THEN
         then(transformerChain).should().transform(request, resource);
-        then(csrfTokenRepository).should().saveToken(csrfToken, request, null);
         assertEquals(actual, expected);
     }
 
