@@ -1,4 +1,4 @@
-package org.xylan.mailspy.core.config;
+package org.xylan.mailspy.core.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

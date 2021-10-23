@@ -1,4 +1,4 @@
-package org.xylan.mailspy;
+package org.xylan.mailspy.app;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -18,7 +18,7 @@ public class MailSpyApplication {
 
     public static void main(final String[] args) {
         final ApplicationContext applicationContext = SpringApplication.run(MailSpyApplication.class, args);
-
+/*
         final JavaMailSender mailSender = applicationContext.getBean(JavaMailSender.class);
 
         final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
@@ -40,7 +40,7 @@ public class MailSpyApplication {
                 e.printStackTrace();
             }
         }, 15, 15, TimeUnit.SECONDS);
-
+*/
     }
 
 //    private static void sendCalMsg(final JavaMailSender mailSender) throws MailException {

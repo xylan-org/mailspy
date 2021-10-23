@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.resource.ResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
-import org.xylan.mailspy.core.config.MailSpyProperties;
+import org.xylan.mailspy.core.config.properties.MailSpyProperties;
 import org.xylan.mailspy.core.web.support.csrf.CsrfTokenRepository;
 
 import javax.servlet.http.HttpServletRequest;

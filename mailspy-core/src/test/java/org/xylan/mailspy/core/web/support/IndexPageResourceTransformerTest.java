@@ -8,13 +8,12 @@ import org.mockito.Mockito;
 import org.mockito.testng.MockitoTestNGListener;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.web.csrf.DefaultCsrfToken;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import org.xylan.mailspy.core.config.MailSpyProperties;
+import org.xylan.mailspy.core.config.properties.MailSpyProperties;
 import org.xylan.mailspy.core.web.support.csrf.CsrfTokenRepository;
 
 import javax.servlet.http.HttpServletRequest;
