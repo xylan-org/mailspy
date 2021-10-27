@@ -10,14 +10,14 @@ import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.server.SMTPServer;
 import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
 import org.xylan.mailspy.core.config.properties.MailSpyProperties;
-import org.xylan.mailspy.core.subetha.EventPublishingMessageHandler;
+import org.xylan.mailspy.core.impl.subetha.EventPublishingMessageHandler;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 @Configuration
 @ConditionalOnMailSpyEnabled
 @EnableConfigurationProperties(MailSpyProperties.class)
-@ComponentScan("org.xylan.mailspy.core")
+@ComponentScan("org.xylan.mailspy.core.impl")
 public class MailSpyAutoConfiguration {
 
     @Autowired

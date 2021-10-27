@@ -3,12 +3,12 @@ package org.xylan.mailspy.core.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
-import org.xylan.mailspy.core.config.condition.ConditionalOnMissingSpringWebSecurity;
-import org.xylan.mailspy.core.web.support.csrf.NoOpCsrfTokenRepository;
+import org.xylan.mailspy.core.config.condition.ConditionalOnMissingWebSecurity;
+import org.xylan.mailspy.core.impl.web.support.csrf.NoOpCsrfTokenRepository;
 
 @Configuration
 @ConditionalOnMailSpyEnabled
-@ConditionalOnMissingSpringWebSecurity
+@ConditionalOnMissingWebSecurity
 public class MailSpyWebSecurityNoOpAutoConfiguration {
 
     @Bean

@@ -9,19 +9,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
-import org.xylan.mailspy.core.config.condition.ConditionalOnSpringWebSecurity;
+import org.xylan.mailspy.core.config.condition.ConditionalOnWebSecurity;
 import org.xylan.mailspy.core.config.properties.MailSpyProperties;
-import org.xylan.mailspy.core.web.support.csrf.SpringSecurityCsrfTokenRepository;
+import org.xylan.mailspy.core.impl.web.support.csrf.SpringSecurityCsrfTokenRepository;
 
 import java.util.List;
 
 @Configuration
 @ConditionalOnMailSpyEnabled
-@ConditionalOnSpringWebSecurity
-@AutoConfigureBefore(SecurityAutoConfiguration.class)
+@ConditionalOnWebSecurity
+@AutoConfigureAfter(SecurityAutoConfiguration.class)
 public class MailSpyWebSecurityAutoConfiguration {
 
     @Bean

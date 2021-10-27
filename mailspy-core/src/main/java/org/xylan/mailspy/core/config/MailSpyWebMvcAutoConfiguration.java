@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
 import org.xylan.mailspy.core.config.properties.MailSpyProperties;
-import org.xylan.mailspy.core.web.support.MailSpyIndexPageResourceTransformer;
+import org.xylan.mailspy.core.impl.web.support.MailSpyIndexPageResourceTransformer;
 
 @ConditionalOnMailSpyEnabled
 public class MailSpyWebMvcAutoConfiguration {
