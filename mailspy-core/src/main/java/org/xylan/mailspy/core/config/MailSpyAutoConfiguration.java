@@ -17,7 +17,7 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 @Configuration
 @ConditionalOnMailSpyEnabled
 @EnableConfigurationProperties(MailSpyProperties.class)
-@ComponentScan("org.xylan.mailspy.core.impl")
+@ComponentScan("org.xylan.mailspy.core")
 public class MailSpyAutoConfiguration {
 
     @Autowired

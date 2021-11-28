@@ -17,7 +17,7 @@ import org.xylan.mailspy.core.config.properties.MailSpyProperties;
 @ConditionalOnMailSpyEnabled
 @ConditionalOnProperty(name = "mailspy.sender.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnMissingBean(JavaMailSender.class)
-public class MailSpySenderAutoConfiguration {
+public class MailSpyMailSenderAutoConfiguration {
 
     @Autowired
     private MailSpyProperties properties;

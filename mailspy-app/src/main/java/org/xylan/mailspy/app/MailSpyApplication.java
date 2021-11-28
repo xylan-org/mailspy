@@ -10,12 +10,14 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-@ImportResource(locations = "classpath:test-security.xml")
+//@ImportResource(locations = "classpath:test-security.xml")
 @SpringBootApplication
+//@Import(TestWebSecurityConfig.class)
 public class MailSpyApplication {
 
     public static void main(final String[] args) {
