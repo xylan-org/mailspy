@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.resource.ResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
-import org.xylan.mailspy.core.config.properties.MailSpyProperties;
+import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.web.support.csrf.CsrfTokenRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +26,8 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
     @Autowired
     private MailSpyProperties properties;
 
-    @Qualifier("mailSpyCsrfTokenRepository")
     @Autowired
+    @Qualifier("mailSpyCsrfTokenRepository")
     private CsrfTokenRepository csrfTokenRepository;
 
     @Override
@@ -37,10 +37,10 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
         final Resource resource = transformerChain.transform(request, originalResource);
         if (resource.getFilename().equals(INDEX_PAGE_FILENAME)) {
             final byte[] bytes = readToString(resource.getInputStream())
-                    .replaceFirst("<base href=\".*?\">", "<base href=\"" + properties.getPathNoTrailingSlash() + "/resources/\">")
-                    .replaceFirst("<meta name=\"csrf_token\" content=\".*?\">",
-                            "<meta name=\"csrf_token\" content=\"" + csrfTokenRepository.getCsrfToken(request) + "\">")
-                    .getBytes();
+                .replaceFirst("<base href=\".*?\">", "<base href=\"" + properties.getPathNoTrailingSlash() + "/resources/\">")
+                .replaceFirst("<meta name=\"csrf_token\" content=\".*?\">",
+                    "<meta name=\"csrf_token\" content=\"" + csrfTokenRepository.getCsrfToken(request) + "\">")
+                .getBytes();
             result = new TransformedResource(resource, bytes);
         } else {
             result = resource;

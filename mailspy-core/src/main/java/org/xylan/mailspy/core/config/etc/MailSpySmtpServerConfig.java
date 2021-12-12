@@ -1,24 +1,18 @@
-package org.xylan.mailspy.core.config;
+package org.xylan.mailspy.core.config.etc;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.server.SMTPServer;
-import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
-import org.xylan.mailspy.core.config.properties.MailSpyProperties;
+import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.subetha.EventPublishingMessageHandler;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 @Configuration
-@ConditionalOnMailSpyEnabled
-@EnableConfigurationProperties(MailSpyProperties.class)
-@ComponentScan("org.xylan.mailspy.core")
-public class MailSpyAutoConfiguration {
+public class MailSpySmtpServerConfig {
 
     @Autowired
     private MailSpyProperties properties;

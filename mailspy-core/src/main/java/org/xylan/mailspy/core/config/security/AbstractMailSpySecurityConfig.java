@@ -6,20 +6,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.cors.CorsConfiguration;
-import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
-import org.xylan.mailspy.core.config.properties.MailSpyProperties;
+import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.web.support.csrf.SpringSecurityCsrfTokenRepository;
 
 import java.util.List;
 
 @Configuration
-@ConditionalOnMailSpyEnabled
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
-@Import(MailSpyCsrfTokenRepositoryConfig.class)
-public abstract class AbstractMailSpySecurityAutoConfiguration {
+public abstract class AbstractMailSpySecurityConfig {
 
     @Autowired
     private MailSpyProperties properties;

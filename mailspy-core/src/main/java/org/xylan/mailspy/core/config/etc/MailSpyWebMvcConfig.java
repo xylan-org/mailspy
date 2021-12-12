@@ -1,17 +1,17 @@
-package org.xylan.mailspy.core.config;
+package org.xylan.mailspy.core.config.etc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
-import org.xylan.mailspy.core.config.properties.MailSpyProperties;
+import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.web.support.MailSpyIndexPageResourceTransformer;
 
-@ConditionalOnMailSpyEnabled
-public class MailSpyWebMvcAutoConfiguration {
+@Configuration
+public class MailSpyWebMvcConfig {
 
     @Bean
     public WebMvcConfigurer mailSpyWebMvcConfigurer() {
@@ -29,15 +29,15 @@ public class MailSpyWebMvcAutoConfiguration {
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
             registry.addResourceHandler(properties.getPathNoTrailingSlash() + "/resources/**")
-                    .addResourceLocations("classpath:META-INF/mailspy-frontend/")
-                    .resourceChain(true)
-                    .addTransformer(indexPageResourceTransformer);
+                .addResourceLocations("classpath:META-INF/mailspy-frontend/")
+                .resourceChain(true)
+                .addTransformer(indexPageResourceTransformer);
         }
 
         @Override
         public void configurePathMatch(final PathMatchConfigurer configurer) {
             configurer.addPathPrefix(properties.getPathNoTrailingSlash(),
-                    HandlerTypePredicate.forBasePackage("org.xylan.mailspy.core"));
+                HandlerTypePredicate.forBasePackage("org.xylan.mailspy.core"));
         }
 
     }

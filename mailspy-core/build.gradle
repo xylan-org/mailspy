@@ -1,9 +1,8 @@
-plugins {
-	id "java-library"
-}
-
 description = "MailSpy :: Core"
 sourceCompatibility = "${sourceCompatibility}"
+
+apply plugin: "java-library"
+apply plugin: "com.coditory.integration-test"
 
 configurations {
 	frontend
@@ -23,14 +22,21 @@ dependencies {
     compileOnly "org.springframework.security:spring-security-config"
     compileOnly "org.springframework.security:spring-security-web"
     compileOnly "jakarta.servlet:jakarta.servlet-api"
-    compileOnly "jakarta.validation:jakarta.validation-api"
     compileOnly "jakarta.annotation:jakarta.annotation-api"
     compileOnly "org.projectlombok:lombok"
 
     testImplementation "org.testng:testng"
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.mockito:mockito-testng"
+    testImplementation "ch.qos.logback:logback-classic"
     testCompileOnly "org.projectlombok:lombok"
+
+    integrationImplementation "org.springframework.boot:spring-boot-test"
+    integrationImplementation "org.springframework:spring-test"
+    integrationImplementation "org.assertj:assertj-core"
+    integrationImplementation "org.hamcrest:hamcrest"
+    integrationImplementation "com.jayway.jsonpath:json-path"
+    integrationImplementation "com.fasterxml.jackson.core:jackson-databind"
 
     annotationProcessor "org.projectlombok:lombok"
     testAnnotationProcessor "org.projectlombok:lombok"
@@ -43,6 +49,10 @@ jar {
     }
 }
 
-test {
+tasks.withType(Test) {
     useTestNG()
+    testLogging {
+        events = ["passed", "failed", "skipped"]
+        exceptionFormat = "full"
+    }
 }

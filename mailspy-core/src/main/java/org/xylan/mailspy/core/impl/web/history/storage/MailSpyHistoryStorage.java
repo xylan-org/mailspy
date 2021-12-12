@@ -3,7 +3,7 @@ package org.xylan.mailspy.core.impl.web.history.storage;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.xylan.mailspy.core.config.properties.MailSpyProperties;
+import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
 
 import java.util.ArrayList;

@@ -9,11 +9,13 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.xylan.mailspy.core.config.properties.MailSpyProperties;
+import org.xylan.mailspy.core.config.MailSpyProperties;
+import org.xylan.mailspy.core.config.condition.ConditionalOnWebSecurity;
 
+@ConditionalOnWebSecurity
 @ConditionalOnBean(WebSecurityConfigurer.class)
 @ConditionalOnMissingBean(SecurityFilterChain.class)
-public class MailSpySecurityWithConfigurerAdapterAutoConfiguration extends AbstractMailSpySecurityAutoConfiguration {
+public class MailSpySecurityWithConfigurerAdapterConfig extends AbstractMailSpySecurityConfig {
 
     @Bean
     public MailSpyWebSecurityConfigurer mailSpyWebSecurityConfigurer() {

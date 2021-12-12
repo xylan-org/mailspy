@@ -38,7 +38,7 @@ public class EventPublishingMessageHandlerTest {
     }
 
     @Test
-    public void dataShouldPublishEventWithNormalEmailObjectWhenMessageStreamIsReadable() throws IOException {
+    public void dataShouldPublishEventWithNormalEmailObjectWhenMessageStreamIsReadable() {
         // GIVEN
         InputStream messageStream = IOUtils.toInputStream("msg", StandardCharsets.UTF_8);
         MailSpyEmail testMail = MailSpyEmail.builder()
@@ -57,7 +57,7 @@ public class EventPublishingMessageHandlerTest {
     }
 
     @Test
-    public void dataShouldPublishEventWithErrorEmailObjectWhenMessageStreamIsNotReadable() throws IOException {
+    public void dataShouldPublishEventWithErrorEmailObjectWhenMessageStreamIsNotReadable() {
         // GIVEN
         IOException expectedException = new IOException("oopsie");
         InputStream messageStream = new InputStream() {

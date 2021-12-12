@@ -1,6 +1,7 @@
 package org.xylan.mailspy.core.impl.web.history.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ public class MailSpyHistoryController {
     @Autowired
     private MailSpyHistoryStorage mailsHistoryStorage;
 
-    @GetMapping(path = "/mails/history")
+    @GetMapping(path = "/mails/history", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MailSpyEmail> getMailsHistory() {
         return mailsHistoryStorage.getHistory();
     }

@@ -38,7 +38,7 @@ public class EventPublishingMessageHandler implements MessageHandler {
             log.error("Exception thrown while reading mail message.", exception);
         }
         builder.id(uuidSupplier.get().toString())
-                .timestamp(nowSupplier.get());
+            .timestamp(nowSupplier.get());
         applicationEventPublisher.publishEvent(new EmailReceivedEvent(builder.build()));
     }
 
