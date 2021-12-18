@@ -21,11 +21,6 @@ public class ClearHistoryIntegrationTest extends AbstractIntegrationTest {
     public void deleteShouldClearHistory() {
         run((context, mockMvc) -> {
             // GIVEN
-            mockMvc.perform(get(HISTORY_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", empty()))
-                .andExpect(status().isOk());
             sendTestMail(context);
             mockMvc.perform(get(HISTORY_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON))
