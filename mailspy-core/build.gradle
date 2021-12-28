@@ -33,6 +33,7 @@ dependencies {
 
     integrationImplementation "org.springframework.boot:spring-boot-test"
     integrationImplementation "org.springframework:spring-test"
+    integrationImplementation "org.springframework.security:spring-security-test"
     integrationImplementation "org.assertj:assertj-core"
     integrationImplementation "org.hamcrest:hamcrest"
     integrationImplementation "com.jayway.jsonpath:json-path"

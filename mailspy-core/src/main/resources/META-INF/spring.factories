@@ -1,1 +1,6 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.xylan.mailspy.core.config.MailSpyAutoConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.xylan.mailspy.core.config.MailSpyBaseAutoConfig,\
+org.xylan.mailspy.core.config.MailSpyMailSenderAutoConfig,\
+org.xylan.mailspy.core.config.security.MailSpySecurityWithFilterChainAutoConfig,\
+org.xylan.mailspy.core.config.security.MailSpySecurityWithConfigurerAdapterAutoConfig,\
+org.xylan.mailspy.core.config.security.MailSpyCsrfTokenRepositoryAutoConfig

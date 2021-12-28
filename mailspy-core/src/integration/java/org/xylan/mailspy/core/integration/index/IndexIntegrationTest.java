@@ -1,5 +1,6 @@
 package org.xylan.mailspy.core.integration.index;
 
+import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.integration.common.AbstractIntegrationTest;
 
@@ -9,22 +10,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class IndexIntegrationTest extends AbstractIntegrationTest {
 
     @Test
-    public void indexShouldBeAvailableOnDefaultPathWhenNotOverridden() {
+    public void indexShouldBeAvailableOnDefaultPathAndForwardToHtmlPageWhenNotOverridden() {
         run((context, mockMvc) -> {
             mockMvc.perform(get("/mailspy"))
-                .andExpect(forwardedUrl("/mailspy/resources/index.html"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/mailspy/resources/index.html"));
         });
     }
 
     @Test
-    public void indexShouldBeAvailableOnCustomPathWhenOverridden() {
+    public void indexShouldBeAvailableOnCustomPathAndForwardToHtmlPageWhenOverridden() {
         run(
             (contextRunner) -> contextRunner.withPropertyValues("mailspy.path=/customMailSpyPath"),
             (context, mockMvc) -> {
                 mockMvc.perform(get("/customMailSpyPath"))
-                    .andExpect(forwardedUrl("/customMailSpyPath/resources/index.html"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().isOk())
+                    .andExpect(forwardedUrl("/customMailSpyPath/resources/index.html"));
         });
     }
 
@@ -34,8 +35,30 @@ public class IndexIntegrationTest extends AbstractIntegrationTest {
             (contextRunner) -> contextRunner.withPropertyValues("mailspy.path=/customMailSpyPath/"),
             (context, mockMvc) -> {
                 mockMvc.perform(get("/customMailSpyPath"))
-                    .andExpect(forwardedUrl("/customMailSpyPath/resources/index.html"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().isOk())
+                    .andExpect(forwardedUrl("/customMailSpyPath/resources/index.html"));
+        });
+    }
+
+    @Test
+    public void indexHtmlPageShouldBeAvailableWithPrefixInBaseTag() {
+        run((context, mockMvc) -> {
+            mockMvc.perform(get("/mailspy/resources/index.html"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.TEXT_HTML))
+                .andExpect(xpath("//base/@href").string("/mailspy/resources/"));
+        });
+    }
+
+    @Test
+    public void indexHtmlPageShouldBeAvailableWithCustomPrefixInBaseTagWhenPrefixIsOverridden() {
+        run(
+            (contextRunner) -> contextRunner.withPropertyValues("mailspy.path=/custom"),
+            (context, mockMvc) -> {
+                mockMvc.perform(get("/custom/resources/index.html"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.TEXT_HTML))
+                    .andExpect(xpath("//base/@href").string("/custom/resources/"));
         });
     }
 

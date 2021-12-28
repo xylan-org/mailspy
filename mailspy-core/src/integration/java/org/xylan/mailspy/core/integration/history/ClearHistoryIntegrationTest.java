@@ -7,11 +7,11 @@ import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.integration.common.AbstractIntegrationTest;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.xylan.mailspy.core.integration.common.matchers.MailSpyMatchers.*;
 
 public class ClearHistoryIntegrationTest extends AbstractIntegrationTest {
 
@@ -24,9 +24,9 @@ public class ClearHistoryIntegrationTest extends AbstractIntegrationTest {
             sendTestMail(context);
             mockMvc.perform(get(HISTORY_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(status().isOk());
+                .andExpect(jsonPath("$", hasSize(1)));
 
             // WHEN
             mockMvc.perform(delete(HISTORY_ENDPOINT))
@@ -35,10 +35,20 @@ public class ClearHistoryIntegrationTest extends AbstractIntegrationTest {
             // THEN
             mockMvc.perform(get(HISTORY_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", empty()))
-                .andExpect(status().isOk());
+                .andExpect(jsonPath("$", empty()));
         });
+    }
+
+    @Test
+    public void deleteShouldBeAvailableWithCustomPrefixWhenPrefixIsOverridden() {
+        run(
+            (contextRunner) -> contextRunner.withPropertyValues("mailspy.path=/custom"),
+            (context, mockMvc) -> {
+                mockMvc.perform(delete("/custom/mails/history"))
+                    .andExpect(status().isOk());
+            });
     }
 
     private void sendTestMail(WebApplicationContext context) {

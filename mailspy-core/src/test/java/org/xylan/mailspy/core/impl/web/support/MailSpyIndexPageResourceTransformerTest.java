@@ -24,7 +24,7 @@ import static org.mockito.BDDMockito.then;
 import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
-public class IndexPageResourceTransformerTest {
+public class MailSpyIndexPageResourceTransformerTest {
 
     @Mock
     private CsrfTokenRepository csrfTokenRepository;

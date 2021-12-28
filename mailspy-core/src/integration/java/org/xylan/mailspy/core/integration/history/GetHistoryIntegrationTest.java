@@ -22,9 +22,9 @@ public class GetHistoryIntegrationTest extends AbstractIntegrationTest {
         run((context, mockMvc) -> {
             mockMvc.perform(get("/mailspy/mails/history")
                 .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", empty()))
-                .andExpect(status().isOk());
+                .andExpect(jsonPath("$", empty()));
         });
     }
 
@@ -34,13 +34,13 @@ public class GetHistoryIntegrationTest extends AbstractIntegrationTest {
             sendTestEmail(context);
             mockMvc.perform(get("/mailspy/mails/history")
                 .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", isValidUuid()))
                 .andExpect(jsonPath("$[0].exception", nullValue()))
                 .andExpect(jsonPath("$[0].rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))))
-                .andExpect(jsonPath("$[0].rawMessage", emailTextMatches(equalTo(TEST_MESSAGE))))
-                .andExpect(status().isOk());
+                .andExpect(jsonPath("$[0].rawMessage", emailTextMatches(equalTo(TEST_MESSAGE))));
         });
     }
 
@@ -55,9 +55,19 @@ public class GetHistoryIntegrationTest extends AbstractIntegrationTest {
                 sendTestEmailWithText(context, testMessage2);
                 mockMvc.perform(get("/mailspy/mails/history")
                     .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$", hasSize(1)))
-                    .andExpect(jsonPath("$[0].rawMessage", emailTextMatches(equalTo(testMessage2))))
+                    .andExpect(jsonPath("$[0].rawMessage", emailTextMatches(equalTo(testMessage2))));
+        });
+    }
+
+    @Test
+    public void getShouldBeAvailableWithCustomPrefixWhenPrefixIsOverridden() {
+        run(
+            (contextRunner) -> contextRunner.withPropertyValues("mailspy.path=/custom"),
+            (context, mockMvc) -> {
+                mockMvc.perform(get("/custom/mails/history"))
                     .andExpect(status().isOk());
         });
     }

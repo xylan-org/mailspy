@@ -1,4 +1,4 @@
-package org.xylan.mailspy.core.config.etc;
+package org.xylan.mailspy.core.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -9,13 +9,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.xylan.mailspy.core.config.MailSpyProperties;
+import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
 
 @Configuration
+@ConditionalOnMailSpyEnabled
 @AutoConfigureAfter(MailSenderAutoConfiguration.class)
 @ConditionalOnProperty(name = "mailspy.sender.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnMissingBean(JavaMailSender.class)
-public class MailSpyMailSenderConfig {
+public class MailSpyMailSenderAutoConfig {
 
     @Autowired
     private MailSpyProperties properties;

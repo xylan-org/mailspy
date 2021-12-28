@@ -4,8 +4,6 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -36,17 +36,31 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
 
         final Resource resource = transformerChain.transform(request, originalResource);
         if (resource.getFilename().equals(INDEX_PAGE_FILENAME)) {
-            final byte[] bytes = readToString(resource.getInputStream())
-                .replaceFirst("<base href=\".*?\">", "<base href=\"" + properties.getPathNoTrailingSlash() + "/resources/\">")
-                .replaceFirst("<meta name=\"csrf_token\" content=\".*?\">",
-                    "<meta name=\"csrf_token\" content=\"" + csrfTokenRepository.getCsrfToken(request) + "\">")
-                .getBytes();
-            result = new TransformedResource(resource, bytes);
+            String resourceAsString = readToString(resource.getInputStream());
+            resourceAsString = injectBasePath(resourceAsString);
+            resourceAsString = injectCsrfToken(request, resourceAsString);
+            result = new TransformedResource(resource, resourceAsString.getBytes());
         } else {
             result = resource;
         }
 
         return result;
+    }
+
+    private String injectCsrfToken(HttpServletRequest request, String resourceAsString) {
+        String result = resourceAsString;
+        if (properties.isEnableCsrfProtection()) {
+            result = resourceAsString.replaceFirst(
+            "<meta name=\"csrf_token\" content=\".*?\"\\s*/?>",
+        "<meta name=\"csrf_token\" content=\"" + csrfTokenRepository.getCsrfToken(request) + "\" />");
+        }
+        return result;
+    }
+
+    private String injectBasePath(String resourceAsString) {
+        return resourceAsString.replaceFirst(
+        "<base href=\".*?\"\\s*/?>",
+    "<base href=\"" + properties.getPathNoTrailingSlash() + "/resources/\" />");
     }
 
     private String readToString(final InputStream inputStream) {
