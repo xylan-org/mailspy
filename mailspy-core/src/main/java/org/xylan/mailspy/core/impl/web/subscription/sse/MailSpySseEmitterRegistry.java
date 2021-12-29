@@ -34,8 +34,8 @@ public class MailSpySseEmitterRegistry {
         registerEventHandlers(emitter);
         try {
             emitter.send(SseEmitter.event()
-                    .data("connected")
-                    .name("connected"));
+                .name("connected")
+                .data("connected"));
             emitters.add(emitter);
         } catch (final IOException exception) {
             emitter.completeWithError(exception);
@@ -45,12 +45,8 @@ public class MailSpySseEmitterRegistry {
     }
 
     private void registerEventHandlers(final SseEmitter emitter) {
-        emitter.onTimeout(() -> {
-            emitter.complete();
-        });
-        emitter.onCompletion(() -> {
-            emitters.remove(emitter);
-        });
+        emitter.onTimeout(emitter::complete);
+        emitter.onCompletion(() -> emitters.remove(emitter));
     }
 
     @Async
@@ -73,7 +69,7 @@ public class MailSpySseEmitterRegistry {
     }
 
     @PreDestroy
-    private void destroy() {
+    public void completeEmitters() {
         emitters.forEach(SseEmitter::complete);
     }
 
