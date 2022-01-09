@@ -17,7 +17,7 @@ import org.xylan.mailspy.core.impl.security.OrderableSecurityFilterChainDecorato
 
 @ConditionalOnMailSpyEnabled
 @ConditionalOnWebSecurity
-@ConditionalOnBean(SecurityFilterChain.class)
+@ConditionalOnBean({ SecurityFilterChain.class, HttpSecurity.class })
 @ConditionalOnMissingBean(WebSecurityConfigurer.class)
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
 public class MailSpySecurityWithFilterChainAutoConfig extends AbstractMailSpySecurityAutoConfig {

@@ -17,7 +17,7 @@ import org.xylan.mailspy.core.config.condition.ConditionalOnWebSecurity;
 
 @ConditionalOnMailSpyEnabled
 @ConditionalOnWebSecurity
-@ConditionalOnBean(WebSecurityConfigurer.class)
+@ConditionalOnBean({ WebSecurityConfigurer.class, HttpSecurity.class })
 @ConditionalOnMissingBean(SecurityFilterChain.class)
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
 public class MailSpySecurityWithConfigurerAdapterAutoConfig extends AbstractMailSpySecurityAutoConfig {
@@ -38,7 +38,7 @@ public class MailSpySecurityWithConfigurerAdapterAutoConfig extends AbstractMail
         }
 
         @Override
-        protected void configure(HttpSecurity httpSecurity) throws Exception {
+        protected void configure(HttpSecurity httpSecurity) {
             configureHttpSecurity(httpSecurity);
         }
     }

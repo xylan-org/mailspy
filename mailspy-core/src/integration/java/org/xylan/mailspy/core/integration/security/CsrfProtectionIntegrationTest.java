@@ -40,7 +40,7 @@ public class CsrfProtectionIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void csrfTokenShouldNotBeInIndexPageMetaTagWhenCsrfProtectionDisabled() {
-        run(
+        runWithSecurity(
             (contextRunner) -> contextRunner
                 .withPropertyValues("mailspy.enable-csrf-protection=false"),
             (context, mockMvc) -> {

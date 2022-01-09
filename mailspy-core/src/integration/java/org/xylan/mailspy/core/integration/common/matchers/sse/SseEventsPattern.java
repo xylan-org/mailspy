@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SseEventsPattern {
 
-    private List<SseEventPattern> sseEventPatterns = new LinkedList<>();
+    private final List<SseEventPattern> sseEventPatterns = new LinkedList<>();
 
     public static SseEventsPattern create() {
         return new SseEventsPattern();

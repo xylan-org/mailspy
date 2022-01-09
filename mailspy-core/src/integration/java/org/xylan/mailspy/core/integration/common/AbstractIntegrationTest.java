@@ -3,13 +3,14 @@ package org.xylan.mailspy.core.integration.common;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.AbstractMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.BeforeMethod;
 import org.xylan.mailspy.core.config.MailSpyBaseAutoConfig;
 
@@ -32,36 +33,36 @@ public abstract class AbstractIntegrationTest {
             .withConfiguration(AutoConfigurations.of(MailSpyBaseAutoConfig.class));
     }
 
-    protected final void run(BiContextConsumer<WebApplicationContext, MockMvc> contextConsumer) {
+    protected final void run(BiContextConsumer<AssertableWebApplicationContext, MockMvc> contextConsumer) {
         run(withoutSecurityAutoConfig(ContextRunnerCustomizer.identity()), contextConsumer);
     }
 
     protected final void run(
         ContextRunnerCustomizer contextCustomizer,
-        BiContextConsumer<WebApplicationContext, MockMvc> contextConsumer
+        BiContextConsumer<AssertableWebApplicationContext, MockMvc> contextConsumer
     ) {
         run(withoutSecurityAutoConfig(contextCustomizer), contextConsumer, false);
     }
 
     private ContextRunnerCustomizer withoutSecurityAutoConfig(ContextRunnerCustomizer additionalCustomizer) {
         return (contextRunner -> additionalCustomizer.customize(
-            contextRunner.withClassLoader(new FilteredClassLoader(SecurityFilterChain.class, HttpSecurity.class))));
+            contextRunner.withClassLoader(new FilteredClassLoader(SecurityFilterChain.class, HttpSecurity.class, EnableWebSecurity.class))));
     }
 
-    protected final void runWithSecurity(BiContextConsumer<WebApplicationContext, MockMvc> contextConsumer) {
+    protected final void runWithSecurity(BiContextConsumer<AssertableWebApplicationContext, MockMvc> contextConsumer) {
         runWithSecurity(ContextRunnerCustomizer.identity(), contextConsumer);
     }
 
     protected final void runWithSecurity(
         ContextRunnerCustomizer contextCustomizer,
-        BiContextConsumer<WebApplicationContext, MockMvc> contextConsumer
+        BiContextConsumer<AssertableWebApplicationContext, MockMvc> contextConsumer
     ) {
         run(contextCustomizer, contextConsumer, true);
     }
 
     private void run(
         ContextRunnerCustomizer contextCustomizer,
-        BiContextConsumer<WebApplicationContext, MockMvc> contextConsumer,
+        BiContextConsumer<AssertableWebApplicationContext, MockMvc> contextConsumer,
         boolean withSecurity
     ) {
         contextCustomizer.customize(contextRunner)
