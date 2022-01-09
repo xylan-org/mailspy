@@ -24,7 +24,7 @@ public class MailSpyMailSenderAutoConfig {
     @Bean
     public JavaMailSenderImpl mailSender() {
         final JavaMailSenderImpl sender = new JavaMailSenderImpl();
-        sender.setHost(properties.getBindAddress().getHostAddress());
+        sender.setHost(properties.getSmtpBindAddress().getHostAddress());
         sender.setPort(properties.getSmtpPort());
         return sender;
     }

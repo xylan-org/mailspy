@@ -1,9 +1,8 @@
-package org.xylan.mailspy.integration.history;
+package org.xylan.mailspy.integration.endpoint.history;
 
 import org.springframework.http.MediaType;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
@@ -12,6 +11,8 @@ import org.xylan.mailspy.integration.common.matchers.MailSpyMatchers;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailTextMatches;
 
 public class GetHistoryIntegrationTest extends AbstractIntegrationTest {
 
@@ -38,10 +39,10 @@ public class GetHistoryIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", MailSpyMatchers.isValidUuid()))
+                .andExpect(jsonPath("$[0].id", MailSpyMatchers.isValidUuid()))
                 .andExpect(jsonPath("$[0].exception", nullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].rawMessage", MailSpyMatchers.emailHeaderMatches("To", equalTo(TEST_RECIPIENT))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].rawMessage", MailSpyMatchers.emailTextMatches(equalTo(TEST_MESSAGE))));
+                .andExpect(jsonPath("$[0].rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))))
+                .andExpect(jsonPath("$[0].rawMessage", emailTextMatches(equalTo(TEST_MESSAGE))));
         });
     }
 
@@ -59,7 +60,7 @@ public class GetHistoryIntegrationTest extends AbstractIntegrationTest {
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$", hasSize(1)))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$[0].rawMessage", MailSpyMatchers.emailTextMatches(equalTo(testMessage2))));
+                    .andExpect(jsonPath("$[0].rawMessage", emailTextMatches(equalTo(testMessage2))));
         });
     }
 

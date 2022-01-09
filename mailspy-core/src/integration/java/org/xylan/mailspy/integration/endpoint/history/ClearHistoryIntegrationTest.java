@@ -1,4 +1,4 @@
-package org.xylan.mailspy.integration.history;
+package org.xylan.mailspy.integration.endpoint.history;
 
 import org.springframework.http.MediaType;
 import org.springframework.mail.MailSender;

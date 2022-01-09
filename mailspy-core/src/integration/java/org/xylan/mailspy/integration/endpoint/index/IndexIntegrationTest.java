@@ -1,4 +1,4 @@
-package org.xylan.mailspy.integration.index;
+package org.xylan.mailspy.integration.endpoint.index;
 
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;

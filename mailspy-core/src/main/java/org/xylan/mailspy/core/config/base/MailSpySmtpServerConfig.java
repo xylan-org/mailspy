@@ -21,7 +21,7 @@ public class MailSpySmtpServerConfig {
     public SMTPServer mailSpySmtpServer() {
         final SMTPServer smtpServer = new SMTPServer(context -> mailSpyMessageHandler());
         smtpServer.setPort(properties.getSmtpPort());
-        smtpServer.setBindAddress(properties.getBindAddress());
+        smtpServer.setBindAddress(properties.getSmtpBindAddress());
         return smtpServer;
     }
 

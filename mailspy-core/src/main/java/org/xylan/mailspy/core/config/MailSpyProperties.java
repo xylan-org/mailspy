@@ -10,7 +10,7 @@ import java.net.InetAddress;
 public class MailSpyProperties {
 
     private int smtpPort = 2525;
-    private InetAddress bindAddress = InetAddress.getLoopbackAddress();
+    private InetAddress smtpBindAddress = InetAddress.getLoopbackAddress();
     private String path = "/mailspy";
     private int retainEmails = 100;
     private int securityOrder = 99;

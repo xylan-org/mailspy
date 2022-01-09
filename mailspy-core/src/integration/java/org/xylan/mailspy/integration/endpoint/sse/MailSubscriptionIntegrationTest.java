@@ -1,4 +1,4 @@
-package org.xylan.mailspy.integration.sse;
+package org.xylan.mailspy.integration.endpoint.sse;
 
 import org.hamcrest.Matchers;
 import org.springframework.mail.MailSender;
@@ -15,6 +15,8 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailTextMatches;
 
 public class MailSubscriptionIntegrationTest extends AbstractIntegrationTest {
 
@@ -45,8 +47,8 @@ public class MailSubscriptionIntegrationTest extends AbstractIntegrationTest {
                         .data(Matchers.allOf(
                             MailSpyMatchers.jsonPathMatches("$.id", MailSpyMatchers.isValidUuid()),
                             MailSpyMatchers.jsonPathMatches("$.exception", nullValue()),
-                            MailSpyMatchers.jsonPathMatches("$.rawMessage", MailSpyMatchers.emailHeaderMatches("To", equalTo(TEST_RECIPIENT))),
-                            MailSpyMatchers.jsonPathMatches("$.rawMessage", MailSpyMatchers.emailTextMatches(equalTo(TEST_MESSAGE)))
+                            MailSpyMatchers.jsonPathMatches("$.rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))),
+                            MailSpyMatchers.jsonPathMatches("$.rawMessage", emailTextMatches(equalTo(TEST_MESSAGE)))
                         ))
                         .emptyLine()
                         .emptyLine()
