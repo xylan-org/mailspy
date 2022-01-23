@@ -8,7 +8,7 @@
     "build": "craco build",
     "test": "craco test"
   },
-  "author": "abelk",
+  "author": "xylan.org",
   "license": "MIT",
   "dependencies": {
     "@craco/craco": "6.1.1",

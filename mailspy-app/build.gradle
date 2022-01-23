@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "org.springframework.boot" version "${springBootVersion}"
+    alias libs.plugins.spring.boot.plugin
 }
 
 description = "MailSpy :: App"
@@ -15,20 +15,11 @@ configurations {
 
 dependencies {
     runtimeOnly project(":mailspy-core")
-
-    implementation "ch.qos.logback:logback-classic"
-    implementation "org.springframework.boot:spring-boot-starter"
-    implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.springframework.boot:spring-boot-starter-security"
-
-    implementation "jakarta.mail:jakarta.mail-api" // TODO remove
-    implementation "com.sun.mail:jakarta.mail" // TODO remove
-    implementation "org.springframework:spring-context-support" // TODO remove
-
-    developmentOnly "org.springframework.boot:spring-boot-devtools"
-
-    compileOnly "org.projectlombok:lombok"
-    annotationProcessor "org.projectlombok:lombok"
+    implementation libs.logback.classic
+    implementation libs.bundles.spring.boot.starters
+    developmentOnly libs.spring.boot.devtools
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 }
 
 bootJar {

@@ -1,9 +1,8 @@
 plugins {
-	id "org.siouan.frontend" version "3.0.0"
+	alias libs.plugins.siouan.frontend
 }
 
 description = "MailSpy :: Frontend"
-buildDir = "gradle-build"
 
 frontend {
 	nodeVersion = "12.18.1"
@@ -12,13 +11,9 @@ frontend {
 
 assembleFrontend {
 	inputs.files("public", "src")
-	outputs.dir("build")
+	outputs.dir("build/webpack")
 }
 
 artifacts {
-	add("default", file("build"))
-}
-
-clean {
-	delete files("build", "node_modules", "node")
+	add("default", file("build/webpack"))
 }

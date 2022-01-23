@@ -1,8 +1,12 @@
+plugins {
+    id "java-library"
+    id "maven-publish"
+    alias libs.plugins.coditory.integrationtest
+    alias libs.plugins.nebula.optionalbase
+}
+
 description = "MailSpy :: Core"
 sourceCompatibility = "${sourceCompatibility}"
-
-apply plugin: "java-library"
-apply plugin: "com.coditory.integration-test"
 
 configurations {
 	frontend
@@ -11,42 +15,45 @@ configurations {
 
 dependencies {
     frontend project(":mailspy-frontend")
-
-    implementation "org.slf4j:slf4j-api"
-    implementation "org.subethamail:subethasmtp"
-    implementation "commons-io:commons-io"
-
-    compileOnly "org.springframework.boot:spring-boot-autoconfigure"
-    compileOnly "org.springframework:spring-context-support"
-    compileOnly "org.springframework:spring-webmvc"
-    compileOnly "org.springframework.security:spring-security-config"
-    compileOnly "org.springframework.security:spring-security-web"
-    compileOnly "jakarta.servlet:jakarta.servlet-api"
-    compileOnly "jakarta.annotation:jakarta.annotation-api"
-    compileOnly "org.projectlombok:lombok"
-
-    testImplementation "org.testng:testng"
-    testImplementation "org.mockito:mockito-core"
-    testImplementation "org.mockito:mockito-testng"
-    testImplementation "ch.qos.logback:logback-classic"
-    testCompileOnly "org.projectlombok:lombok"
-
-    integrationImplementation "org.springframework.boot:spring-boot-test"
-    integrationImplementation "org.springframework:spring-test"
-    integrationImplementation "org.springframework.security:spring-security-test"
-    integrationImplementation "org.assertj:assertj-core"
-    integrationImplementation "org.hamcrest:hamcrest"
-    integrationImplementation "com.jayway.jsonpath:json-path"
-    integrationImplementation "com.fasterxml.jackson.core:jackson-databind"
-
-    annotationProcessor "org.projectlombok:lombok"
-    testAnnotationProcessor "org.projectlombok:lombok"
+    api libs.spring.boot.autoconfigure
+    api libs.spring.context.support
+    api libs.spring.webmvc
+    api libs.spring.security.config, optional
+    api libs.spring.security.web, optional
+    api libs.slf4j.api
+    api libs.subetha
+    api libs.apache.commons.io
+    api libs.jackson.databind, optional
+    compileOnly libs.jakarta.servletapi
+    compileOnly libs.jakarta.annotationsapi
+    compileOnly libs.lombok
+    testImplementation libs.testng
+    testImplementation libs.mockito.core
+    testImplementation libs.mockito.testng
+    testImplementation libs.logback.classic
+    testCompileOnly libs.lombok
+    integrationImplementation libs.spring.boot.test
+    integrationImplementation libs.spring.test
+    integrationImplementation libs.spring.security.test
+    integrationImplementation libs.assertj.core
+    integrationImplementation libs.hamcrest
+    integrationImplementation libs.jsonpath
+    annotationProcessor libs.lombok
+    testAnnotationProcessor libs.lombok
 }
 
 jar {
     dependsOn ":mailspy-frontend:assemble"
     from (configurations.frontend.files) {
         into "META-INF/mailspy-frontend"
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
     }
 }
 
