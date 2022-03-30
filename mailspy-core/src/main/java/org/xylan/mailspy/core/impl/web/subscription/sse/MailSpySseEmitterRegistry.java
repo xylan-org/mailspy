@@ -15,10 +15,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 
 /**
- *
  * Based on demo.sse.server.web.mvc.controller.SseEmitters from
  * https://github.com/aliakh/demo-spring-sse
- *
  */
 @Slf4j
 @Component

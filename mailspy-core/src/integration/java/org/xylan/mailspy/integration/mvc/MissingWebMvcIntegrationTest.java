@@ -7,8 +7,6 @@ import org.subethamail.smtp.server.SMTPServer;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyBaseAutoConfig;
 import org.xylan.mailspy.core.config.base.MailSpyWebMvcConfig.MailSpyWebMvcConfigurer;
-import org.xylan.mailspy.core.config.security.MailSpySecurityWithConfigurerAdapterAutoConfig.MailSpyWebSecurityConfigurer;
-import org.xylan.mailspy.core.impl.web.support.csrf.CsrfTokenRepository;
 import org.xylan.mailspy.integration.common.AbstractIntegrationTest.TestUserConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,8 +23,6 @@ public class MissingWebMvcIntegrationTest {
                 assertThat(context).doesNotHaveBean(MailSpyWebMvcConfigurer.class);
                 assertThat(context).doesNotHaveBean(SMTPServer.class);
                 assertThat(context).doesNotHaveBean("mailSpySecurityFilterChain");
-                assertThat(context).doesNotHaveBean(MailSpyWebSecurityConfigurer.class);
-                assertThat(context).doesNotHaveBean(CsrfTokenRepository.class);
             });
     }
 
@@ -40,8 +36,6 @@ public class MissingWebMvcIntegrationTest {
                 assertThat(context).doesNotHaveBean(MailSpyWebMvcConfigurer.class);
                 assertThat(context).doesNotHaveBean(SMTPServer.class);
                 assertThat(context).doesNotHaveBean("mailSpySecurityFilterChain");
-                assertThat(context).doesNotHaveBean(MailSpyWebSecurityConfigurer.class);
-                assertThat(context).doesNotHaveBean(CsrfTokenRepository.class);
             });
     }
 

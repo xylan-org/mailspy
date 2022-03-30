@@ -32,7 +32,7 @@ public class SmtpServerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void smtpServerShouldReceiveEmailsOnConfiguredHostAndPort() {
-        runWithSecurity(
+        run(
             (contextRunner) -> contextRunner
                 .withPropertyValues("mailspy.smtp-port=2526", "mailspy.smtp-bind-address=127.0.0.2")
                 .withUserConfiguration(TestSmtpConfig.class),

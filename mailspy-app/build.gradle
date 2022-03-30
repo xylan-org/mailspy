@@ -8,7 +8,6 @@ sourceCompatibility = "${sourceCompatibility}"
 
 dependencies {
     runtimeOnly project(":mailspy-core")
-    // implementation libs.spring.security.web // TODO applying this causes double bean definition
     implementation libs.logback.classic
     implementation libs.bundles.spring.boot.starters
     developmentOnly libs.spring.boot.devtools

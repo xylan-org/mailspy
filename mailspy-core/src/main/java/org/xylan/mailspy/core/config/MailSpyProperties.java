@@ -13,9 +13,6 @@ public class MailSpyProperties {
     private InetAddress smtpBindAddress = InetAddress.getLoopbackAddress();
     private String path = "/mailspy";
     private int retainEmails = 100;
-    private int securityOrder = 99;
-    private boolean enableCors = false;
-    private boolean enableCsrfProtection = true;
 
     public String getPathNoTrailingSlash() {
         return path.replaceAll("/$", "");

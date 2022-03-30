@@ -3,7 +3,6 @@ package org.xylan.mailspy.core.impl.web.support;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.testng.MockitoTestNGListener;
 import org.springframework.core.io.InputStreamResource;
@@ -14,7 +13,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyProperties;
-import org.xylan.mailspy.core.impl.web.support.csrf.CsrfTokenRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
@@ -25,9 +23,6 @@ import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpyIndexPageResourceTransformerTest {
-
-    @Mock
-    private CsrfTokenRepository csrfTokenRepository;
 
     @InjectMocks
     private MailSpyIndexPageResourceTransformer underTest;
@@ -64,12 +59,9 @@ public class MailSpyIndexPageResourceTransformerTest {
     @SneakyThrows
     public void testTransformShouldReplaceBaseTagAndCsrfTokenInContentWhenFileIsIndexHtml() {
         // GIVEN
-        String csrfToken = "testCsrfToken";
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         ResourceTransformerChain transformerChain = Mockito.mock(ResourceTransformerChain.class);
-        Resource resource = new InputStreamResource(IOUtils.toInputStream(
-                "<base href=\"randomStuff\"><meta name=\"csrf_token\" content=\"randomStuff\">",
-                StandardCharsets.UTF_8)) {
+        Resource resource = new InputStreamResource(IOUtils.toInputStream("<base href=\"randomStuff\" />", StandardCharsets.UTF_8)) {
             @Override
             public String getFilename() {
                 return "index.html";
@@ -80,11 +72,9 @@ public class MailSpyIndexPageResourceTransformerTest {
             }
         };
 
-        String expectedContent = "<base href=\"/test-path/resources/\">" +
-                "<meta name=\"csrf_token\" content=\"testCsrfToken\">";
+        String expectedContent = "<base href=\"/test-path/resources/\" />";
         TransformedResource expected = new TransformedResource(resource, expectedContent.getBytes(StandardCharsets.UTF_8));
 
-        given(csrfTokenRepository.getCsrfToken(request)).willReturn(csrfToken);
         given(transformerChain.transform(request, resource)).willReturn(resource);
 
         // WHEN

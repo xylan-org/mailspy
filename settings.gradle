@@ -10,7 +10,6 @@ dependencyResolutionManagement {
     versionCatalogs {
         libs {
             version("spring-framework", "5.3.13")
-            version("spring-security", "5.4.9")
             version("spring-boot", "2.4.0")
             version("slf4j", "1.7.32")
             version("subetha", "3.1.7")
@@ -31,12 +30,6 @@ dependencyResolutionManagement {
             version("nebula-optionalbase", "7.0.0")
             version("siouan-frontend", "6.0.0")
 
-            alias("spring-security-config")
-                .to("org.springframework.security", "spring-security-config").versionRef("spring-security")
-            alias("spring-security-web")
-                .to("org.springframework.security", "spring-security-web").versionRef("spring-security")
-            alias("spring-security-test")
-                .to("org.springframework.security", "spring-security-test").versionRef("spring-security")
             alias("spring-boot-autoconfigure")
                 .to("org.springframework.boot", "spring-boot-autoconfigure").versionRef("spring-boot")
             alias("spring-boot-test")
@@ -46,8 +39,6 @@ dependencyResolutionManagement {
             alias("spring-boot-starter-base")
                 .to("org.springframework.boot", "spring-boot-starter").versionRef("spring-boot")
             alias("spring-boot-starter-web")
-                .to("org.springframework.boot", "spring-boot-starter-web").versionRef("spring-boot")
-            alias("spring-boot-starter-security")
                 .to("org.springframework.boot", "spring-boot-starter-web").versionRef("spring-boot")
             alias("spring-context-support")
                 .to("org.springframework", "spring-context-support").versionRef("spring-framework")

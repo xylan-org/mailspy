@@ -47,9 +47,8 @@ public class SseEmitterRegistryTest {
         // THEN
         then(sseEmitter).should().send(sseEventCaptor.capture());
         Iterator<DataWithMediaType> sseEventIterator = getSseEventIterator();
-        assertEquals(sseEventIterator.next().getData(), "data:");
+        assertEquals(sseEventIterator.next().getData(), "event:connected\ndata:");
         assertEquals(sseEventIterator.next().getData(), "connected");
-        assertEquals(sseEventIterator.next().getData(), "\nevent:connected\n\n");
     }
 
     @Test

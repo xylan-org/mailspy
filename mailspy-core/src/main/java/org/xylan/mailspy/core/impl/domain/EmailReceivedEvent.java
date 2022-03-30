@@ -1,10 +1,9 @@
 package org.xylan.mailspy.core.impl.domain;
 
-import lombok.EqualsAndHashCode;
 import org.springframework.context.ApplicationEvent;
 
-@SuppressWarnings("serial")
-@EqualsAndHashCode(of = "source")
+import java.util.Objects;
+
 public class EmailReceivedEvent extends ApplicationEvent {
 
     public EmailReceivedEvent(final MailSpyEmail source) {
@@ -14,6 +13,16 @@ public class EmailReceivedEvent extends ApplicationEvent {
     @Override
     public MailSpyEmail getSource() {
         return (MailSpyEmail) source;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(source);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof EmailReceivedEvent && Objects.equals(((EmailReceivedEvent) obj).source, source);
     }
 
 }

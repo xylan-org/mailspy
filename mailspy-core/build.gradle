@@ -6,17 +6,11 @@ plugins {
 }
 
 description = "MailSpy :: Core"
-sourceCompatibility = "${sourceCompatibility}"
+sourceCompatibility = "$sourceCompatibility"
 
 configurations {
 	frontendAssets
     testImplementation.extendsFrom compileOnly
-}
-
-java {
-    registerFeature("springSecurity") {
-        usingSourceSet(sourceSets.main)
-    }
 }
 
 dependencies {
@@ -24,8 +18,6 @@ dependencies {
     api libs.spring.boot.autoconfigure
     api libs.spring.context.support
     api libs.spring.webmvc
-    springSecurityApi libs.spring.security.config
-    springSecurityApi libs.spring.security.web
     api libs.slf4j.api
     api libs.subetha
     api libs.apache.commons.io
@@ -40,7 +32,6 @@ dependencies {
     testCompileOnly libs.lombok
     integrationImplementation libs.spring.boot.test
     integrationImplementation libs.spring.test
-    integrationImplementation libs.spring.security.test
     integrationImplementation libs.assertj.core
     integrationImplementation libs.hamcrest
     integrationImplementation libs.jsonpath

@@ -18,5 +18,5 @@ allprojects {
 }
 
 dependencyCheck {
-	suppressionFile "${rootDir}/owasp/suppressions.xml"
+	suppressionFile "$rootDir/owasp/suppressions.xml"
 }
