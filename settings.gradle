@@ -29,7 +29,7 @@ dependencyResolutionManagement {
             version("owasp-dependencycheck", "6.0.3")
             version("coditory-integrationtest", "1.3.0")
             version("nebula-optionalbase", "7.0.0")
-            version("siouan-frontend", "3.0.0")
+            version("siouan-frontend", "6.0.0")
 
             alias("spring-security-config")
                 .to("org.springframework.security", "spring-security-config").versionRef("spring-security")
@@ -93,12 +93,11 @@ dependencyResolutionManagement {
             alias("spring-boot-plugin")
                 .toPluginId("org.springframework.boot").versionRef("spring-boot")
             alias("siouan-frontend")
-                .toPluginId("org.siouan.frontend").versionRef("siouan-frontend")
+                .toPluginId("org.siouan.frontend-jdk11").versionRef("siouan-frontend")
 
             bundle("spring-boot-starters", [
                 "spring-boot-starter-base",
-                "spring-boot-starter-web",
-                "spring-boot-starter-security"
+                "spring-boot-starter-web"
             ])
         }
     }

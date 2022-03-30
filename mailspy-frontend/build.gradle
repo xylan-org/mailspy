@@ -7,10 +7,11 @@ description = "MailSpy :: Frontend"
 frontend {
 	nodeVersion = "12.18.1"
 	assembleScript = "run build"
+	installScript = "install --no-audit --no-fund --loglevel=error"
 }
 
 assembleFrontend {
-	inputs.files("public", "src")
+	inputs.files("public", "src", "package.json", "tsconfig.json", "craco.config.js")
 	outputs.dir("build/webpack")
 }
 

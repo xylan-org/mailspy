@@ -2,24 +2,30 @@ plugins {
     id "java-library"
     id "maven-publish"
     alias libs.plugins.coditory.integrationtest
-    alias libs.plugins.nebula.optionalbase
+    alias libs.plugins.nebula.optionalbase // TODO remove?
 }
 
 description = "MailSpy :: Core"
 sourceCompatibility = "${sourceCompatibility}"
 
 configurations {
-	frontend
+	frontendAssets
     testImplementation.extendsFrom compileOnly
 }
 
+java {
+    registerFeature("springSecurity") {
+        usingSourceSet(sourceSets.main)
+    }
+}
+
 dependencies {
-    frontend project(":mailspy-frontend")
+    frontendAssets project(":mailspy-frontend")
     api libs.spring.boot.autoconfigure
     api libs.spring.context.support
     api libs.spring.webmvc
-    api libs.spring.security.config, optional
-    api libs.spring.security.web, optional
+    springSecurityApi libs.spring.security.config
+    springSecurityApi libs.spring.security.web
     api libs.slf4j.api
     api libs.subetha
     api libs.apache.commons.io
@@ -44,7 +50,7 @@ dependencies {
 
 jar {
     dependsOn ":mailspy-frontend:assemble"
-    from (configurations.frontend.files) {
+    from (configurations.frontendAssets.files) {
         into "META-INF/mailspy-frontend"
     }
 }

@@ -6,22 +6,14 @@ plugins {
 description = "MailSpy :: App"
 sourceCompatibility = "${sourceCompatibility}"
 
-configurations {
-    developmentOnly
-    runtimeClasspath {
-        extendsFrom developmentOnly
-    }
-}
-
 dependencies {
     runtimeOnly project(":mailspy-core")
+    // implementation libs.spring.security.web // TODO applying this causes double bean definition
     implementation libs.logback.classic
     implementation libs.bundles.spring.boot.starters
     developmentOnly libs.spring.boot.devtools
-    compileOnly libs.lombok
-    annotationProcessor libs.lombok
 }
 
-bootJar {
-    mainClassName = "org.xylan.mailspy.app.MailSpyApplication"
+springBoot {
+    mainClass = "org.xylan.mailspy.app.MailSpyApplication"
 }

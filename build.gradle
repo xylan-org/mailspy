@@ -1,6 +1,7 @@
 plugins {
     alias libs.plugins.owasp.dependencycheck
 }
+
 description = "MailSpy :: Root"
 
 wrapper {
