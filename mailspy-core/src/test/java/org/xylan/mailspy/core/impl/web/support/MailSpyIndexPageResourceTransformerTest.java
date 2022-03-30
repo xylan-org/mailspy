@@ -34,7 +34,7 @@ public class MailSpyIndexPageResourceTransformerTest {
 
     @Test
     @SneakyThrows
-    public void testTransformShouldReturnOriginalResourceWhenFileIsNotIndexHtml() {
+    public void transformShouldReturnOriginalResourceWhenFileIsNotIndexHtml() {
         // GIVEN
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         ResourceTransformerChain transformerChain = Mockito.mock(ResourceTransformerChain.class);
@@ -57,7 +57,7 @@ public class MailSpyIndexPageResourceTransformerTest {
 
     @Test
     @SneakyThrows
-    public void testTransformShouldReplaceBaseTagAndCsrfTokenInContentWhenFileIsIndexHtml() {
+    public void transformShouldReplaceBaseTagAndCsrfTokenInContentWhenFileIsIndexHtml() {
         // GIVEN
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         ResourceTransformerChain transformerChain = Mockito.mock(ResourceTransformerChain.class);
