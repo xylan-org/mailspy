@@ -54,6 +54,10 @@ publishing {
     }
 }
 
+check {
+    dependsOn tasks.withType(Test)
+}
+
 tasks.withType(Test) {
     useTestNG()
     testLogging {
