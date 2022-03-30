@@ -22,6 +22,7 @@ dependencies {
     api libs.subetha
     api libs.apache.commons.io
     api libs.jackson.databind, optional
+    api libs.jackson.datatype.jsr310, optional
     compileOnly libs.jakarta.servletapi
     compileOnly libs.jakarta.annotationsapi
     compileOnly libs.lombok
