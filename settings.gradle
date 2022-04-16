@@ -27,6 +27,7 @@ dependencyResolutionManagement {
             version("coditory-integrationtest", "1.3.0")
             version("nebula-optionalbase", "7.0.0")
             version("siouan-frontend", "6.0.0")
+            version("spotless", "6.4.2")
 
             library("spring-boot-autoconfigure", "org.springframework.boot", "spring-boot-autoconfigure").versionRef("spring-boot")
             library("spring-boot-test", "org.springframework.boot", "spring-boot-test").versionRef("spring-boot")
@@ -57,6 +58,7 @@ dependencyResolutionManagement {
             plugin("nebula-optionalbase", "nebula.optional-base").versionRef("nebula-optionalbase")
             plugin("spring-boot-plugin", "org.springframework.boot").versionRef("spring-boot")
             plugin("siouan-frontend", "org.siouan.frontend-jdk11").versionRef("siouan-frontend")
+            plugin("spotless", "com.diffplug.gradle.spotless").versionRef("spotless")
 
             bundle("spring-boot-starters", [
                 "spring-boot-starter-base",
