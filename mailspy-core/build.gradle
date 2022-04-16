@@ -8,7 +8,7 @@ plugins {
 description = "MailSpy :: Core"
 
 configurations {
-	frontendAssets
+    frontendAssets
     testImplementation.extendsFrom compileOnly
 }
 
@@ -64,8 +64,4 @@ tasks.withType(Test) {
         events = ["passed", "failed", "skipped"]
         exceptionFormat = "full"
     }
-}
-
-tasks.withType(JavaCompile) {
-    options.release = 11
 }

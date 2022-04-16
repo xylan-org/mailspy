@@ -1,6 +1,5 @@
 plugins {
     alias libs.plugins.owasp.dependencycheck
-    alias libs.plugins.spotless
 }
 
 description = "MailSpy :: Root"
@@ -16,18 +15,12 @@ allprojects {
     repositories {
         mavenCentral()
     }
+
+    tasks.withType(JavaCompile) {
+        options.release = 11
+    }
 }
 
 dependencyCheck {
     suppressionFile "$rootDir/owasp/suppressions.xml"
-}
-
-spotless {
-    format "generic" {
-        target "*.gradle", "*.java", "*.js", "*.ts", "*.tsx"
-        licenseHeaderFile "$rootDir/gradle/license-template.txt"
-        trimTrailingWhitespace()
-        indentWithSpaces(4)
-        endWithNewline()
-    }
 }

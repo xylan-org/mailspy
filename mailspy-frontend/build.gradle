@@ -1,5 +1,5 @@
 plugins {
-	alias libs.plugins.siouan.frontend
+    alias libs.plugins.siouan.frontend
 }
 
 import org.siouan.frontendgradleplugin.infrastructure.gradle.RunNpm
@@ -7,27 +7,27 @@ import org.siouan.frontendgradleplugin.infrastructure.gradle.RunNpm
 description = "MailSpy :: Frontend"
 
 frontend {
-	nodeVersion = "12.18.1"
-	assembleScript = "run build"
-	installScript = "install --no-audit --no-fund --loglevel=error"
+    nodeVersion = "12.18.1"
+    assembleScript = "run build"
+    installScript = "install --no-audit --no-fund --loglevel=error"
 }
 
 assembleFrontend {
-	inputs.files("public", "src", "package.json", "tsconfig.json", "craco.config.js")
-	outputs.dir("build/webpack")
+    inputs.files("public", "src", "package.json", "tsconfig.json", "craco.config.js")
+    outputs.dir("build/webpack")
 }
 
 task testFrontend(type: RunNpm) {
-	description = "Runs the frontend tests."
-	group = "verification"
-	script = "test -- --watchAll=false"
-	dependsOn installFrontend
+    description = "Runs the frontend tests."
+    group = "verification"
+    script = "test -- --watchAll=false"
+    dependsOn installFrontend
 }
 
 check {
-	dependsOn testFrontend
+    dependsOn testFrontend
 }
 
 artifacts {
-	add("default", file("build/webpack"))
+    add("default", file("build/webpack"))
 }
