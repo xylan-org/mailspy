@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.*;
 import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
-public class SseEmitterRegistryTest {
+public class MailSpySseEmitterRegistryTest {
 
     @Mock
     private SseEmitter sseEmitter;

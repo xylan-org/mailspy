@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
 
+import static org.springframework.http.HttpHeaders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -15,10 +16,10 @@ public class CrossOriginSupportIntegrationTest extends AbstractIntegrationTest {
             (contextRunner) -> contextRunner.withPropertyValues("mailspy.enable-cors=true"),
             (context, mockMvc) -> {
                 mockMvc.perform(get("/mailspy/mails/history")
-                        .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET")
-                        .header(HttpHeaders.ORIGIN, "http://www.example.com"))
+                        .header(ACCESS_CONTROL_REQUEST_METHOD, "GET")
+                        .header(ORIGIN, "http://www.example.com"))
                     .andExpect(status().isOk())
-                    .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://www.example.com"));
+                    .andExpect(header().string(ACCESS_CONTROL_ALLOW_ORIGIN, "http://www.example.com"));
         });
     }
 
@@ -28,10 +29,10 @@ public class CrossOriginSupportIntegrationTest extends AbstractIntegrationTest {
             (contextRunner) -> contextRunner.withPropertyValues("mailspy.enable-cors=false"),
             (context, mockMvc) -> {
                 mockMvc.perform(get("/mailspy/mails/history")
-                        .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET")
-                        .header(HttpHeaders.ORIGIN, "http://www.example.com"))
+                        .header(ACCESS_CONTROL_REQUEST_METHOD, "GET")
+                        .header(ORIGIN, "http://www.example.com"))
                     .andExpect(status().isOk())
-                    .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+                    .andExpect(header().doesNotExist(ACCESS_CONTROL_ALLOW_ORIGIN));
             });
     }
 

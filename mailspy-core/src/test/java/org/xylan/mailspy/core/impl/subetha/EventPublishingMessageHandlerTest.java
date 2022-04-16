@@ -22,8 +22,8 @@ import static org.mockito.BDDMockito.then;
 @Listeners(MockitoTestNGListener.class)
 public class EventPublishingMessageHandlerTest {
 
-    private static String TEST_UUID = "fdadec6a-222c-45b4-89a0-dd0944deecc3";
-    private static Instant TEST_NOW = Instant.parse("2000-01-01T10:15:30.00Z");
+    private static final String TEST_UUID = "fdadec6a-222c-45b4-89a0-dd0944deecc3";
+    private static final Instant TEST_NOW = Instant.parse("2000-01-01T10:15:30.00Z");
 
     @Mock
     private ApplicationEventPublisher applicationEventPublisher;

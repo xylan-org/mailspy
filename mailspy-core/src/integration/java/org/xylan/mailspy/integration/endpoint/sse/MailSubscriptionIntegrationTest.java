@@ -15,8 +15,7 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
-import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailTextMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.*;
 
 public class MailSubscriptionIntegrationTest extends AbstractIntegrationTest {
 
@@ -38,17 +37,17 @@ public class MailSubscriptionIntegrationTest extends AbstractIntegrationTest {
 
             // THEN
             mockMvc.perform(asyncDispatch(mvcResult))
-                .andExpect(content().string(MailSpyMatchers.sseEventsMatchPattern(
+                .andExpect(content().string(sseEventsMatchPattern(
                     SseEventsPattern.create()
                         .name(equalTo("connected"))
                         .data(equalTo("connected"))
                         .emptyLine()
                         .name(equalTo("mail"))
-                        .data(Matchers.allOf(
-                            MailSpyMatchers.jsonPathMatches("$.id", MailSpyMatchers.isValidUuid()),
-                            MailSpyMatchers.jsonPathMatches("$.exception", nullValue()),
-                            MailSpyMatchers.jsonPathMatches("$.rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))),
-                            MailSpyMatchers.jsonPathMatches("$.rawMessage", emailTextMatches(equalTo(TEST_MESSAGE)))
+                        .data(allOf(
+                            jsonPathMatches("$.id", isValidUuid()),
+                            jsonPathMatches("$.exception", nullValue()),
+                            jsonPathMatches("$.rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))),
+                            jsonPathMatches("$.rawMessage", emailTextMatches(equalTo(TEST_MESSAGE)))
                         ))
                         .emptyLine()
                         .emptyLine()

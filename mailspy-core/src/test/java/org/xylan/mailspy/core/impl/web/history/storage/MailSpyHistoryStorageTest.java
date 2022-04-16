@@ -14,7 +14,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
-public class MailsHistoryStorageTest {
+public class MailSpyHistoryStorageTest {
 
     @InjectMocks
     private MailSpyHistoryStorage underTest;

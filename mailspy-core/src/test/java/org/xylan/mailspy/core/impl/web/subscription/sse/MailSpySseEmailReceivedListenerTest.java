@@ -11,7 +11,7 @@ import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
 import static org.mockito.BDDMockito.then;
 
 @Listeners(MockitoTestNGListener.class)
-public class SseEmailReceivedListenerTest {
+public class MailSpySseEmailReceivedListenerTest {
 
     @Mock
     private MailSpySseEmitterRegistry mailSpySseEmitterRegistry;

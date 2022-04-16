@@ -4,7 +4,6 @@ plugins {
 }
 
 description = "MailSpy :: App"
-sourceCompatibility = "$sourceCompatibility"
 
 dependencies {
     runtimeOnly project(":mailspy-core")

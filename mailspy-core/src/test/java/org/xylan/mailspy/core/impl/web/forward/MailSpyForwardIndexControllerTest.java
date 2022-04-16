@@ -19,7 +19,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 
 @Listeners(MockitoTestNGListener.class)
-public class ForwardIndexControllerTest {
+public class MailSpyForwardIndexControllerTest {
 
     @InjectMocks
     private MailSpyForwardIndexController underTest;

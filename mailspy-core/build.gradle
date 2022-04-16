@@ -2,11 +2,10 @@ plugins {
     id "java-library"
     id "maven-publish"
     alias libs.plugins.coditory.integrationtest
-    alias libs.plugins.nebula.optionalbase // TODO remove?
+    alias libs.plugins.nebula.optionalbase
 }
 
 description = "MailSpy :: Core"
-sourceCompatibility = "$sourceCompatibility"
 
 configurations {
 	frontendAssets
@@ -65,4 +64,8 @@ tasks.withType(Test) {
         events = ["passed", "failed", "skipped"]
         exceptionFormat = "full"
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.release = 11
 }

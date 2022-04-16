@@ -22,7 +22,6 @@ public class MissingWebMvcIntegrationTest {
             .run((context) -> {
                 assertThat(context).doesNotHaveBean(MailSpyWebMvcConfigurer.class);
                 assertThat(context).doesNotHaveBean(SMTPServer.class);
-                assertThat(context).doesNotHaveBean("mailSpySecurityFilterChain");
             });
     }
 
@@ -35,7 +34,6 @@ public class MissingWebMvcIntegrationTest {
             .run((context) -> {
                 assertThat(context).doesNotHaveBean(MailSpyWebMvcConfigurer.class);
                 assertThat(context).doesNotHaveBean(SMTPServer.class);
-                assertThat(context).doesNotHaveBean("mailSpySecurityFilterChain");
             });
     }
 

@@ -15,7 +15,7 @@ import static org.mockito.BDDMockito.then;
 import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
-public class MailsHistoryControllerTest {
+public class MailSpyHistoryControllerTest {
 
     @Mock
     private MailSpyHistoryStorage mailSpyHistoryStorage;

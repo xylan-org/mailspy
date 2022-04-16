@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
-public class MailsSubscriptionControllerTest {
+public class MailSpySseSubscriptionControllerTest {
 
     @Mock
     private MailSpySseEmitterRegistry mailSpySseEmitterRegistry;
