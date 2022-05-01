@@ -1,5 +1,8 @@
 package org.xylan.mailspy.core.impl.web.support;
 
+import java.nio.charset.StandardCharsets;
+import javax.servlet.http.HttpServletRequest;
+
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
@@ -13,9 +16,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyProperties;
-
-import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.StandardCharsets;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -66,6 +66,7 @@ public class MailSpyIndexPageResourceTransformerTest {
             public String getFilename() {
                 return "index.html";
             }
+
             @Override
             public long lastModified() {
                 return 0;

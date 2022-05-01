@@ -9,11 +9,11 @@ import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
 
 public class SmtpServerIntegrationTest extends AbstractIntegrationTest {

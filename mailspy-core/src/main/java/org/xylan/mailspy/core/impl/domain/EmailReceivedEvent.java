@@ -1,9 +1,12 @@
 package org.xylan.mailspy.core.impl.domain;
 
-import org.springframework.context.ApplicationEvent;
-
 import java.util.Objects;
 
+import org.springframework.context.ApplicationEvent;
+
+/**
+ * An {@link ApplicationEvent} that is fired when an email is received by MailSpy.
+ */
 public class EmailReceivedEvent extends ApplicationEvent {
 
     public EmailReceivedEvent(final MailSpyEmail source) {

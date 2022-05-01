@@ -27,6 +27,7 @@ dependencyResolutionManagement {
             version("coditory-integrationtest", "1.3.0")
             version("nebula-optionalbase", "7.0.0")
             version("siouan-frontend", "6.0.0")
+            version("checkstyle", "10.1")
 
             library("spring-boot-autoconfigure", "org.springframework.boot", "spring-boot-autoconfigure").versionRef("spring-boot")
             library("spring-boot-test", "org.springframework.boot", "spring-boot-test").versionRef("spring-boot")

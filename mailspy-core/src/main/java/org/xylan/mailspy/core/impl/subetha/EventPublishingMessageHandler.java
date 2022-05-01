@@ -1,5 +1,11 @@
 package org.xylan.mailspy.core.impl.subetha;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Instant;
+import java.util.UUID;
+import java.util.function.Supplier;
+
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -10,12 +16,9 @@ import org.xylan.mailspy.core.impl.domain.EmailReceivedEvent;
 import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
 import org.xylan.mailspy.core.impl.domain.MailSpyEmail.MailSpyEmailBuilder;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.Instant;
-import java.util.UUID;
-import java.util.function.Supplier;
-
+/**
+ * MailSpy's implementation of the embedded SubEtha SMTP server's {@link MessageHandler}.
+ */
 @Slf4j
 public class EventPublishingMessageHandler implements MessageHandler {
 

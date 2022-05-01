@@ -5,7 +5,10 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-public class JsonPathMatcher extends BaseMatcher<String>  {
+/**
+ * A Hamcrest matcher that allows extracting values using JSONPath and matching them against any matcher.
+ */
+public class JsonPathMatcher extends BaseMatcher<String> {
 
     private final String jsonPath;
     private final Matcher<?> valueMatcher;

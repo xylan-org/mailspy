@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class WebMvcConfigurerSupportIntegrationTest extends AbstractIntegrationTest {
 

@@ -8,9 +8,14 @@ import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
 import org.xylan.mailspy.integration.common.matchers.MailSpyMatchers;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailTextMatches;
 
@@ -61,7 +66,7 @@ public class GetHistoryIntegrationTest extends AbstractIntegrationTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$", hasSize(1)))
                     .andExpect(jsonPath("$[0].rawMessage", emailTextMatches(equalTo(testMessage2))));
-        });
+            });
     }
 
     @Test
@@ -71,7 +76,7 @@ public class GetHistoryIntegrationTest extends AbstractIntegrationTest {
             (context, mockMvc) -> {
                 mockMvc.perform(get("/custom/mails/history"))
                     .andExpect(status().isOk());
-        });
+            });
     }
 
     private void sendTestEmail(WebApplicationContext context) {

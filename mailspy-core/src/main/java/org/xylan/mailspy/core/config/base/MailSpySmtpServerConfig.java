@@ -11,6 +11,9 @@ import org.xylan.mailspy.core.impl.subetha.EventPublishingMessageHandler;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
+/**
+ * Configuration for MailSpy's embedded SMTP server.
+ */
 @Configuration
 public class MailSpySmtpServerConfig {
 

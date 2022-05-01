@@ -1,6 +1,5 @@
 package org.xylan.mailspy.integration.endpoint.sse;
 
-import org.hamcrest.Matchers;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.web.servlet.MvcResult;
@@ -9,13 +8,20 @@ import org.testng.annotations.Test;
 import org.xylan.mailspy.core.impl.web.subscription.sse.MailSpySseEmitterRegistry;
 import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
 import org.xylan.mailspy.integration.common.matchers.sse.SseEventsPattern;
-import org.xylan.mailspy.integration.common.matchers.MailSpyMatchers;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailTextMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.isValidUuid;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.jsonPathMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.sseEventsMatchPattern;
 
 public class MailSubscriptionIntegrationTest extends AbstractIntegrationTest {
 

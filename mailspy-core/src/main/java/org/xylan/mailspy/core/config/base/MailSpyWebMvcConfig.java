@@ -11,6 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.web.support.MailSpyIndexPageResourceTransformer;
 
+/**
+ * Configuration for MailSpy's web layer.
+ */
 @Configuration
 public class MailSpyWebMvcConfig {
 
@@ -19,6 +22,9 @@ public class MailSpyWebMvcConfig {
         return new MailSpyWebMvcConfigurer();
     }
 
+    /**
+     * MailSpy's {@link WebMvcConfigurer}.
+     */
     public static class MailSpyWebMvcConfigurer implements WebMvcConfigurer {
 
         @Autowired

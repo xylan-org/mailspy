@@ -11,6 +11,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
 
+/**
+ * Autoconfiguration for {@link JavaMailSenderImpl} that sets MailSpy's address and port automatically.
+ */
 @Configuration
 @ConditionalOnMailSpyEnabled
 @AutoConfigureAfter(MailSenderAutoConfiguration.class)

@@ -1,5 +1,8 @@
 package org.xylan.mailspy.core.impl.web.history.storage;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.mockito.InjectMocks;
 import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
@@ -7,9 +10,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
-
-import java.util.Collections;
-import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 

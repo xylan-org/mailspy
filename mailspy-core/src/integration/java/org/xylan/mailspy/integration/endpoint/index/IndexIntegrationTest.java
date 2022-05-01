@@ -5,7 +5,10 @@ import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 public class IndexIntegrationTest extends AbstractIntegrationTest {
 
@@ -26,7 +29,7 @@ public class IndexIntegrationTest extends AbstractIntegrationTest {
                 mockMvc.perform(get("/customMailSpyPath"))
                     .andExpect(status().isOk())
                     .andExpect(forwardedUrl("/customMailSpyPath/resources/index.html"));
-        });
+            });
     }
 
     @Test
@@ -37,7 +40,7 @@ public class IndexIntegrationTest extends AbstractIntegrationTest {
                 mockMvc.perform(get("/customMailSpyPath"))
                     .andExpect(status().isOk())
                     .andExpect(forwardedUrl("/customMailSpyPath/resources/index.html"));
-        });
+            });
     }
 
     @Test
@@ -59,7 +62,7 @@ public class IndexIntegrationTest extends AbstractIntegrationTest {
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.TEXT_HTML))
                     .andExpect(xpath("//base/@href").string("/custom/resources/"));
-        });
+            });
     }
 
 }

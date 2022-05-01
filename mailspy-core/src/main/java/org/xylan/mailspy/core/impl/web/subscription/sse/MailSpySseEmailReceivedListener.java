@@ -5,6 +5,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.xylan.mailspy.core.impl.domain.EmailReceivedEvent;
 
+/**
+ * Listener that broadcasts the email message through SSE when an {@link EmailReceivedEvent} is fired.
+ */
 @Component
 public class MailSpySseEmailReceivedListener implements ApplicationListener<EmailReceivedEvent> {
 

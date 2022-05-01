@@ -21,6 +21,16 @@ allprojects {
     }
 }
 
+subprojects {
+    if (file("$projectDir/src/main/java").exists()) {
+        apply plugin: "checkstyle"
+        checkstyle {
+            configFile file("$rootDir/config/checkstyle.xml")
+            toolVersion = libs.versions.checkstyle.get()
+        }
+    }
+}
+
 dependencyCheck {
-    suppressionFile "$rootDir/owasp/suppressions.xml"
+    suppressionFile "$rootDir/config/owasp-suppressions.xml"
 }

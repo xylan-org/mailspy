@@ -1,10 +1,13 @@
 package org.xylan.mailspy.core.config;
 
+import java.net.InetAddress;
+
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.net.InetAddress;
-
+/**
+ * Configuration properties of MailSpy.
+ */
 @Data
 @ConfigurationProperties(prefix = "mailspy")
 public class MailSpyProperties {
@@ -15,6 +18,10 @@ public class MailSpyProperties {
     private int retainEmails = 100;
     private boolean enableCors = false;
 
+    /**
+     * Returns the path without trailing slashes.
+     * @return The trimmed path.
+     */
     public String getPathNoTrailingSlash() {
         return path.replaceAll("/$", "");
     }

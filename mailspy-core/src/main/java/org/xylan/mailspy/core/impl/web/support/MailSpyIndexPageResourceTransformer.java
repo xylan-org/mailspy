@@ -1,5 +1,10 @@
 package org.xylan.mailspy.core.impl.web.support;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+import javax.servlet.http.HttpServletRequest;
+
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +15,9 @@ import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
 import org.xylan.mailspy.core.config.MailSpyProperties;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
-
+/**
+ * Resource transformer that sets the proper base tag in the index page specified by the configuration.
+ */
 @Component
 public class MailSpyIndexPageResourceTransformer implements ResourceTransformer {
 
@@ -26,7 +29,8 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
 
     @Override
     @SneakyThrows
-    public Resource transform(final HttpServletRequest request, final Resource originalResource, final ResourceTransformerChain transformerChain) {
+    public Resource transform(final HttpServletRequest request,
+                              final Resource originalResource, final ResourceTransformerChain transformerChain) {
         Resource result;
         final Resource resource = transformerChain.transform(request, originalResource);
         if (resource.getFilename().equals(INDEX_PAGE_FILENAME)) {

@@ -1,5 +1,11 @@
 package org.xylan.mailspy.core.impl.subetha;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.UUID;
+
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -10,12 +16,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.impl.domain.EmailReceivedEvent;
 import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.UUID;
 
 import static org.mockito.BDDMockito.then;
 

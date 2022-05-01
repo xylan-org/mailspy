@@ -1,5 +1,8 @@
 package org.xylan.mailspy.core.impl.web.subscription.sse;
 
+import java.io.IOException;
+import java.util.Iterator;
+
 import lombok.SneakyThrows;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -13,11 +16,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.util.Iterator;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.times;
+import static org.mockito.BDDMockito.willThrow;
 import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)

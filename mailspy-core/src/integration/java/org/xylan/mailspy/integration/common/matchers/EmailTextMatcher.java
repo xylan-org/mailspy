@@ -1,12 +1,15 @@
 package org.xylan.mailspy.integration.common.matchers;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+
+/**
+ * A Hamcrest matcher to match the body of a base64 encoded email message.
+ */
 public class EmailTextMatcher extends BaseMatcher<String> {
 
     private static final Pattern MAIL_CONTENT_PATTERN = Pattern.compile("^(?:[A-Za-z0-9-]+\\s*:(?:\\s+.*[\\r\\n]+)*)+(.*)$");

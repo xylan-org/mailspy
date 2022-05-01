@@ -1,12 +1,14 @@
 package org.xylan.mailspy.integration.mvc;
 
-import org.springframework.http.HttpHeaders;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
 
-import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
+import static org.springframework.http.HttpHeaders.ORIGIN;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CrossOriginSupportIntegrationTest extends AbstractIntegrationTest {
 
@@ -20,7 +22,7 @@ public class CrossOriginSupportIntegrationTest extends AbstractIntegrationTest {
                         .header(ORIGIN, "http://www.example.com"))
                     .andExpect(status().isOk())
                     .andExpect(header().string(ACCESS_CONTROL_ALLOW_ORIGIN, "http://www.example.com"));
-        });
+            });
     }
 
     @Test

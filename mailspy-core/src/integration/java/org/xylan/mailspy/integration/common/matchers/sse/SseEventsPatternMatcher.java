@@ -1,13 +1,16 @@
 package org.xylan.mailspy.integration.common.matchers.sse;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SseEventsPatternMatcher extends BaseMatcher<String>  {
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+
+/**
+ * A Hamcrest matcher to match a series of SSE events against a pattern.
+ */
+public class SseEventsPatternMatcher extends BaseMatcher<String> {
 
     private static final Pattern SSE_EVENT_LINE_PATTERN = Pattern.compile("^(.*?):(.*)$");
 
@@ -30,8 +33,8 @@ public class SseEventsPatternMatcher extends BaseMatcher<String>  {
                     SseEventPattern sseEventPattern = sseEventPatterns.get(i);
                     if (sseEventPattern.isEmptyLine()) {
                         if (!line.isEmpty()) {
-                           result = false;
-                           break;
+                            result = false;
+                            break;
                         }
                     } else {
                         Matcher matcher = SSE_EVENT_LINE_PATTERN.matcher(line);
