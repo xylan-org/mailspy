@@ -6,7 +6,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.impl.web.subscription.sse.MailSpySseEmitterRegistry;
-import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
+import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 import org.xylan.mailspy.integration.common.matchers.sse.SseEventsPattern;
 
 import static org.hamcrest.Matchers.allOf;
@@ -23,7 +23,7 @@ import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.isVa
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.jsonPathMatches;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.sseEventsMatchPattern;
 
-public class MailSubscriptionIntegrationTest extends AbstractIntegrationTest {
+public class MailSubscriptionIntegrationTest extends BaseIntegrationTest {
 
     private static final String TEST_RECIPIENT = "test@example.com";
     private static final String TEST_MESSAGE = "Test Message";

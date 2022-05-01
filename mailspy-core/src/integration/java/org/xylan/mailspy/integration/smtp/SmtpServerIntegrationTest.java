@@ -4,10 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
-import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
+import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -16,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
 
-public class SmtpServerIntegrationTest extends AbstractIntegrationTest {
+public class SmtpServerIntegrationTest extends BaseIntegrationTest {
 
     private static final String TEST_RECIPIENT = "test@example.com";
 
@@ -41,7 +40,7 @@ public class SmtpServerIntegrationTest extends AbstractIntegrationTest {
                 mockMvc.perform(get("/mailspy/mails/history"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$", hasSize(1)))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$[0].rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))));
+                    .andExpect(jsonPath("$[0].rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))));
             });
     }
 

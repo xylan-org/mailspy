@@ -25,6 +25,14 @@ subprojects {
             toolVersion = libs.versions.checkstyle.get()
         }
 
+        apply plugin: "pmd"
+        pmd {
+            ruleSets = []
+            ruleSetFiles = files("$rootDir/config/pmd.xml")
+            toolVersion = libs.versions.pmd.get()
+            consoleOutput = true
+        }
+
         tasks.withType(JavaCompile) {
             options.release = 11
         }

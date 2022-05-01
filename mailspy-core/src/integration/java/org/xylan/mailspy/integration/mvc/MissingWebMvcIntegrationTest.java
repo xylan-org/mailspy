@@ -7,7 +7,7 @@ import org.subethamail.smtp.server.SMTPServer;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyBaseAutoConfig;
 import org.xylan.mailspy.core.config.base.MailSpyWebMvcConfig.MailSpyWebMvcConfigurer;
-import org.xylan.mailspy.integration.common.AbstractIntegrationTest.TestUserConfig;
+import org.xylan.mailspy.integration.common.BaseIntegrationTest.TestUserConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

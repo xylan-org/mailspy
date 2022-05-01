@@ -33,7 +33,7 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
                               final Resource originalResource, final ResourceTransformerChain transformerChain) {
         Resource result;
         final Resource resource = transformerChain.transform(request, originalResource);
-        if (resource.getFilename().equals(INDEX_PAGE_FILENAME)) {
+        if (INDEX_PAGE_FILENAME.equals(resource.getFilename())) {
             String resourceAsString = injectBasePath(readToString(resource.getInputStream()));
             result = new TransformedResource(resource, resourceAsString.getBytes());
         } else {

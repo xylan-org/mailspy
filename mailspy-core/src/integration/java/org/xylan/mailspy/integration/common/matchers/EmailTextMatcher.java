@@ -28,7 +28,7 @@ public class EmailTextMatcher extends BaseMatcher<String> {
                 String mailMessage = decodeBase64((String) mailMessageBase64);
                 String text = getText(mailMessage);
                 result = valueMatcher.matches(text);
-            } catch (IllegalArgumentException exception) {
+            } catch (IllegalArgumentException ignored) {
                 // ignored; result remains false
             }
         }

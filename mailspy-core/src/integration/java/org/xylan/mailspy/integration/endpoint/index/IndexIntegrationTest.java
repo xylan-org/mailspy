@@ -2,7 +2,7 @@ package org.xylan.mailspy.integration.endpoint.index;
 
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
-import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
+import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
-public class IndexIntegrationTest extends AbstractIntegrationTest {
+public class IndexIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void indexShouldBeAvailableOnDefaultPathAndForwardToHtmlPageWhenNotOverridden() {

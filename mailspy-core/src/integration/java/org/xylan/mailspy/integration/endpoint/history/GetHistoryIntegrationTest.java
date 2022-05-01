@@ -5,7 +5,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
-import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
+import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 import org.xylan.mailspy.integration.common.matchers.MailSpyMatchers;
 
 import static org.hamcrest.Matchers.empty;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailTextMatches;
 
-public class GetHistoryIntegrationTest extends AbstractIntegrationTest {
+public class GetHistoryIntegrationTest extends BaseIntegrationTest {
 
     private static final String TEST_RECIPIENT = "test@example.com";
     private static final String TEST_MESSAGE = "Test Message";

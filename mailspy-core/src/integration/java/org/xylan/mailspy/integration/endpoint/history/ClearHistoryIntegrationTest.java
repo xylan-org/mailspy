@@ -5,7 +5,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
-import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
+import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ClearHistoryIntegrationTest extends AbstractIntegrationTest {
+public class ClearHistoryIntegrationTest extends BaseIntegrationTest {
 
     public static final String HISTORY_ENDPOINT = "/mailspy/mails/history";
 

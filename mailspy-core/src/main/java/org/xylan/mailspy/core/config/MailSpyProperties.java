@@ -16,7 +16,7 @@ public class MailSpyProperties {
     private InetAddress smtpBindAddress = InetAddress.getLoopbackAddress();
     private String path = "/mailspy";
     private int retainEmails = 100;
-    private boolean enableCors = false;
+    private boolean enableCors;
 
     /**
      * Returns the path without trailing slashes.

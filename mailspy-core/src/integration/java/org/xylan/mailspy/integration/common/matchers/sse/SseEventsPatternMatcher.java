@@ -22,39 +22,53 @@ public class SseEventsPatternMatcher extends BaseMatcher<String> {
 
     @Override
     public boolean matches(Object sseEventsAsString) {
-        boolean result = true;
+        boolean result = false;
         if (sseEventsAsString instanceof String) {
-            String pattern = (String) sseEventsAsString;
-            String[] lines = pattern.split("\n", -1);
-            List<SseEventPattern> sseEventPatterns = sseEventsPattern.getSseEventPatterns();
-            if (lines.length == sseEventPatterns.size()) {
-                for (int i = 0; i < lines.length; ++i) {
-                    String line = lines[i];
-                    SseEventPattern sseEventPattern = sseEventPatterns.get(i);
-                    if (sseEventPattern.isEmptyLine()) {
-                        if (!line.isEmpty()) {
-                            result = false;
-                            break;
-                        }
-                    } else {
-                        Matcher matcher = SSE_EVENT_LINE_PATTERN.matcher(line);
-                        if (matcher.find()) {
-                            String key = matcher.group(1);
-                            String value = matcher.group(2);
-                            if (key == null || value == null
-                                || !key.equals(sseEventPattern.getKey())
-                                || !sseEventPattern.getValueMatcher().matches(value)
-                            ) {
-                                result = false;
-                                break;
-                            }
-                        } else {
-                            result = false;
-                            break;
-                        }
-                    }
+            result = stringMatches((String) sseEventsAsString);
+        }
+        return result;
+    }
+
+    private boolean stringMatches(String sseEventsAsString) {
+        boolean result = false;
+        String[] lines = sseEventsAsString.split("\n", -1);
+        List<SseEventPattern> sseEventPatterns = sseEventsPattern.getSseEventPatterns();
+        if (lines.length == sseEventPatterns.size()) {
+            result = linesMatchPatterns(lines, sseEventPatterns);
+        }
+        return result;
+    }
+
+    private boolean linesMatchPatterns(String[] lines, List<SseEventPattern> sseEventPatterns) {
+        boolean result = true;
+        for (int i = 0; i < lines.length; ++i) {
+            String line = lines[i];
+            SseEventPattern sseEventPattern = sseEventPatterns.get(i);
+            if (sseEventPattern.isEmptyLine()) {
+                if (!line.isEmpty()) {
+                    result = false;
+                    break;
                 }
             } else {
+                result = lineMatchesPattern(line, sseEventPattern);
+                if (!result) {
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    private boolean lineMatchesPattern(String line, SseEventPattern sseEventPattern) {
+        boolean result = true;
+        Matcher matcher = SSE_EVENT_LINE_PATTERN.matcher(line);
+        if (matcher.find()) {
+            String key = matcher.group(1);
+            String value = matcher.group(2);
+            if (key == null || value == null
+                || !key.equals(sseEventPattern.getKey())
+                || !sseEventPattern.getValueMatcher().matches(value)
+            ) {
                 result = false;
             }
         } else {

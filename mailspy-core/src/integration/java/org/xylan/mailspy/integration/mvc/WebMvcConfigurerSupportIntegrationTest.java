@@ -10,12 +10,12 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.testng.annotations.Test;
-import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
+import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class WebMvcConfigurerSupportIntegrationTest extends AbstractIntegrationTest {
+public class WebMvcConfigurerSupportIntegrationTest extends BaseIntegrationTest {
 
     public static class TestWebMvcConfigurer implements WebMvcConfigurer {
 
@@ -42,7 +42,9 @@ public class WebMvcConfigurerSupportIntegrationTest extends AbstractIntegrationT
     public static class TestController {
         @RequestMapping("/test-method")
         @ResponseStatus(HttpStatus.OK)
-        public void testMethod() {}
+        public void testMethod() {
+            // method body does not matter
+        }
     }
 
     @Test

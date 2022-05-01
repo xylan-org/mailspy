@@ -1,7 +1,7 @@
 package org.xylan.mailspy.integration.mvc;
 
 import org.testng.annotations.Test;
-import org.xylan.mailspy.integration.common.AbstractIntegrationTest;
+import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CrossOriginSupportIntegrationTest extends AbstractIntegrationTest {
+public class CrossOriginSupportIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void corsSupportShouldAddHeaderToResponseWhenEnabledAndAppHasSecurity() {

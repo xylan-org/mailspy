@@ -2,6 +2,7 @@ package org.xylan.mailspy.integration.common.matchers;
 
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,8 +32,8 @@ public class EmailHeaderMatcher extends BaseMatcher<String> {
             try {
                 String mailMessage = decodeBase64((String) mailMessageBase64);
                 Map<String, String> headers = getHeaders(mailMessage);
-                result = valueMatcher.matches(headers.get(header.toLowerCase()));
-            } catch (IllegalArgumentException exception) {
+                result = valueMatcher.matches(headers.get(header.toLowerCase(Locale.US)));
+            } catch (IllegalArgumentException ignored) {
                 // ignored; result remains false
             }
         }
@@ -46,7 +47,7 @@ public class EmailHeaderMatcher extends BaseMatcher<String> {
             String header = matcher.group(1);
             String value = matcher.group(2);
             if (header != null && value != null) {
-                result.put(header.toLowerCase(), value.trim());
+                result.put(header.toLowerCase(Locale.US), value.trim());
             }
         }
         return result;

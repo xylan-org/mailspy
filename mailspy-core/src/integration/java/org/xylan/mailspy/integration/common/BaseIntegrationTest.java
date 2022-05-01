@@ -14,9 +14,13 @@ import org.xylan.mailspy.core.config.MailSpyBaseAutoConfig;
 
 import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
-public abstract class AbstractIntegrationTest {
+public class BaseIntegrationTest {
 
     private WebApplicationContextRunner contextRunner;
+
+    protected BaseIntegrationTest() {
+        // to prevent direct instantiation
+    }
 
     @SpringBootApplication
     @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*"))

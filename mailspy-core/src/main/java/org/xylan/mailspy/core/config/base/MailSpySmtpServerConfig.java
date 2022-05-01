@@ -29,7 +29,7 @@ public class MailSpySmtpServerConfig {
     }
 
     @Bean
-    @Scope(value = SCOPE_PROTOTYPE)
+    @Scope(SCOPE_PROTOTYPE)
     public MessageHandler mailSpyMessageHandler() {
         return new EventPublishingMessageHandler();
     }

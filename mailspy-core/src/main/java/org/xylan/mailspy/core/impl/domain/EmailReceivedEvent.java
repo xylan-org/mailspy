@@ -9,6 +9,8 @@ import org.springframework.context.ApplicationEvent;
  */
 public class EmailReceivedEvent extends ApplicationEvent {
 
+    private static final long serialVersionUID = 4182099155575702359L;
+
     public EmailReceivedEvent(final MailSpyEmail source) {
         super(source);
     }

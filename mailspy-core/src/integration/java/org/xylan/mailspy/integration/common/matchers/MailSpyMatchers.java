@@ -8,7 +8,7 @@ import org.xylan.mailspy.integration.common.matchers.sse.SseEventsPatternMatcher
 /**
  * Static factory for MailSpy's custom Hamcrest matchers.
  */
-public class MailSpyMatchers {
+public final class MailSpyMatchers {
 
     private MailSpyMatchers() {}
 

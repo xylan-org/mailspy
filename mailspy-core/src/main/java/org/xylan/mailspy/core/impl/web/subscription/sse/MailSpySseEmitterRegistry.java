@@ -66,7 +66,7 @@ public class MailSpySseEmitterRegistry {
                     builder.data(object);
                 }
                 emitter.send(builder);
-            } catch (final Exception exception) {
+            } catch (final IOException exception) {
                 emitter.completeWithError(exception);
                 failedEmitters.add(emitter);
                 log.error(exception.getMessage(), exception);
