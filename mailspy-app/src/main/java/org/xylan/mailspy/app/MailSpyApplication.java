@@ -7,9 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Entry point of the standalone MailSpy application.
  */
 @SpringBootApplication
-public final class MailSpyApplication {
-
-    private MailSpyApplication() {}
+public class MailSpyApplication {
 
     /**
      * Entry point.
