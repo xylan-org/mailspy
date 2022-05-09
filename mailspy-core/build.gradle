@@ -8,12 +8,11 @@ plugins {
 description = "MailSpy :: Core"
 
 configurations {
-    frontendAssets
     testImplementation.extendsFrom compileOnly
 }
 
 dependencies {
-    frontendAssets project(":mailspy-frontend")
+    runtimeOnly project(":mailspy-frontend")
     api libs.spring.boot.autoconfigure
     api libs.spring.context.support
     api libs.spring.webmvc
@@ -37,13 +36,6 @@ dependencies {
     integrationImplementation libs.jsonpath
     annotationProcessor libs.lombok
     testAnnotationProcessor libs.lombok
-}
-
-jar {
-    dependsOn ":mailspy-frontend:assemble"
-    from (configurations.frontendAssets.files) {
-        into "META-INF/mailspy-frontend"
-    }
 }
 
 publishing {

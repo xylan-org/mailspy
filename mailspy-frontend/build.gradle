@@ -1,4 +1,6 @@
 plugins {
+    id "java-library"
+    id "maven-publish"
     alias libs.plugins.siouan.frontend
 }
 
@@ -14,7 +16,18 @@ frontend {
 
 assembleFrontend {
     inputs.files("public", "src", "package.json", "tsconfig.json", "craco.config.js")
-    outputs.dir("build/webpack")
+    outputs.dir("$buildDir/webpack")
+    onlyIf {
+        project.findProperty("production") ?: false
+    }
+}
+
+task jarFrontend(type: Jar) {
+    archivesBaseName = "mailspy-frontend"
+    from (assembleFrontend) {
+        into "META-INF/mailspy-frontend"
+    }
+    dependsOn assembleFrontend
 }
 
 task testFrontend(type: RunNpm) {
@@ -29,5 +42,13 @@ check {
 }
 
 artifacts {
-    add("default", file("build/webpack"))
+    add("default", jarFrontend)
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact jarFrontend
+        }
+    }
 }
