@@ -9,7 +9,7 @@ import org.siouan.frontendgradleplugin.infrastructure.gradle.RunNpm
 description = "MailSpy :: Frontend"
 
 frontend {
-    nodeVersion = "12.18.1"
+    nodeVersion = "16.15.0"
     assembleScript = "run build"
     installScript = "install --no-audit --no-fund --loglevel=error"
 }
@@ -37,8 +37,23 @@ task testFrontend(type: RunNpm) {
     dependsOn installFrontend
 }
 
+task prettierCheck(type: RunNpm) {
+    description = "Runs prettier in check mode."
+    group = "verification"
+    script = "run prettier-check"
+    dependsOn installFrontend
+}
+
+task prettierApply(type: RunNpm) {
+    description = "Runs prettier in write mode."
+    group = "verification"
+    script = "run prettier-apply"
+    dependsOn installFrontend
+}
+
 check {
     dependsOn testFrontend
+    dependsOn prettierCheck
 }
 
 publishing {
