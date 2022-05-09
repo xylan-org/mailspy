@@ -2,7 +2,6 @@ import FileSaver from "file-saver";
 import { FileDownloadService } from "./FileDownloadService";
 
 describe("FileDownloadService", () => {
-
     let saveAsMock: jest.SpyInstance;
     let underTest: FileDownloadService;
 
@@ -22,13 +21,16 @@ describe("FileDownloadService", () => {
             const content = "Hello there!";
 
             // WHEN
-            underTest.downloadFile({name, contentType, content});
-    
+            underTest.downloadFile({ name, contentType, content });
+
             // THEN
-            expect(saveAsMock).toHaveBeenCalledWith({
-                blobParts: [ content ],
-                options: { type: contentType }
-            }, name);
+            expect(saveAsMock).toHaveBeenCalledWith(
+                {
+                    blobParts: [content],
+                    options: { type: contentType }
+                },
+                name
+            );
         });
 
         it("should invoke saveAs() with blob and 'untitled' when file name is missing", async () => {
@@ -38,14 +40,16 @@ describe("FileDownloadService", () => {
             const content = "Hello there!";
 
             // WHEN
-            underTest.downloadFile({name, contentType, content});
-    
+            underTest.downloadFile({ name, contentType, content });
+
             // THEN
-            expect(saveAsMock).toHaveBeenCalledWith({
-                blobParts: [ content ],
-                options: { type: contentType }
-            }, "untitled");
+            expect(saveAsMock).toHaveBeenCalledWith(
+                {
+                    blobParts: [content],
+                    options: { type: contentType }
+                },
+                "untitled"
+            );
         });
     });
-    
 });

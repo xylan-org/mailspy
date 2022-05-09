@@ -8,4 +8,9 @@ import { App } from "components/app/App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
-ReactDOM.render(<Provider container={container}><App /></Provider>, document.querySelector("#root"));
+ReactDOM.render(
+    <Provider container={container}>
+        <App />
+    </Provider>,
+    document.querySelector("#root")
+);

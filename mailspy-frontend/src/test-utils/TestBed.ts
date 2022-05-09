@@ -5,22 +5,18 @@ import React from "react";
 import { Component, ComponentClass, ComponentState } from "react";
 
 type TestBedInit<P, S> = {
-    component: ComponentClass<P, S>,
-    dependencies?: TestBedDependency<any>[]
-    props?: P
-}
+    component: ComponentClass<P, S>;
+    dependencies?: TestBedDependency<any>[];
+    props?: P;
+};
 
 type TestBedDependency<T> = {
-    identifier: interfaces.ServiceIdentifier<T>,
-    value: T
-}
+    identifier: interfaces.ServiceIdentifier<T>;
+    value: T;
+};
 
 @autobind
-export class TestBed<
-    T extends Component<P, S>,
-    P extends {} = T["props"],
-    S extends ComponentState = T["state"]
-> {
+export class TestBed<T extends Component<P, S>, P extends {} = T["props"], S extends ComponentState = T["state"]> {
     private componentType: ComponentClass<P, S>;
     private props: P;
     private container: Container;

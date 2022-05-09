@@ -1,11 +1,10 @@
-import { shallow } from "enzyme"
+import { shallow } from "enzyme";
 import moment from "moment";
 import { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
 import { MailListItem } from "./MailListItem";
 
 describe("MailListItem", () => {
-
     let mail: Mail;
     let testBed: TestBed<MailListItem>;
 
@@ -27,7 +26,7 @@ describe("MailListItem", () => {
                 text: "sender@example.com"
             },
             attachments: []
-        }; 
+        };
     });
 
     it("should display failure when mail has 'error' attribute", () => {
@@ -145,5 +144,4 @@ describe("MailListItem", () => {
         // THEN
         expect(selectMail).toHaveBeenCalledWith("123");
     });
-
 });

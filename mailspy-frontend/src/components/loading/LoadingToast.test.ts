@@ -3,7 +3,6 @@ import { TestBed } from "test-utils/TestBed";
 import { LoadingToast } from "./LoadingToast";
 
 describe("LoadingToast", () => {
-    
     let testBed: TestBed<LoadingToast>;
 
     beforeEach(() => {
@@ -37,5 +36,4 @@ describe("LoadingToast", () => {
         // THEN
         expect(result.find(Toast).prop("style")).toHaveProperty("display", "none");
     });
-
 });

@@ -1,7 +1,6 @@
 import { HtmlService } from "./HtmlService";
 
 describe("HtmlService", () => {
-
     let domParser: DOMParser;
     let xmlSerializer: XMLSerializer;
     let escapeHtml: jest.Mock<string>;
@@ -17,16 +16,9 @@ describe("HtmlService", () => {
     describe("replaceLinksTarget", () => {
         it("should replace all anchor tag targets to _blank", () => {
             // GIVEN
-            const inputHtml =
-                "<html>" +
-                "<head></head>" +
-                "<body><a href=\"http://example.com\" target=\"_self\"></a></body>" +
-                "</html>";
+            const inputHtml = "<html>" + "<head></head>" + '<body><a href="http://example.com" target="_self"></a></body>' + "</html>";
             const expectedHtml =
-                "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
-                "<head></head>" +
-                "<body><a href=\"http://example.com\" target=\"_blank\"></a></body>" +
-                "</html>";
+                '<html xmlns="http://www.w3.org/1999/xhtml">' + "<head></head>" + '<body><a href="http://example.com" target="_blank"></a></body>' + "</html>";
 
             // WHEN
             const result = underTest.replaceLinksTarget(inputHtml);
@@ -39,8 +31,8 @@ describe("HtmlService", () => {
     describe("escapeHtml", () => {
         it("should return HTML escaped by escapeHtml function", () => {
             // GIVEN
-            const input = "<b>escape me!!</b>"
-            const output = "&lt;b&gt;escape me!!&lt;/b&gt;"
+            const input = "<b>escape me!!</b>";
+            const output = "&lt;b&gt;escape me!!&lt;/b&gt;";
             escapeHtml.mockReturnValue(output);
 
             // WHEN
@@ -60,5 +52,4 @@ describe("HtmlService", () => {
             expect(result).toBeNull();
         });
     });
-
 });

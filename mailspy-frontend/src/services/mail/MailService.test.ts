@@ -9,17 +9,16 @@ import { MailParserService } from "./MailParserService";
 import { MailService } from "./MailService";
 
 describe("MailService", () => {
-
     let httpService: MockProxy<HttpService> & HttpService;
     let mailParserService: MockProxy<MailParserService> & MailParserService;
     let underTest: MailService;
-    
+
     beforeEach(() => {
         httpService = mock<HttpService>();
         mailParserService = mock<MailParserService>();
         underTest = new MailService(httpService, mailParserService);
     });
-    
+
     describe("getMails", () => {
         it("should resolve to the parsed representation of the mail", () => {
             // GIVEN
@@ -78,5 +77,4 @@ describe("MailService", () => {
             expect(eventSource.onCustomEvent).toHaveBeenCalledWith(expect.stringMatching("mail"), expect.anything());
         });
     });
-
 });

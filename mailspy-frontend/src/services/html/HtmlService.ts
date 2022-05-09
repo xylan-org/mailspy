@@ -5,7 +5,6 @@ import { inject, injectable } from "inversify";
 @autobind
 @injectable()
 export class HtmlService {
-
     public constructor(
         @inject(DOMParser) private domParser: DOMParser,
         @inject(XMLSerializer) private xmlSerializer: XMLSerializer,
@@ -18,7 +17,7 @@ export class HtmlService {
             const dom = this.domParser.parseFromString(html, "text/html");
             dom.querySelectorAll("a").forEach((anchor: HTMLAnchorElement) => {
                 anchor.target = "_blank";
-            })
+            });
             result = this.xmlSerializer.serializeToString(dom);
         }
         return result;
@@ -31,5 +30,4 @@ export class HtmlService {
         }
         return result;
     }
-
 }

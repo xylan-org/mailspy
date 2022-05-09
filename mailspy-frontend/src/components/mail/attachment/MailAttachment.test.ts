@@ -5,7 +5,6 @@ import { TestBed } from "test-utils/TestBed";
 import { MailAttachment } from "./MailAttachment";
 
 describe("MailAttachment", () => {
-
     let fileDownloadService: FileDownloadService;
     let testBed: TestBed<MailAttachment>;
 
@@ -13,7 +12,7 @@ describe("MailAttachment", () => {
         fileDownloadService = mock<FileDownloadService>();
         testBed = TestBed.create({
             component: MailAttachment,
-            dependencies: [ 
+            dependencies: [
                 {
                     identifier: FileDownloadService,
                     value: fileDownloadService
@@ -64,9 +63,11 @@ describe("MailAttachment", () => {
         const content = "abcd";
         testBed.setProps({
             attachment: {
-                filename, contentType, content
+                filename,
+                contentType,
+                content
             }
-        })
+        });
 
         // WHEN
         testBed.render().find(Badge).simulate("click");
@@ -74,5 +75,4 @@ describe("MailAttachment", () => {
         // THEN
         expect(fileDownloadService.downloadFile).toHaveBeenCalledWith({ name: filename, contentType, content });
     });
-
 });

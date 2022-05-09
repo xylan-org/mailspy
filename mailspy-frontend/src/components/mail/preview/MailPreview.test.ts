@@ -7,7 +7,6 @@ import { MailAttachment } from "../attachment/MailAttachment";
 import { MailPreview } from "./MailPreview";
 
 describe("MailPreview", () => {
-
     let mail: Mail;
     let testBed: TestBed<MailPreview>;
 
@@ -29,7 +28,7 @@ describe("MailPreview", () => {
                 text: "sender@example.com"
             },
             attachments: []
-        }; 
+        };
     });
 
     it("should render empty preview when no mail is selected", () => {
@@ -44,9 +43,8 @@ describe("MailPreview", () => {
         // THEN
         expect(result.find("#preview > *").exists()).toBeFalsy();
     });
-    
-    describe("tab navigation", () => {
 
+    describe("tab navigation", () => {
         it("should select html tab by default when selected mail has HTML format", () => {
             // GIVEN
             mail.html = "<h1>Hello there</h1>";
@@ -136,7 +134,7 @@ describe("MailPreview", () => {
 
         it("should display selected tab body when onSelect is fired", () => {
             // GIVEN
-            mail.html = "<b>This is not expected!</b>"
+            mail.html = "<b>This is not expected!</b>";
             mail.text = "Expected mail text";
             testBed.setProps({
                 selectedMail: mail
@@ -150,11 +148,9 @@ describe("MailPreview", () => {
             // THEN
             expect(result.find("#text-body").exists()).toBeTruthy();
         });
-
     });
 
     describe("tab body", () => {
-
         it("should display iframe with HTML content when HTML format is selected", () => {
             // GIVEN
             let expectedHtml = "<b>Expected HTML content.</b>";
@@ -162,7 +158,7 @@ describe("MailPreview", () => {
             testBed.setProps({
                 selectedMail: mail
             });
-            
+
             let result = testBed.render();
 
             // WHEN
@@ -179,7 +175,7 @@ describe("MailPreview", () => {
             testBed.setProps({
                 selectedMail: mail
             });
-            
+
             let result = testBed.render();
 
             // WHEN
@@ -196,7 +192,7 @@ describe("MailPreview", () => {
             testBed.setProps({
                 selectedMail: mail
             });
-            
+
             let result = testBed.render();
 
             // WHEN
@@ -205,11 +201,9 @@ describe("MailPreview", () => {
             // THEN
             expect(result.find(Card.Body).find("#raw-body > code").render().text()).toEqual(expectedRaw);
         });
-
     });
 
     describe("mail details", () => {
-
         it("should be correctly displayed", () => {
             // GIVEN
             testBed.setProps({
@@ -225,11 +219,9 @@ describe("MailPreview", () => {
             expect(result.find(".mail-to").text()).toEqual("To: recipient@example.com");
             expect(result.find(".mail-from").text()).toEqual("From: sender@example.com");
         });
-
     });
 
     describe("attachments", () => {
-
         it("should be correctly displayed", () => {
             // GIVEN
             let expectedAttachment: Attachment = {
@@ -237,7 +229,7 @@ describe("MailPreview", () => {
                 contentType: "text/plain",
                 content: "content"
             };
-            mail.attachments = [ expectedAttachment ];
+            mail.attachments = [expectedAttachment];
             testBed.setProps({
                 selectedMail: mail
             });
@@ -248,7 +240,5 @@ describe("MailPreview", () => {
             // THEN
             expect(result.find(Card.Footer).find(MailAttachment).prop("attachment")).toEqual(expectedAttachment);
         });
-
     });
-
 });

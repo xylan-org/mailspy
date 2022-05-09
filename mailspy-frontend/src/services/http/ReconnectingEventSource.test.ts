@@ -8,7 +8,7 @@ describe("ReconnectingEventSource", () => {
     let eventSourceMock: Partial<EventSource>;
     let clock: FakeTimers.Clock;
     let underTest: ReconnectingEventSource;
-    
+
     beforeEach(() => {
         clock = FakeTimers.install();
         underTest = new ReconnectingEventSource(EVENT_SOURCE_URL, (url) => eventSourceMock as EventSource);
@@ -30,7 +30,7 @@ describe("ReconnectingEventSource", () => {
             errorHandlerMock = jest.fn();
             addEventListenerMock = jest.fn();
 
-            underTest.onError(errorHandlerMock)
+            underTest.onError(errorHandlerMock);
             underTest.onConnected(connectedMock);
             eventSourceMock = {
                 close: closeMock,
@@ -55,11 +55,12 @@ describe("ReconnectingEventSource", () => {
             const event = new Event("test");
 
             let eventSourceConnectedListener: EventListener;
-            when(addEventListenerMock).calledWith(expect.stringMatching("connected"), expect.anything())
+            when(addEventListenerMock)
+                .calledWith(expect.stringMatching("connected"), expect.anything())
                 .mockImplementation((type: string, listener: EventListener) => {
                     eventSourceConnectedListener = listener;
                 });
-            
+
             // WHEN
             underTest.connect();
             eventSourceConnectedListener(event);
@@ -76,15 +77,17 @@ describe("ReconnectingEventSource", () => {
 
             let eventSourceConnectedListener: EventListener;
             let eventSourceErrorListener: EventListener;
-            when(addEventListenerMock).calledWith(expect.stringMatching("connected"), expect.anything())
+            when(addEventListenerMock)
+                .calledWith(expect.stringMatching("connected"), expect.anything())
                 .mockImplementation((type: string, listener: EventListener) => {
                     eventSourceConnectedListener = listener;
                 });
-            when(addEventListenerMock).calledWith(expect.stringMatching("error"), expect.anything())
+            when(addEventListenerMock)
+                .calledWith(expect.stringMatching("error"), expect.anything())
                 .mockImplementation((type: string, listener: EventListener) => {
                     eventSourceErrorListener = listener;
                 });
-            
+
             // WHEN
             underTest.connect();
             // first connection
@@ -101,7 +104,6 @@ describe("ReconnectingEventSource", () => {
             expect(connectedMock).toHaveBeenCalledTimes(1);
         });
 
-        
         it("should should invoke custom event handler when event source fires event with same name", async () => {
             // GIVEN
             const eventObject = new Event("test");
@@ -109,7 +111,8 @@ describe("ReconnectingEventSource", () => {
             const customEventMock = jest.fn();
 
             let eventSourceCustomListener: EventListener;
-            when(addEventListenerMock).calledWith(expect.stringMatching(eventName), expect.anything())
+            when(addEventListenerMock)
+                .calledWith(expect.stringMatching(eventName), expect.anything())
                 .mockImplementation((type: string, listener: EventListener) => {
                     eventSourceCustomListener = listener;
                 });
@@ -127,5 +130,4 @@ describe("ReconnectingEventSource", () => {
             expect(customEventMock).toHaveBeenCalledWith(eventObject);
         });
     });
-
 });

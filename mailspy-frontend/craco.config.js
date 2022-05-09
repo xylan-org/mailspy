@@ -1,9 +1,7 @@
 const path = require("path");
 module.exports = {
     babel: {
-        plugins: [
-            "babel-plugin-transform-typescript-metadata"
-        ]
+        plugins: ["babel-plugin-transform-typescript-metadata"]
     },
     webpack: {
         configure: (webpackConfig, { env, paths }) => {
@@ -11,4 +9,4 @@ module.exports = {
             return webpackConfig;
         }
     }
-}
+};

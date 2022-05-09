@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Badge } from "react-bootstrap"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faFile } from "@fortawesome/free-solid-svg-icons"
+import { Badge } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFile } from "@fortawesome/free-solid-svg-icons";
 import autobind from "autobind-decorator";
 import { MailAttachmentProps } from "./domain/MailAttachmentProps";
 import { resolve } from "inversify-react";
@@ -9,7 +9,6 @@ import { FileDownloadService } from "services/download/FileDownloadService";
 
 @autobind
 export class MailAttachment extends Component<MailAttachmentProps, Empty> {
-
     @resolve(FileDownloadService)
     private fileDownloadService: FileDownloadService;
 
@@ -17,9 +16,7 @@ export class MailAttachment extends Component<MailAttachmentProps, Empty> {
         return (
             <Badge variant="primary" onClick={() => this.downloadAttachment()}>
                 <FontAwesomeIcon icon={faFile} />
-                <span className="mail-attachment-name">
-                    {this.props.attachment.filename ?? <i>untitled</i>}
-                </span>
+                <span className="mail-attachment-name">{this.props.attachment.filename ?? <i>untitled</i>}</span>
             </Badge>
         );
     }
@@ -32,5 +29,4 @@ export class MailAttachment extends Component<MailAttachmentProps, Empty> {
             content: attachment.content
         });
     }
-
 }

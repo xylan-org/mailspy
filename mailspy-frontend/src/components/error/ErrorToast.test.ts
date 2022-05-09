@@ -3,7 +3,6 @@ import { TestBed } from "test-utils/TestBed";
 import { ErrorToast } from "./ErrorToast";
 
 describe("ErrorToast", () => {
-
     let testBed: TestBed<ErrorToast>;
 
     beforeEach(() => {
@@ -42,7 +41,7 @@ describe("ErrorToast", () => {
 
     it("should display message", () => {
         // GIVEN
-        const message = "The apocalypse has struck."
+        const message = "The apocalypse has struck.";
         testBed.setProps({
             show: true,
             message

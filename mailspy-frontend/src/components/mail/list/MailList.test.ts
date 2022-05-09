@@ -28,7 +28,7 @@ describe("MailList", () => {
                 }
             ]
         });
-    })
+    });
 
     describe("mail list items", () => {
         it("should be displayed", () => {
@@ -99,7 +99,7 @@ describe("MailList", () => {
                 canClearMails: true
             });
 
-            // WHEN 
+            // WHEN
             const result = testBed.render();
 
             // THEN
@@ -108,7 +108,6 @@ describe("MailList", () => {
     });
 
     describe("download mails button", () => {
-
         it("should be disabled when 'selectedMail' prop is null", () => {
             // GIVEN
             testBed.setProps({
@@ -173,4 +172,4 @@ describe("MailList", () => {
             });
         });
     });
-})
+});

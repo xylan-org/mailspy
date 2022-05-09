@@ -1,6 +1,6 @@
 import autobind from "autobind-decorator";
 import React, { Component } from "react";
-import { Nav, Card } from "react-bootstrap"
+import { Nav, Card } from "react-bootstrap";
 import { Attachment } from "services/mail/domain/Attachment";
 import { MailAttachment } from "../attachment/MailAttachment";
 import { MailPreviewProps } from "./domain/MailPreviewProps";
@@ -10,10 +10,9 @@ const DATE_TIME_FORMAT = "DD/MM/YYYY hh:mm:ss A";
 
 @autobind
 export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
-
     public constructor(props: MailPreviewProps) {
         super(props);
-        this.state = {}
+        this.state = {};
     }
 
     public static getDerivedStateFromProps(props: MailPreviewProps, prevState: MailPreviewState): MailPreviewState {
@@ -38,21 +37,29 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
 
     public render(): JSX.Element {
         const mail = this.props.selectedMail;
-        
+
         let result: JSX.Element;
         if (mail === null) {
-            result = <div id="preview" />
+            result = <div id="preview" />;
         } else {
             const attachments = mail.attachments.map((attachment: Attachment, index: number) => <MailAttachment key={index} attachment={attachment} />),
-                  activeKey = this.state.activeKey;
-            
+                activeKey = this.state.activeKey;
+
             let body: JSX.Element = null;
             if (activeKey === "html") {
-                body = <iframe id="html-body" title="html" srcDoc={mail.html} height="100%" width="100%"></iframe>
+                body = <iframe id="html-body" title="html" srcDoc={mail.html} height="100%" width="100%"></iframe>;
             } else if (activeKey === "text") {
-                body = <pre id="text-body"><code dangerouslySetInnerHTML={{ __html: mail.text }}/></pre>
+                body = (
+                    <pre id="text-body">
+                        <code dangerouslySetInnerHTML={{ __html: mail.text }} />
+                    </pre>
+                );
             } else if (activeKey === "raw") {
-                body = <pre id="raw-body"><code dangerouslySetInnerHTML={{ __html: mail.raw }}/></pre>
+                body = (
+                    <pre id="raw-body">
+                        <code dangerouslySetInnerHTML={{ __html: mail.raw }} />
+                    </pre>
+                );
             }
 
             result = (
@@ -75,13 +82,19 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
                         </div>
                         <Nav variant="tabs" activeKey={activeKey} onSelect={(key) => this.setState({ activeKey: key })}>
                             <Nav.Item>
-                                <Nav.Link id="html-link" eventKey="html" disabled={!mail.html}>HTML</Nav.Link>
+                                <Nav.Link id="html-link" eventKey="html" disabled={!mail.html}>
+                                    HTML
+                                </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link id="text-link" eventKey="text" disabled={!mail.text}>Text</Nav.Link>
+                                <Nav.Link id="text-link" eventKey="text" disabled={!mail.text}>
+                                    Text
+                                </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link id="raw-link" eventKey="raw" disabled={!mail.raw}>Raw</Nav.Link>
+                                <Nav.Link id="raw-link" eventKey="raw" disabled={!mail.raw}>
+                                    Raw
+                                </Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Card.Header>
@@ -93,5 +106,4 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
 
         return result;
     }
-
 }

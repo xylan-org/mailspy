@@ -10,15 +10,10 @@ import { inject, injectable } from "inversify";
 @autobind
 @injectable()
 export class MailService {
-
-    public constructor(
-        @inject(HttpService) private httpService: HttpService,
-        @inject(MailParserService) private mailParserService: MailParserService
-    ) {}
+    public constructor(@inject(HttpService) private httpService: HttpService, @inject(MailParserService) private mailParserService: MailParserService) {}
 
     public getMails(): Promise<Mail[]> {
-        return this.httpService.fetch<RawMail[]>("/mails/history")
-            .then((mails: RawMail[]) => this.mailParserService.parseMails(mails));
+        return this.httpService.fetch<RawMail[]>("/mails/history").then((mails: RawMail[]) => this.mailParserService.parseMails(mails));
     }
 
     public clearMails(): Promise<void> {
@@ -28,11 +23,8 @@ export class MailService {
     }
 
     public subscribeMails(callback: (mail: Mail) => void): ReconnectingEventSource {
-        return this.httpService.createEventSource("/mails/subscribe")
-            .onCustomEvent("mail", (event: CustomEvent) => {
-                this.mailParserService.parseMail(JSON.parse(event.data))
-                    .then(callback);
-            });
+        return this.httpService.createEventSource("/mails/subscribe").onCustomEvent("mail", (event: CustomEvent) => {
+            this.mailParserService.parseMail(JSON.parse(event.data)).then(callback);
+        });
     }
-
 }

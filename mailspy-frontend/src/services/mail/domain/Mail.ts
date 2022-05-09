@@ -13,9 +13,9 @@ export interface Mail {
     subject?: string;
     from?: {
         text: string;
-    }
+    };
     to?: {
         text: string;
-    }
+    };
     [key: string]: any;
 }

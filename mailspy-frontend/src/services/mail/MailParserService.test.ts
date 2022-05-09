@@ -8,7 +8,6 @@ import { RawMail } from "./domain/RawMail";
 import { MailParserService } from "./MailParserService";
 
 describe("MailParserService", () => {
-
     let htmlService: HtmlService & MockProxy<HtmlService>;
     let parseMailMock: jest.Mock<Promise<ParsedMail>>;
     let readBase64Mock: jest.Mock<Buffer>;
@@ -88,5 +87,4 @@ describe("MailParserService", () => {
             expect(result).resolves.toEqual(expected);
         });
     });
-
 });

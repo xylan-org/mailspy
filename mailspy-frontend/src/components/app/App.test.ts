@@ -16,8 +16,8 @@ import { MailPreview } from "components/mail/preview/MailPreview";
 import { Navbar } from "components/navbar/Navbar";
 
 class MockReconnectingEventSource extends ReconnectingEventSource {
-    private errorHandler: (() => void);
-	private connectedHandler: ((event: Event) => void);
+    private errorHandler: () => void;
+    private connectedHandler: (event: Event) => void;
 
     public connect(): void {
         this.connectedHandler(null);
@@ -28,25 +28,24 @@ class MockReconnectingEventSource extends ReconnectingEventSource {
     }
 
     public onError(callback: () => void): ReconnectingEventSource {
-		this.errorHandler = callback;
-		return this;
-	}
+        this.errorHandler = callback;
+        return this;
+    }
 
-	public onConnected(callback: (event: Event) => void): ReconnectingEventSource {
-		this.connectedHandler = callback;
-		return this;
-	}
+    public onConnected(callback: (event: Event) => void): ReconnectingEventSource {
+        this.connectedHandler = callback;
+        return this;
+    }
 }
 
 describe("App", () => {
-
     const mail: Mail = {
         id: "id1",
         timeReceived: moment("2020-03-28T16:00:00"),
         selected: false,
         error: null
     };
-    const mails: Mail[] = [ mail ];
+    const mails: Mail[] = [mail];
 
     let mailService: MockProxy<MailService>;
     let testBed: TestBed<App>;
@@ -81,7 +80,7 @@ describe("App", () => {
             await clock.runAllAsync();
 
             // THEN
-            expect(result.find(LoadingToast).prop('show')).toEqual(true);
+            expect(result.find(LoadingToast).prop("show")).toEqual(true);
         });
 
         it("should set mails and reset selected mail on mail list component when fetch is done", async () => {
@@ -93,8 +92,8 @@ describe("App", () => {
             await clock.runAllAsync();
 
             // THEN
-            expect(result.find(MailList).prop('mails')).toEqual(mails);
-            expect(result.find(MailList).prop('selectedMail')).toBeNull();
+            expect(result.find(MailList).prop("mails")).toEqual(mails);
+            expect(result.find(MailList).prop("selectedMail")).toBeNull();
         });
 
         it("should display an error toast when mails fetch is rejected", async () => {
@@ -106,7 +105,7 @@ describe("App", () => {
             await clock.runAllAsync();
 
             // THEN
-            expect(result.find("#error-toast-fetch").find(ErrorToast).prop('show')).toEqual(true);
+            expect(result.find("#error-toast-fetch").find(ErrorToast).prop("show")).toEqual(true);
         });
     });
 
@@ -140,7 +139,7 @@ describe("App", () => {
             addMail(newMail);
 
             // THEN
-            expect(result.find(MailList).prop('mails')).toEqual([newMail, mail]);
+            expect(result.find(MailList).prop("mails")).toEqual([newMail, mail]);
         });
 
         it("should not display error toast when connected successfully", async () => {
@@ -152,7 +151,7 @@ describe("App", () => {
             await clock.runAllAsync();
 
             // THEN
-            expect(result.find("#error-toast-fetch").find(ErrorToast).prop('show')).toEqual(false);
+            expect(result.find("#error-toast-fetch").find(ErrorToast).prop("show")).toEqual(false);
         });
 
         it("should display error toast when error occurrs", async () => {
@@ -165,12 +164,11 @@ describe("App", () => {
             mockEventSource.simulateError();
 
             // THEN
-            expect(result.find("#error-toast-fetch").find(ErrorToast).prop('show')).toEqual(true);
+            expect(result.find("#error-toast-fetch").find(ErrorToast).prop("show")).toEqual(true);
         });
     });
 
     describe("mail list", () => {
-
         const selectedMail: Mail = {
             id: "id1",
             timeReceived: moment("2020-03-28T16:00:00"),
@@ -188,19 +186,19 @@ describe("App", () => {
 
         it("should be able to mark a mail selected", async () => {
             // GIVEN
-            const selectMail = render.find(MailList).prop('selectMail');
+            const selectMail = render.find(MailList).prop("selectMail");
 
             // WHEN
             selectMail(selectedMail.id);
 
             // THEN
-            expect(render.find(MailList).prop('mails')).toEqual([ selectedMail ]);
-            expect(render.find(MailList).prop('selectedMail')).toEqual(selectedMail);
+            expect(render.find(MailList).prop("mails")).toEqual([selectedMail]);
+            expect(render.find(MailList).prop("selectedMail")).toEqual(selectedMail);
         });
 
         it("should be able to clear mails", async () => {
             // GIVEN
-            const clearMails = render.find(MailList).prop('clearMails');
+            const clearMails = render.find(MailList).prop("clearMails");
             mailService.clearMails.mockResolvedValue();
 
             // WHEN
@@ -209,8 +207,8 @@ describe("App", () => {
 
             // THEN
             expect(mailService.clearMails).toHaveBeenCalled();
-            expect(render.find(MailList).prop('mails')).toEqual([]);
-            expect(render.find(MailList).prop('selectedMail')).toBeNull();
+            expect(render.find(MailList).prop("mails")).toEqual([]);
+            expect(render.find(MailList).prop("selectedMail")).toBeNull();
         });
 
         it("should receive true canClearMails when fetch state is OK", async () => {
@@ -221,7 +219,7 @@ describe("App", () => {
             });
 
             // THEN
-            expect(render.find(MailList).prop('canClearMails')).toEqual(true);
+            expect(render.find(MailList).prop("canClearMails")).toEqual(true);
         });
 
         it("should receive false canClearMails when fetch state is LOADING", async () => {
@@ -232,7 +230,7 @@ describe("App", () => {
             });
 
             // THEN
-            expect(render.find(MailList).prop('canClearMails')).toEqual(false);
+            expect(render.find(MailList).prop("canClearMails")).toEqual(false);
         });
     });
 
@@ -254,7 +252,7 @@ describe("App", () => {
 
         it("should receive the selected mail", async () => {
             // GIVEN
-            const selectMail = render.find(MailList).prop('selectMail');
+            const selectMail = render.find(MailList).prop("selectMail");
 
             // WHEN
             selectMail(selectedMail.id);
@@ -275,7 +273,7 @@ describe("App", () => {
 
         it("should display error toast when error occurs", async () => {
             // GIVEN
-            const clearMails = render.find(MailList).prop('clearMails');
+            const clearMails = render.find(MailList).prop("clearMails");
             mailService.clearMails.mockRejectedValue(null);
 
             // WHEN
@@ -283,12 +281,12 @@ describe("App", () => {
             await clock.tickAsync(1000);
 
             // THEN
-            expect(render.find("#error-toast-clear").find(ErrorToast).prop('show')).toEqual(true);
+            expect(render.find("#error-toast-clear").find(ErrorToast).prop("show")).toEqual(true);
         });
 
         it("should hide error toast after error eventually", async () => {
             // GIVEN
-            const clearMails = render.find(MailList).prop('clearMails');
+            const clearMails = render.find(MailList).prop("clearMails");
             mailService.clearMails.mockRejectedValue(null);
 
             // WHEN
@@ -296,12 +294,11 @@ describe("App", () => {
             await clock.runAllAsync();
 
             // THEN
-            expect(render.find("#error-toast-clear").find(ErrorToast).prop('show')).toEqual(false);
+            expect(render.find("#error-toast-clear").find(ErrorToast).prop("show")).toEqual(false);
         });
     });
 
     describe("navbar", () => {
-
         it("should be displayed", async () => {
             // GIVEN
             mailService.getMails.mockResolvedValue(mails);
@@ -313,7 +310,5 @@ describe("App", () => {
             // THEN
             expect(render.find(Navbar)).toBeTruthy();
         });
-
     });
-
 });

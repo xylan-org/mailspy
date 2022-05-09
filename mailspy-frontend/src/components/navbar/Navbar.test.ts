@@ -3,7 +3,6 @@ import { Navbar } from "./Navbar";
 import BsNavbar from "react-bootstrap/Navbar";
 
 describe("Navbar", () => {
-
     let testBed: TestBed<Navbar>;
 
     beforeEach(() => {
@@ -20,5 +19,4 @@ describe("Navbar", () => {
         // THEN
         expect(result.find(BsNavbar.Brand).text()).toEqual("MailSpy");
     });
-
 });
