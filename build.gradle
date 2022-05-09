@@ -32,10 +32,9 @@ subprojects {
             toolVersion = libs.versions.pmd.get()
             consoleOutput = true
         }
-
-        tasks.withType(JavaCompile) {
-            options.release = 11
-        }
+    }
+    tasks.withType(JavaCompile) {
+        options.release = 11
     }
 }
 

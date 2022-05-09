@@ -22,7 +22,7 @@ assembleFrontend {
     }
 }
 
-task jarFrontend(type: Jar) {
+jar {
     archivesBaseName = "mailspy-frontend"
     from (assembleFrontend) {
         into "META-INF/mailspy-frontend"
@@ -41,14 +41,10 @@ check {
     dependsOn testFrontend
 }
 
-artifacts {
-    add("default", jarFrontend)
-}
-
 publishing {
     publications {
         maven(MavenPublication) {
-            artifact jarFrontend
+            artifact jar
         }
     }
 }
