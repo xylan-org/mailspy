@@ -9,7 +9,9 @@ describe("FileDownloadService", () => {
         jest.spyOn(global, "Blob").mockImplementation((blobParts?: BlobPart[], options?: BlobPropertyBag) => {
             return { blobParts, options } as unknown as Blob;
         });
-        saveAsMock = jest.spyOn(FileSaver, "saveAs").mockImplementation(() => {});
+        saveAsMock = jest.spyOn(FileSaver, "saveAs").mockImplementation(() => {
+            // empty
+        });
         underTest = new FileDownloadService();
     });
 

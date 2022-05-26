@@ -1,4 +1,3 @@
-import { shallow } from "enzyme";
 import moment from "moment";
 import { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
@@ -34,7 +33,9 @@ describe("MailListItem", () => {
         mail.error = "errorMessage";
         testBed.setProps({
             mail: mail,
-            selectMail: () => {}
+            selectMail: () => {
+                // empty
+            }
         });
 
         // WHEN
@@ -49,7 +50,9 @@ describe("MailListItem", () => {
         // GIVEN
         testBed.setProps({
             mail: mail,
-            selectMail: () => {}
+            selectMail: () => {
+                // empty
+            }
         });
 
         // WHEN
@@ -68,7 +71,9 @@ describe("MailListItem", () => {
         mail.selected = true;
         testBed.setProps({
             mail: mail,
-            selectMail: () => {}
+            selectMail: () => {
+                // empty
+            }
         });
 
         // WHEN
@@ -83,7 +88,9 @@ describe("MailListItem", () => {
         mail.selected = false;
         testBed.setProps({
             mail: mail,
-            selectMail: () => {}
+            selectMail: () => {
+                // empty
+            }
         });
 
         // WHEN
@@ -104,7 +111,9 @@ describe("MailListItem", () => {
         ];
         testBed.setProps({
             mail: mail,
-            selectMail: () => {}
+            selectMail: () => {
+                // empty
+            }
         });
 
         // WHEN
@@ -119,7 +128,9 @@ describe("MailListItem", () => {
         mail.attachments = [];
         testBed.setProps({
             mail: mail,
-            selectMail: () => {}
+            selectMail: () => {
+                // empty
+            }
         });
 
         // WHEN

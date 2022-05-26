@@ -33,12 +33,16 @@ describe("MailList", () => {
     describe("mail list items", () => {
         it("should be displayed", () => {
             // GIVEN
-            const selectMail = () => {};
+            const selectMail = () => {
+                // empty
+            };
             testBed.setProps({
                 mails: [mail],
                 selectedMail: null,
                 selectMail: selectMail,
-                clearMails: () => {},
+                clearMails: () => {
+                    // empty
+                },
                 canClearMails: false
             });
 
@@ -60,8 +64,12 @@ describe("MailList", () => {
             testBed.setProps({
                 mails: [mail],
                 selectedMail: null,
-                selectMail: () => {},
-                clearMails: () => {},
+                selectMail: () => {
+                    // empty
+                },
+                clearMails: () => {
+                    // empty
+                },
                 canClearMails: false
             });
 
@@ -77,8 +85,12 @@ describe("MailList", () => {
             testBed.setProps({
                 mails: [],
                 selectedMail: null,
-                selectMail: () => {},
-                clearMails: () => {},
+                selectMail: () => {
+                    // empty
+                },
+                clearMails: () => {
+                    // empty
+                },
                 canClearMails: true
             });
 
@@ -94,8 +106,12 @@ describe("MailList", () => {
             testBed.setProps({
                 mails: [mail],
                 selectedMail: null,
-                selectMail: () => {},
-                clearMails: () => {},
+                selectMail: () => {
+                    // empty
+                },
+                clearMails: () => {
+                    // empty
+                },
                 canClearMails: true
             });
 
@@ -113,8 +129,12 @@ describe("MailList", () => {
             testBed.setProps({
                 mails: [],
                 selectedMail: null,
-                selectMail: () => {},
-                clearMails: () => {},
+                selectMail: () => {
+                    // empty
+                },
+                clearMails: () => {
+                    // empty
+                },
                 canClearMails: false
             });
 
@@ -130,8 +150,12 @@ describe("MailList", () => {
             testBed.setProps({
                 mails: [mail],
                 selectedMail: mail,
-                selectMail: () => {},
-                clearMails: () => {},
+                selectMail: () => {
+                    // empty
+                },
+                clearMails: () => {
+                    // empty
+                },
                 canClearMails: false
             });
 
@@ -155,8 +179,12 @@ describe("MailList", () => {
             testBed.setProps({
                 mails: [mail],
                 selectedMail: mail,
-                selectMail: () => {},
-                clearMails: () => {},
+                selectMail: () => {
+                    // empty
+                },
+                clearMails: () => {
+                    // empty
+                },
                 canClearMails: false
             });
             const result = testBed.render();

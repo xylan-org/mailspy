@@ -11,7 +11,7 @@ description = "MailSpy :: Frontend"
 frontend {
     nodeVersion = "16.15.0"
     assembleScript = "run build"
-    installScript = "install --no-audit --no-fund --loglevel=error"
+    installScript = "install --no-audit --no-fund"
 }
 
 assembleFrontend {
@@ -33,7 +33,7 @@ jar {
 task testFrontend(type: RunNpm) {
     description = "Runs the frontend tests."
     group = "verification"
-    script = "test -- --watchAll=false"
+    script = "test -- --coverage --watchAll=false --coverageDirectory build/reports/coverage"
     dependsOn installFrontend
 }
 
@@ -51,9 +51,17 @@ task prettierApply(type: RunNpm) {
     dependsOn installFrontend
 }
 
+task eslint(type: RunNpm) {
+    description = "Runs ESLint."
+    group = "verification"
+    script = "run eslint"
+    dependsOn installFrontend
+}
+
 check {
     dependsOn testFrontend
     dependsOn prettierCheck
+    dependsOn eslint
 }
 
 publishing {

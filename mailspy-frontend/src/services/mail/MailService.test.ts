@@ -56,7 +56,7 @@ describe("MailService", () => {
         it("should invoke the http service with the mail clearing endpoint", () => {
             // GIVEN
             // WHEN
-            const result = underTest.clearMails();
+            underTest.clearMails();
 
             // THEN
             expect(httpService.fetch).toHaveBeenCalledWith("/mails/history", { method: "DELETE" });
@@ -66,7 +66,7 @@ describe("MailService", () => {
     describe("subscribeMails", () => {
         it("should return a ReconnectingEventSource with a registered 'mail' custom event", () => {
             // GIVEN
-            let eventSource = mock<ReconnectingEventSource>();
+            const eventSource = mock<ReconnectingEventSource>();
             httpService.createEventSource.mockReturnValue(eventSource);
 
             // WHEN

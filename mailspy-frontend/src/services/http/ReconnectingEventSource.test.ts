@@ -11,7 +11,7 @@ describe("ReconnectingEventSource", () => {
 
     beforeEach(() => {
         clock = FakeTimers.install();
-        underTest = new ReconnectingEventSource(EVENT_SOURCE_URL, (url) => eventSourceMock as EventSource);
+        underTest = new ReconnectingEventSource(EVENT_SOURCE_URL, () => eventSourceMock as EventSource);
     });
 
     afterEach(() => {

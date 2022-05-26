@@ -38,7 +38,7 @@ describe("MailPreview", () => {
         });
 
         // WHEN
-        let result = testBed.render();
+        const result = testBed.render();
 
         // THEN
         expect(result.find("#preview > *").exists()).toBeFalsy();
@@ -53,7 +53,7 @@ describe("MailPreview", () => {
             });
 
             // WHEN
-            let result = testBed.render();
+            const result = testBed.render();
 
             // THEN
             expect(result.find(Nav).prop("activeKey")).toEqual("html");
@@ -68,7 +68,7 @@ describe("MailPreview", () => {
             });
 
             // WHEN
-            let result = testBed.render();
+            const result = testBed.render();
 
             // THEN
             expect(result.find(Nav).prop("activeKey")).toEqual("text");
@@ -84,7 +84,7 @@ describe("MailPreview", () => {
             });
 
             // WHEN
-            let result = testBed.render();
+            const result = testBed.render();
 
             // THEN
             expect(result.find(Nav).prop("activeKey")).toEqual("raw");
@@ -98,7 +98,7 @@ describe("MailPreview", () => {
             });
 
             // WHEN
-            let result = testBed.render();
+            const result = testBed.render();
 
             // THEN
             expect(result.find("#html-link").prop("disabled")).toBeTruthy();
@@ -112,7 +112,7 @@ describe("MailPreview", () => {
             });
 
             // WHEN
-            let result = testBed.render();
+            const result = testBed.render();
 
             // THEN
             expect(result.find("#text-link").prop("disabled")).toBeTruthy();
@@ -126,7 +126,7 @@ describe("MailPreview", () => {
             });
 
             // WHEN
-            let result = testBed.render();
+            const result = testBed.render();
 
             // THEN
             expect(result.find("#raw-link").prop("disabled")).toBeTruthy();
@@ -140,7 +140,7 @@ describe("MailPreview", () => {
                 selectedMail: mail
             });
 
-            let result = testBed.render();
+            const result = testBed.render();
 
             // WHEN
             result.find(Nav).prop("onSelect")("text", null);
@@ -153,13 +153,13 @@ describe("MailPreview", () => {
     describe("tab body", () => {
         it("should display iframe with HTML content when HTML format is selected", () => {
             // GIVEN
-            let expectedHtml = "<b>Expected HTML content.</b>";
+            const expectedHtml = "<b>Expected HTML content.</b>";
             mail.html = expectedHtml;
             testBed.setProps({
                 selectedMail: mail
             });
 
-            let result = testBed.render();
+            const result = testBed.render();
 
             // WHEN
             result.find(Nav).prop("onSelect")("html", null);
@@ -170,13 +170,13 @@ describe("MailPreview", () => {
 
         it("should display code element with text content when text format is selected", () => {
             // GIVEN
-            let expectedText = "Expected text content.";
+            const expectedText = "Expected text content.";
             mail.text = expectedText;
             testBed.setProps({
                 selectedMail: mail
             });
 
-            let result = testBed.render();
+            const result = testBed.render();
 
             // WHEN
             result.find(Nav).prop("onSelect")("text", null);
@@ -187,13 +187,13 @@ describe("MailPreview", () => {
 
         it("should display code element with raw content when raw format is selected", () => {
             // GIVEN
-            let expectedRaw = "(Some ugly stuff.)";
+            const expectedRaw = "(Some ugly stuff.)";
             mail.raw = expectedRaw;
             testBed.setProps({
                 selectedMail: mail
             });
 
-            let result = testBed.render();
+            const result = testBed.render();
 
             // WHEN
             result.find(Nav).prop("onSelect")("raw", null);
@@ -211,7 +211,7 @@ describe("MailPreview", () => {
             });
 
             // WHEN
-            let result = testBed.render();
+            const result = testBed.render();
 
             // THEN
             expect(result.find(".mail-subject").text()).toEqual("mailSubject");
@@ -224,7 +224,7 @@ describe("MailPreview", () => {
     describe("attachments", () => {
         it("should be correctly displayed", () => {
             // GIVEN
-            let expectedAttachment: Attachment = {
+            const expectedAttachment: Attachment = {
                 filename: "attachment.txt",
                 contentType: "text/plain",
                 content: "content"
@@ -235,7 +235,7 @@ describe("MailPreview", () => {
             });
 
             // WHEN
-            let result = testBed.render();
+            const result = testBed.render();
 
             // THEN
             expect(result.find(Card.Footer).find(MailAttachment).prop("attachment")).toEqual(expectedAttachment);

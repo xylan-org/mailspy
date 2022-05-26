@@ -72,7 +72,9 @@ describe("App", () => {
     describe("component load", () => {
         it("should display a loading toast while mails are being fetched", async () => {
             // GIVEN
-            const unresolvedPromise = new Promise<Mail[]>((): void => {});
+            const unresolvedPromise = new Promise<Mail[]>((): void => {
+                // empty
+            });
             mailService.getMails.mockReturnValue(unresolvedPromise);
 
             // WHEN

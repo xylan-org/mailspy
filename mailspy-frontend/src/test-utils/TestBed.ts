@@ -16,15 +16,17 @@ type TestBedDependency<T> = {
 };
 
 @autobind
-export class TestBed<T extends Component<P, S>, P extends {} = T["props"], S extends ComponentState = T["state"]> {
+export class TestBed<T extends Component<P, S>, P extends unknown = T["props"], S extends ComponentState = T["state"]> {
     private componentType: ComponentClass<P, S>;
     private props: P;
     private container: Container;
 
-    private constructor() {}
+    private constructor() {
+        // empty
+    }
 
     public static create<T extends Component<P, S>, P = T["props"], S = T["state"]>({ component, dependencies, props }: TestBedInit<P, S>): TestBed<T, P, S> {
-        let testBed = new TestBed<T, P, S>();
+        const testBed = new TestBed<T, P, S>();
         testBed.componentType = component;
         testBed.container = TestBed.initContainer(dependencies || []);
         testBed.props = props;
@@ -32,7 +34,7 @@ export class TestBed<T extends Component<P, S>, P extends {} = T["props"], S ext
     }
 
     private static initContainer(dependencies: TestBedDependency<any>[]): Container {
-        let container = new Container({
+        const container = new Container({
             defaultScope: "Singleton"
         });
         dependencies.forEach((dependency: TestBedDependency<any>) => {

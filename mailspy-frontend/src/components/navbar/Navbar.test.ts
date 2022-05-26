@@ -14,7 +14,7 @@ describe("Navbar", () => {
     it("should render branding", () => {
         // GIVEN
         // WHEN
-        let result = testBed.render();
+        const result = testBed.render();
 
         // THEN
         expect(result.find(BsNavbar.Brand).text()).toEqual("MailSpy");

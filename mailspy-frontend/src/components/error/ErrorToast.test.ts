@@ -59,7 +59,9 @@ describe("ErrorToast", () => {
         testBed.setProps({
             show: true,
             message: "",
-            retry: () => {}
+            retry: () => {
+                // empty
+            }
         });
 
         // WHEN

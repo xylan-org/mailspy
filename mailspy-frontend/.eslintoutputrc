@@ -1,0 +1,13 @@
+{
+    "formats": [
+        {
+            "name": "stylish",
+            "output": "console"
+        },
+        {
+            "name": "html",
+            "output": "file",
+            "path": "build/reports/eslint/index.html"
+        }
+    ]
+}

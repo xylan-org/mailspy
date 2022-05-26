@@ -8,7 +8,8 @@
         "build": "craco build",
         "test": "craco test",
         "prettier-check": "prettier --check .",
-        "prettier-apply": "prettier --write ."
+        "prettier-apply": "prettier --write .",
+        "eslint": "eslint-output \"**/*.ts\" \"**/*.tsx\""
     },
     "author": "xylan.org",
     "license": "MIT",
@@ -36,6 +37,8 @@
         "bootstrap": "4.5.3",
         "enzyme": "3.11.0",
         "escape-html": "1.0.3",
+        "eslint-config-prettier": "8.5.0",
+        "eslint-output": "3.0.1",
         "file-saver": "2.0.5",
         "inversify": "5.0.5",
         "inversify-react": "0.4.3",
@@ -64,6 +67,26 @@
     "jest": {
         "transform": {
             "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+        },
+        "collectCoverageFrom": [
+            "src/**/*.{ts,tsx}",
+            "!src/test-utils/**",
+            "!src/index.tsx",
+            "!**/*.config.ts",
+            "!**/*.d.ts"
+        ],
+        "coverageReporters": [
+            "text-summary",
+            "cobertura",
+            "html"
+        ],
+        "coverageThreshold": {
+            "global": {
+                "branches": 80,
+                "functions": 80,
+                "lines": 80,
+                "statements": 80
+            }
         }
     }
 }
