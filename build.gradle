@@ -40,7 +40,15 @@ subprojects {
 
 dependencyCheck {
     suppressionFile "$rootDir/config/owasp-suppressions.xml"
+    scanConfigurations = ["runtimeClasspath", "compileClasspath"]
     analyzers {
+        nodeEnabled = false // cannot skip dev deps, see https://github.com/jeremylong/DependencyCheck/issues/2482#issuecomment-603755623
         assemblyEnabled = false
+        nodeAudit {
+            skipDevDependencies = true
+        }
+        retirejs {
+            enabled = false
+        }
     }
 }

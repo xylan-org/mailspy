@@ -7,12 +7,12 @@ include "mailspy-frontend"
 dependencyResolutionManagement {
     versionCatalogs {
         libs {
-            version("gradle", "7.4.1")
-            version("spring-framework", "5.3.17")
-            version("spring-boot", "2.6.5")
+            version("gradle", "7.4.2")
+            version("spring-framework", "5.3.20")
+            version("spring-boot", "2.7.0")
             version("slf4j", "1.7.36")
             version("subetha", "3.1.7")
-            version("commons-io", "2.6")
+            version("commons-io", "2.11.0")
             version("jakarta-servletapi", "4.0.4")
             version("jakarta-annotationsapi", "1.3.5")
             version("lombok", "1.18.22")
@@ -23,13 +23,13 @@ dependencyResolutionManagement {
             version("assertj", "3.21.0")
             version("hamcrest", "2.2")
             version("json-path", "2.6.0")
-            version("jackson", "2.13.2")
+            version("jackson", "2.13.3")
             version("owasp-dependencycheck", "7.1.0.1")
             version("coditory-integrationtest", "1.3.0")
             version("nebula-optionalbase", "7.0.0")
             version("siouan-frontend", "6.0.0")
             version("checkstyle", "10.1")
-            version("pmd", "6.44.0")
+            version("pmd", "6.45.0")
 
             library("spring-boot-autoconfigure", "org.springframework.boot", "spring-boot-autoconfigure").versionRef("spring-boot")
             library("spring-boot-test", "org.springframework.boot", "spring-boot-test").versionRef("spring-boot")
