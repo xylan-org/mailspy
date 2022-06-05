@@ -1,7 +1,7 @@
 import autobind from "autobind-decorator";
 import FileSaver from "file-saver";
 import { injectable } from "inversify";
-import { DownloadableFile } from "./domain/DownloadableFile";
+import type { DownloadableFile } from "./domain/DownloadableFile";
 
 @autobind
 @injectable()

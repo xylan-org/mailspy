@@ -3,8 +3,8 @@ import { when } from "jest-when";
 import moment from "moment";
 import { HttpService } from "services/http/HttpService";
 import { ReconnectingEventSource } from "services/http/ReconnectingEventSource";
-import { Mail } from "./domain/Mail";
-import { RawMail } from "./domain/RawMail";
+import type { Mail } from "./domain/Mail";
+import type { RawMail } from "./domain/RawMail";
 import { MailParserService } from "./MailParserService";
 import { MailService } from "./MailService";
 

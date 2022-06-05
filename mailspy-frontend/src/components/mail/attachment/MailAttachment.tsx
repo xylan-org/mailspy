@@ -3,7 +3,7 @@ import { Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 import autobind from "autobind-decorator";
-import { MailAttachmentProps } from "./domain/MailAttachmentProps";
+import type { MailAttachmentProps } from "./domain/MailAttachmentProps";
 import { resolve } from "inversify-react";
 import { FileDownloadService } from "services/download/FileDownloadService";
 

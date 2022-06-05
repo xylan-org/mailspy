@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Mail } from "services/mail/domain/Mail";
+import type { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
 import { MailListItem } from "./MailListItem";
 

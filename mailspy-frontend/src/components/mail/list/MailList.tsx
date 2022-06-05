@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { MailListProps } from "./domain/MailListProps";
+import type { MailListProps } from "./domain/MailListProps";
 import autobind from "autobind-decorator";
 import { FileDownloadService } from "services/download/FileDownloadService";
 import { resolve } from "inversify-react";

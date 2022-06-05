@@ -1,6 +1,6 @@
 import moment from "moment";
-import { Mail } from "./domain/Mail";
-import { RawMail } from "./domain/RawMail";
+import type { Mail } from "./domain/Mail";
+import type { RawMail } from "./domain/RawMail";
 import { ParsedMail, simpleParser } from "mailparser";
 import autobind from "autobind-decorator";
 import { HtmlService } from "services/html/HtmlService";

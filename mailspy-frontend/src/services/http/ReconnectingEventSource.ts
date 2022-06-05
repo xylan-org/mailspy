@@ -1,5 +1,5 @@
 import autobind from "autobind-decorator";
-import { CustomEvent } from "./domain/CustomEvent";
+import type { CustomEvent } from "./domain/CustomEvent";
 
 @autobind
 export class ReconnectingEventSource {

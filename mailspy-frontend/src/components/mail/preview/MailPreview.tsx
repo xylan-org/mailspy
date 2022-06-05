@@ -1,10 +1,10 @@
 import autobind from "autobind-decorator";
 import React, { Component } from "react";
 import { Nav, Card } from "react-bootstrap";
-import { Attachment } from "services/mail/domain/Attachment";
+import type { Attachment } from "services/mail/domain/Attachment";
 import { MailAttachment } from "../attachment/MailAttachment";
-import { MailPreviewProps } from "./domain/MailPreviewProps";
-import { MailPreviewState } from "./domain/MailPreviewState";
+import type { MailPreviewProps } from "./domain/MailPreviewProps";
+import type { MailPreviewState } from "./domain/MailPreviewState";
 
 const DATE_TIME_FORMAT = "DD/MM/YYYY hh:mm:ss A";
 

@@ -1,7 +1,7 @@
 import { ErrorToast } from "components/error/ErrorToast";
 import { LoadingToast } from "components/loading/LoadingToast";
 import { mock, MockProxy } from "jest-mock-extended";
-import { Mail } from "services/mail/domain/Mail";
+import type { Mail } from "services/mail/domain/Mail";
 import { MailService } from "services/mail/MailService";
 import FakeTimers from "@sinonjs/fake-timers";
 import { TestBed } from "test-utils/TestBed";
@@ -10,7 +10,7 @@ import moment from "moment";
 import { MailList } from "components/mail/list/MailList";
 import { ReconnectingEventSource } from "services/http/ReconnectingEventSource";
 import { ShallowWrapper } from "enzyme";
-import { AppState } from "./domain/AppState";
+import type { AppState } from "./domain/AppState";
 import { LoadingStatus } from "./domain/LoadingStatus";
 import { MailPreview } from "components/mail/preview/MailPreview";
 import { Navbar } from "components/navbar/Navbar";

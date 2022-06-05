@@ -3,7 +3,7 @@ import { Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import autobind from "autobind-decorator";
-import { MailListItemProps } from "./domain/MailListItemProps";
+import type { MailListItemProps } from "./domain/MailListItemProps";
 
 const DATE_TIME_FORMAT = "DD/MM/YYYY hh:mm:ss A";
 

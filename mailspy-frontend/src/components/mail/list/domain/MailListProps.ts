@@ -1,4 +1,4 @@
-import { Mail } from "services/mail/domain/Mail";
+import type { Mail } from "services/mail/domain/Mail";
 
 export interface MailListProps {
     mails: Mail[];

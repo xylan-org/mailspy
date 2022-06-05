@@ -3,8 +3,8 @@ import { when } from "jest-when";
 import { ParsedMail } from "mailparser";
 import moment from "moment";
 import { HtmlService } from "services/html/HtmlService";
-import { Mail } from "./domain/Mail";
-import { RawMail } from "./domain/RawMail";
+import type { Mail } from "./domain/Mail";
+import type { RawMail } from "./domain/RawMail";
 import { MailParserService } from "./MailParserService";
 
 describe("MailParserService", () => {

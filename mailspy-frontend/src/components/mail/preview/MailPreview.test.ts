@@ -1,7 +1,7 @@
 import moment from "moment";
 import { Card, Nav } from "react-bootstrap";
-import { Attachment } from "services/mail/domain/Attachment";
-import { Mail } from "services/mail/domain/Mail";
+import type { Attachment } from "services/mail/domain/Attachment";
+import type { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
 import { MailAttachment } from "../attachment/MailAttachment";
 import { MailPreview } from "./MailPreview";

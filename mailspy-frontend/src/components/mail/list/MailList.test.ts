@@ -1,7 +1,7 @@
 import { mock } from "jest-mock-extended";
 import moment from "moment";
 import { FileDownloadService } from "services/download/FileDownloadService";
-import { Mail } from "services/mail/domain/Mail";
+import type { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
 import { MailListItem } from "../list-item/MailListItem";
 import { MailList } from "./MailList";

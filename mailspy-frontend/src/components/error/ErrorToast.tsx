@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Toast from "react-bootstrap/Toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import { ErrorToastProps } from "./domain/ErrorProps";
+import type { ErrorToastProps } from "./domain/ErrorProps";
 import autobind from "autobind-decorator";
 
 @autobind
