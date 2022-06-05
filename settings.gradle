@@ -31,6 +31,7 @@ dependencyResolutionManagement {
             version("checkstyle", "10.1")
             version("pmd", "6.45.0")
             version("versions-plugin", "0.42.0")
+            version("jacoco", "0.8.8")
 
             library("spring-boot-autoconfigure", "org.springframework.boot", "spring-boot-autoconfigure").versionRef("spring-boot")
             library("spring-boot-test", "org.springframework.boot", "spring-boot-test").versionRef("spring-boot")

@@ -1,6 +1,7 @@
 plugins {
     id "java-library"
     id "maven-publish"
+    id "jacoco"
     alias libs.plugins.coditory.integrationtest
     alias libs.plugins.nebula.optionalbase
 }
@@ -48,6 +49,7 @@ publishing {
 
 check {
     dependsOn tasks.withType(Test)
+    dependsOn jacocoTestCoverageVerification
 }
 
 tasks.withType(Test) {
@@ -55,5 +57,56 @@ tasks.withType(Test) {
     testLogging {
         events = ["passed", "failed", "skipped"]
         exceptionFormat = "full"
+    }
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = libs.versions.jacoco.get()
+}
+
+def setJacocoExclusions = { classDirectories ->
+    classDirectories.setFrom(files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: [
+            "org/xylan/mailspy/core/config/**"
+        ])
+    }))
+}
+
+jacocoTestReport {
+    dependsOn test
+    afterEvaluate {
+        setJacocoExclusions(classDirectories)
+    }
+}
+
+jacocoTestCoverageVerification {
+    dependsOn test
+    violationRules {
+        rule {
+            limit {
+                counter = "BRANCH"
+                value = "COVEREDRATIO"
+                minimum = 0.8
+            }
+            limit {
+                counter = "METHOD"
+                value = "COVEREDRATIO"
+                minimum = 0.8
+            }
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = 0.8
+            }
+            limit {
+                counter = "INSTRUCTION"
+                value = "COVEREDRATIO"
+                minimum = 0.8
+            }
+        }
+    }
+    afterEvaluate {
+        setJacocoExclusions(classDirectories)
     }
 }
