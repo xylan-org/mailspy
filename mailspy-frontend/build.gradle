@@ -58,6 +58,13 @@ task eslint(type: RunNpm) {
     dependsOn installFrontend
 }
 
+task frontendDependencyUpdates(type: RunNpm) {
+    description = "Checks the latest versions of frontend dependencies."
+    group = "verification"
+    script = "run versions-check"
+    dependsOn installFrontend
+}
+
 check {
     dependsOn testFrontend
     dependsOn prettierCheck
