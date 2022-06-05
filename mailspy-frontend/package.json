@@ -10,7 +10,7 @@
         "prettier-check": "prettier --check .",
         "prettier-apply": "prettier --write .",
         "eslint": "eslint-output \"**/*.ts\" \"**/*.tsx\"",
-        "versions-check": "npm-check-updates"
+        "versions-check": "npm-check-updates --target minor"
     },
     "author": "xylan.org",
     "license": "MIT",
