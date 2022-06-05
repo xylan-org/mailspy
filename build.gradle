@@ -1,5 +1,6 @@
 plugins {
     alias libs.plugins.owasp.dependencycheck
+    alias libs.plugins.versions
 }
 
 description = "MailSpy :: Root"
@@ -50,5 +51,25 @@ dependencyCheck {
         retirejs {
             enabled = false
         }
+    }
+}
+
+dependencyUpdates {
+    gradleReleaseChannel = "current"
+}
+
+def isNonStable = { version ->
+    def stableKeyword = ["RELEASE", "FINAL", "GA"].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+tasks.named("dependencyUpdates").configure {
+    checkForGradleUpdate = true
+    outputFormatter = "html"
+    outputDir = "$buildDir/reports"
+    reportfileName = "dependency-update-report"
+    rejectVersionIf {
+        isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
     }
 }
