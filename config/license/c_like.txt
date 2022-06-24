@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 xylan.org
+ * Copyright (c) $YEAR xylan.org
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,24 +20,3 @@
  * SOFTWARE.
  */
 
-package org.xylan.mailspy.app;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-/**
- * Entry point of the standalone MailSpy application.
- */
-@SpringBootApplication
-public class MailSpyApplication {
-
-    /**
-     * Entry point.
-     *
-     * @param args The command-line arguments.
-     */
-    public static void main(final String[] args) {
-        SpringApplication.run(MailSpyApplication.class, args);
-    }
-
-}
