@@ -31,7 +31,7 @@ import org.siouan.frontendgradleplugin.infrastructure.gradle.RunNpm
 description = "MailSpy :: Frontend"
 
 frontend {
-    nodeVersion = "16.15.0"
+    nodeVersion = libs.versions.node.get()
     assembleScript = "run build"
     installScript = "install --no-audit --no-fund"
 }

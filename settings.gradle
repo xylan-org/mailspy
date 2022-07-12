@@ -30,6 +30,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         libs {
             version("gradle", "7.4.2")
+            version("node", "16.15.0")
             version("spring-framework", "5.3.20")
             version("spring-boot", "2.7.0")
             version("slf4j", "1.7.36")
