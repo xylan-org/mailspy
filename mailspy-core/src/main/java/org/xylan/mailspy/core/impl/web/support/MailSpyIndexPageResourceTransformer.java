@@ -25,6 +25,7 @@ package org.xylan.mailspy.core.impl.web.support;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -48,6 +49,9 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
     @Autowired
     private MailSpyProperties properties;
 
+    @Autowired
+    private ServletContext servletContext;
+
     @Override
     @SneakyThrows
     public Resource transform(
@@ -68,7 +72,8 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
     private String injectBasePath(String resourceAsString) {
         return resourceAsString.replaceFirst(
                 "<base href=\".*?\"\\s*/?>",
-                "<base href=\"" + properties.getPathNoTrailingSlash() + "/resources/\" />");
+                "<base href=\"" + servletContext.getContextPath() + properties.getPathNoTrailingSlash()
+                        + "/resources/\" />");
     }
 
     private String readToString(final InputStream inputStream) {

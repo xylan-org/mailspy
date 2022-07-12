@@ -27,10 +27,12 @@ import static org.mockito.BDDMockito.then;
 import static org.testng.Assert.assertEquals;
 
 import java.nio.charset.StandardCharsets;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.testng.MockitoTestNGListener;
 import org.springframework.core.io.InputStreamResource;
@@ -44,6 +46,9 @@ import org.xylan.mailspy.core.config.MailSpyProperties;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpyIndexPageResourceTransformerTest {
+
+    @Mock
+    private ServletContext servletContext;
 
     @InjectMocks
     private MailSpyIndexPageResourceTransformer underTest;
@@ -96,11 +101,13 @@ public class MailSpyIndexPageResourceTransformerTest {
                     }
                 };
 
-        String expectedContent = "<base href=\"/test-path/resources/\" />";
+        String expectedContent = "<base href=\"/context-path/test-path/resources/\" />";
+
+        given(servletContext.getContextPath()).willReturn("/context-path");
+        given(transformerChain.transform(request, resource)).willReturn(resource);
+
         TransformedResource expected =
                 new TransformedResource(resource, expectedContent.getBytes(StandardCharsets.UTF_8));
-
-        given(transformerChain.transform(request, resource)).willReturn(resource);
 
         // WHEN
         Resource actual = underTest.transform(request, resource, transformerChain);

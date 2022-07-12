@@ -24,12 +24,14 @@ package org.xylan.mailspy.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /**
  * Entry point of the standalone MailSpy application.
  */
 @SpringBootApplication
-public class MailSpyApplication {
+public class MailSpyApplication extends SpringBootServletInitializer {
 
     /**
      * Entry point.
@@ -38,5 +40,10 @@ public class MailSpyApplication {
      */
     public static void main(final String[] args) {
         SpringApplication.run(MailSpyApplication.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(MailSpyApplication.class);
     }
 }
