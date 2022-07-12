@@ -22,9 +22,14 @@
 
 package org.xylan.mailspy.core.impl.web.subscription.sse;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.times;
+import static org.mockito.BDDMockito.willThrow;
+import static org.testng.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.Iterator;
-
 import lombok.SneakyThrows;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -37,12 +42,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEvent
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.then;
-import static org.mockito.BDDMockito.times;
-import static org.mockito.BDDMockito.willThrow;
-import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpySseEmitterRegistryTest {

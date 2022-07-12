@@ -22,9 +22,12 @@
 
 package org.xylan.mailspy.core.impl.web.support;
 
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.testng.Assert.assertEquals;
+
 import java.nio.charset.StandardCharsets;
 import javax.servlet.http.HttpServletRequest;
-
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
@@ -38,10 +41,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyProperties;
-
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
-import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpyIndexPageResourceTransformerTest {
@@ -83,20 +82,23 @@ public class MailSpyIndexPageResourceTransformerTest {
         // GIVEN
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         ResourceTransformerChain transformerChain = Mockito.mock(ResourceTransformerChain.class);
-        Resource resource = new InputStreamResource(IOUtils.toInputStream("<base href=\"randomStuff\" />", StandardCharsets.UTF_8)) {
-            @Override
-            public String getFilename() {
-                return "index.html";
-            }
+        Resource resource =
+                new InputStreamResource(
+                        IOUtils.toInputStream("<base href=\"randomStuff\" />", StandardCharsets.UTF_8)) {
+                    @Override
+                    public String getFilename() {
+                        return "index.html";
+                    }
 
-            @Override
-            public long lastModified() {
-                return 0;
-            }
-        };
+                    @Override
+                    public long lastModified() {
+                        return 0;
+                    }
+                };
 
         String expectedContent = "<base href=\"/test-path/resources/\" />";
-        TransformedResource expected = new TransformedResource(resource, expectedContent.getBytes(StandardCharsets.UTF_8));
+        TransformedResource expected =
+                new TransformedResource(resource, expectedContent.getBytes(StandardCharsets.UTF_8));
 
         given(transformerChain.transform(request, resource)).willReturn(resource);
 
@@ -113,5 +115,4 @@ public class MailSpyIndexPageResourceTransformerTest {
         properties.setPath("/test-path");
         return properties;
     }
-
 }

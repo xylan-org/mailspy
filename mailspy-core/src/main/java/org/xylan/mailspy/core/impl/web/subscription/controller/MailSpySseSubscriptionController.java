@@ -45,5 +45,4 @@ public class MailSpySseSubscriptionController {
     public SseEmitter createSseEmitter() {
         return sseEmitterRegistry.createEmitter();
     }
-
 }

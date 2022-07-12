@@ -85,6 +85,16 @@ spotless {
         trimTrailingWhitespace()
         endWithNewline()
     }
+    groovyGradle {
+        target "**/*.gradle"
+        targetExclude exclusions
+        greclipse().configFile(file("$rootDir/config/greclipse.properties"))
+    }
+    java {
+        target "**/*.java"
+        targetExclude exclusions
+        palantirJavaFormat(libs.versions.palantirformat.get())
+    }
 }
 
 dependencyCheck {
@@ -128,8 +138,7 @@ tasks.named("dependencyUpdates").configure {
     outputDir = "$buildDir/reports"
     reportfileName = "dependency-update-report"
     rejectVersionIf {
-        majorVersionUpdate(it.candidate.version, it.currentVersion)
-            || isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
+        majorVersionUpdate(it.candidate.version, it.currentVersion) || isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
     }
 }
 
@@ -143,22 +152,23 @@ licenseReport {
         new DependencyDataImporter() {
             @Override
             public String getImporterName() {
-                return "NPM dependency licenses report";
+                return "NPM dependency licenses report"
             }
 
             @Override
             public Collection<ImportedModuleBundle> doImport() {
-                def report = new JsonSlurper().parse(file("${project(":mailspy-frontend").buildDir}/reports/licenses/licenses.json"));
+                def report = new JsonSlurper().parse(file("${project(":mailspy-frontend").buildDir}/reports/licenses/licenses.json"))
                 def modules = report.collect { key, value ->
-                    def versionSeparatorIndex = key.lastIndexOf('@');
+                    def versionSeparatorIndex = key.lastIndexOf('@')
                     return new ImportedModuleData(
                         name: key.substring(0, versionSeparatorIndex),
                         version: key.substring(versionSeparatorIndex + 1),
                         projectUrl: value.url ?: value.repository,
-                        license: value.licenses
-                    );
+                        license: value.licenses)
                 }
-                return [new ImportedModuleBundle("NPM dependencies", modules)];
+                return [
+                    new ImportedModuleBundle("NPM dependencies", modules)
+                ]
             }
         }
     ]
@@ -172,4 +182,5 @@ generateLicenseReport {
 
 check {
     dependsOn checkLicense
+    dependsOn spotlessCheck
 }

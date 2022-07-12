@@ -53,5 +53,4 @@ public class MailSpyMailSenderAutoConfig {
         sender.setPort(properties.getSmtpPort());
         return sender;
     }
-
 }

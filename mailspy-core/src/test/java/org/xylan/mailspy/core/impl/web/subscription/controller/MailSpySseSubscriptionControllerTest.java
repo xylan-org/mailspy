@@ -22,6 +22,10 @@
 
 package org.xylan.mailspy.core.impl.web.subscription.controller;
 
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.testng.Assert.assertEquals;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -29,10 +33,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.impl.web.subscription.sse.MailSpySseEmitterRegistry;
-
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpySseSubscriptionControllerTest {
@@ -55,5 +55,4 @@ public class MailSpySseSubscriptionControllerTest {
         // THEN
         assertEquals(actual, expected);
     }
-
 }

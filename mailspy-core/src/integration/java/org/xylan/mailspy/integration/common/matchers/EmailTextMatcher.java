@@ -25,7 +25,6 @@ package org.xylan.mailspy.integration.common.matchers;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
@@ -34,7 +33,8 @@ import org.hamcrest.Description;
  */
 public class EmailTextMatcher extends BaseMatcher<String> {
 
-    private static final Pattern MAIL_CONTENT_PATTERN = Pattern.compile("^(?:[A-Za-z0-9-]+\\s*:(?:\\s+.*[\\r\\n]+)*)+(.*)$");
+    private static final Pattern MAIL_CONTENT_PATTERN =
+            Pattern.compile("^(?:[A-Za-z0-9-]+\\s*:(?:\\s+.*[\\r\\n]+)*)+(.*)$");
 
     private final org.hamcrest.Matcher<String> valueMatcher;
 
@@ -75,13 +75,11 @@ public class EmailTextMatcher extends BaseMatcher<String> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("the email text to be ")
-            .appendDescriptionOf(valueMatcher);
+        description.appendText("the email text to be ").appendDescriptionOf(valueMatcher);
     }
 
     @Override
     public void describeMismatch(Object item, Description description) {
         description.appendText("the email text was missing or did not match");
     }
-
 }

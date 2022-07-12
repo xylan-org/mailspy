@@ -56,6 +56,7 @@ dependencyResolutionManagement {
             version("jacoco", "0.8.8")
             version("dependency-license-report", "2.1")
             version("spotless", "6.7.2")
+            version("palantirformat", "2.25.0")
 
             library("spring-boot-autoconfigure", "org.springframework.boot", "spring-boot-autoconfigure").versionRef("spring-boot")
             library("spring-boot-test", "org.springframework.boot", "spring-boot-test").versionRef("spring-boot")

@@ -60,5 +60,4 @@ public class JsonPathMatcher extends BaseMatcher<String> {
     public void describeMismatch(Object item, Description description) {
         description.appendText(item.toString());
     }
-
 }

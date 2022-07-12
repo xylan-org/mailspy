@@ -40,5 +40,4 @@ public class MailSpySseEmailReceivedListener implements ApplicationListener<Emai
     public void onApplicationEvent(final EmailReceivedEvent event) {
         sseEmitterRegistry.broadcast("mail", event.getSource());
     }
-
 }

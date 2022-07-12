@@ -37,9 +37,5 @@ import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
 @ConditionalOnMailSpyEnabled
 @EnableConfigurationProperties(MailSpyProperties.class)
 @ComponentScan("org.xylan.mailspy.core.impl")
-@Import({
-    MailSpyWebMvcConfig.class,
-    MailSpySmtpServerConfig.class
-})
-public class MailSpyBaseAutoConfig {
-}
+@Import({MailSpyWebMvcConfig.class, MailSpySmtpServerConfig.class})
+public class MailSpyBaseAutoConfig {}

@@ -22,12 +22,13 @@
 
 package org.xylan.mailspy.core.impl.subetha;
 
+import static org.mockito.BDDMockito.then;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.UUID;
-
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -38,8 +39,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.impl.domain.EmailReceivedEvent;
 import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
-
-import static org.mockito.BDDMockito.then;
 
 @Listeners(MockitoTestNGListener.class)
 public class EventPublishingMessageHandlerTest {
@@ -65,7 +64,7 @@ public class EventPublishingMessageHandlerTest {
         InputStream messageStream = IOUtils.toInputStream("msg", StandardCharsets.UTF_8);
         MailSpyEmail testMail = MailSpyEmail.builder()
                 .id(TEST_UUID)
-                .rawMessage(new byte[] { 0x6d, 0x73, 0x67 })
+                .rawMessage(new byte[] {0x6d, 0x73, 0x67})
                 .timestamp(TEST_NOW)
                 .exception(null)
                 .build();
@@ -102,5 +101,4 @@ public class EventPublishingMessageHandlerTest {
         // THEN
         then(applicationEventPublisher).should().publishEvent(expected);
     }
-
 }

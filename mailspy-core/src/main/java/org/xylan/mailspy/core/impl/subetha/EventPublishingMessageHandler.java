@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.function.Supplier;
-
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -62,8 +61,7 @@ public class EventPublishingMessageHandler implements MessageHandler {
             builder.exception(exception);
             log.error("Exception thrown while reading mail message.", exception);
         }
-        builder.id(uuidSupplier.get().toString())
-            .timestamp(nowSupplier.get());
+        builder.id(uuidSupplier.get().toString()).timestamp(nowSupplier.get());
         applicationEventPublisher.publishEvent(new EmailReceivedEvent(builder.build()));
     }
 
@@ -81,5 +79,4 @@ public class EventPublishingMessageHandler implements MessageHandler {
     public void done() {
         // ignored
     }
-
 }

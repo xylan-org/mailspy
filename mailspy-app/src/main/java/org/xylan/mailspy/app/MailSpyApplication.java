@@ -39,5 +39,4 @@ public class MailSpyApplication {
     public static void main(final String[] args) {
         SpringApplication.run(MailSpyApplication.class, args);
     }
-
 }

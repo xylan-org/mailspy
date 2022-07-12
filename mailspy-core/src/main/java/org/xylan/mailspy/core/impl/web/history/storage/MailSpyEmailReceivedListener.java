@@ -40,5 +40,4 @@ public class MailSpyEmailReceivedListener implements ApplicationListener<EmailRe
     public void onApplicationEvent(final EmailReceivedEvent event) {
         mailsHistoryStorage.addEmail(event.getSource());
     }
-
 }

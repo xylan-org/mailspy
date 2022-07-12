@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import javax.servlet.http.HttpServletRequest;
-
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +50,10 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
 
     @Override
     @SneakyThrows
-    public Resource transform(final HttpServletRequest request,
-                              final Resource originalResource, final ResourceTransformerChain transformerChain) {
+    public Resource transform(
+            final HttpServletRequest request,
+            final Resource originalResource,
+            final ResourceTransformerChain transformerChain) {
         Resource result;
         final Resource resource = transformerChain.transform(request, originalResource);
         if (INDEX_PAGE_FILENAME.equals(resource.getFilename())) {
@@ -66,8 +67,8 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
 
     private String injectBasePath(String resourceAsString) {
         return resourceAsString.replaceFirst(
-            "<base href=\".*?\"\\s*/?>",
-            "<base href=\"" + properties.getPathNoTrailingSlash() + "/resources/\" />");
+                "<base href=\".*?\"\\s*/?>",
+                "<base href=\"" + properties.getPathNoTrailingSlash() + "/resources/\" />");
     }
 
     private String readToString(final InputStream inputStream) {
@@ -77,5 +78,4 @@ public class MailSpyIndexPageResourceTransformer implements ResourceTransformer 
         }
         return text;
     }
-
 }

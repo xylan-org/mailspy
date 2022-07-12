@@ -58,15 +58,15 @@ public class MailSpyWebMvcConfig {
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
             registry.addResourceHandler(properties.getPathNoTrailingSlash() + "/resources/**")
-                .addResourceLocations("classpath:META-INF/mailspy-frontend/")
-                .resourceChain(true)
-                .addTransformer(indexPageResourceTransformer);
+                    .addResourceLocations("classpath:META-INF/mailspy-frontend/")
+                    .resourceChain(true)
+                    .addTransformer(indexPageResourceTransformer);
         }
 
         @Override
         public void configurePathMatch(final PathMatchConfigurer configurer) {
-            configurer.addPathPrefix(properties.getPathNoTrailingSlash(),
-                HandlerTypePredicate.forBasePackage("org.xylan.mailspy.core"));
+            configurer.addPathPrefix(
+                    properties.getPathNoTrailingSlash(), HandlerTypePredicate.forBasePackage("org.xylan.mailspy.core"));
         }
 
         @Override
@@ -75,6 +75,5 @@ public class MailSpyWebMvcConfig {
                 registry.addMapping("/**").allowedOriginPatterns("*");
             }
         }
-
     }
 }

@@ -228,15 +228,6 @@
         <module name="NoWhitespaceBeforeCaseDefaultColon"/>
         <module name="OverloadMethodsDeclarationOrder"/>
         <module name="VariableDeclarationUsageDistance"/>
-        <module name="ImportOrder">
-            <property name="groups" value="/^javax?\./,/./"/>
-            <property name="staticGroups" value="/^javax?\./,/./"/>
-            <property name="ordered" value="true"/>
-            <property name="separated" value="true"/>
-            <property name="separatedStaticGroups" value="true"/>
-            <property name="option" value="bottom"/>
-            <property name="sortStaticImportsAlphabetically" value="true"/>
-        </module>
         <module name="MethodParamPad">
             <property name="tokens"
                       value="CTOR_DEF, LITERAL_NEW, METHOD_CALL, METHOD_DEF,

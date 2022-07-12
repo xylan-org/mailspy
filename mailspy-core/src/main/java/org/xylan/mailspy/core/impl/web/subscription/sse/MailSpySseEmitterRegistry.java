@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 import javax.annotation.PreDestroy;
-
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -57,9 +56,7 @@ public class MailSpySseEmitterRegistry {
         final SseEmitter emitter = sseEmitterSupplier.get();
         registerEventHandlers(emitter);
         try {
-            emitter.send(SseEmitter.event()
-                .name("connected")
-                .data("connected"));
+            emitter.send(SseEmitter.event().name("connected").data("connected"));
             emitters.add(emitter);
         } catch (final IOException exception) {
             emitter.completeWithError(exception);
@@ -104,5 +101,4 @@ public class MailSpySseEmitterRegistry {
     public void completeEmitters() {
         emitters.forEach(SseEmitter::complete);
     }
-
 }

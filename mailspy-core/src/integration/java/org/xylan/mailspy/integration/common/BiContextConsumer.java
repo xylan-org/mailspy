@@ -39,5 +39,4 @@ public interface BiContextConsumer<A, B> {
      * @throws Throwable Arbitrary throwable thrown.
      */
     void accept(A argument1, B argument2) throws Throwable;
-
 }

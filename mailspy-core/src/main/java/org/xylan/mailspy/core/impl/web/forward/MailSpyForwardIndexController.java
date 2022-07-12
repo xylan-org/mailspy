@@ -24,7 +24,6 @@ package org.xylan.mailspy.core.impl.web.forward;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +51,7 @@ public class MailSpyForwardIndexController {
     @RequestMapping(produces = MediaType.APPLICATION_XHTML_XML_VALUE)
     public void forwardIndexRequest(final HttpServletRequest request, final HttpServletResponse response) {
         request.getServletContext()
-            .getRequestDispatcher(properties.getPathNoTrailingSlash() + "/resources/index.html")
-            .forward(request, response);
+                .getRequestDispatcher(properties.getPathNoTrailingSlash() + "/resources/index.html")
+                .forward(request, response);
     }
-
 }

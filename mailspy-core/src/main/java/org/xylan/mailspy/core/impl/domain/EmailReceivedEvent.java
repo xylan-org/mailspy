@@ -23,7 +23,6 @@
 package org.xylan.mailspy.core.impl.domain;
 
 import java.util.Objects;
-
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -51,5 +50,4 @@ public class EmailReceivedEvent extends ApplicationEvent {
     public boolean equals(Object obj) {
         return obj instanceof EmailReceivedEvent && Objects.equals(((EmailReceivedEvent) obj).source, source);
     }
-
 }

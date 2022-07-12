@@ -22,8 +22,11 @@
 
 package org.xylan.mailspy.core.impl.web.history.controller;
 
-import java.util.List;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.testng.Assert.assertEquals;
 
+import java.util.List;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -31,10 +34,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
 import org.xylan.mailspy.core.impl.web.history.storage.MailSpyHistoryStorage;
-
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
-import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpyHistoryControllerTest {
@@ -67,5 +66,4 @@ public class MailSpyHistoryControllerTest {
         // THEN
         then(mailSpyHistoryStorage).should().clearHistory();
     }
-
 }

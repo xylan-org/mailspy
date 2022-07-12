@@ -45,5 +45,4 @@ public class SseEventPattern {
     public boolean isEmptyLine() {
         return this == EMPTY_LINE;
     }
-
 }

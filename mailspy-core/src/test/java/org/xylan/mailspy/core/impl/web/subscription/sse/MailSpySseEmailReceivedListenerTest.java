@@ -22,6 +22,8 @@
 
 package org.xylan.mailspy.core.impl.web.subscription.sse;
 
+import static org.mockito.BDDMockito.then;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -29,8 +31,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.impl.domain.EmailReceivedEvent;
 import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
-
-import static org.mockito.BDDMockito.then;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpySseEmailReceivedListenerTest {
@@ -53,5 +53,4 @@ public class MailSpySseEmailReceivedListenerTest {
         // THEN
         then(mailSpySseEmitterRegistry).should().broadcast("mail", email);
     }
-
 }

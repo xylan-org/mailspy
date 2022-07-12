@@ -44,5 +44,4 @@ public interface ContextRunnerCustomizer {
     static ContextRunnerCustomizer identity() {
         return contextRunner -> contextRunner;
     }
-
 }

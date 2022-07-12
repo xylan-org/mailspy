@@ -24,7 +24,6 @@ package org.xylan.mailspy.integration.common.matchers.sse;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import org.hamcrest.Matcher;
 
 /**
@@ -78,5 +77,4 @@ public class SseEventsPattern {
     public List<SseEventPattern> getSseEventPatterns() {
         return List.copyOf(sseEventPatterns);
     }
-
 }

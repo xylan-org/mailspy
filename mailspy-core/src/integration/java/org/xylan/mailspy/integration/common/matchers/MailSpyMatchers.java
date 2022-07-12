@@ -79,5 +79,4 @@ public final class MailSpyMatchers {
     public static Matcher<String> jsonPathMatches(String jsonPath, Matcher<?> valueMatcher) {
         return new JsonPathMatcher(jsonPath, valueMatcher);
     }
-
 }

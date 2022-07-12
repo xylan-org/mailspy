@@ -22,6 +22,8 @@
 
 package org.xylan.mailspy.integration.common;
 
+import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
+
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
@@ -34,8 +36,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testng.annotations.BeforeMethod;
 import org.xylan.mailspy.core.config.MailSpyBaseAutoConfig;
 
-import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
-
 public class BaseIntegrationTest {
 
     private WebApplicationContextRunner contextRunner;
@@ -46,15 +46,14 @@ public class BaseIntegrationTest {
 
     @SpringBootApplication
     @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*"))
-    public static class TestUserConfig {
-    }
+    public static class TestUserConfig {}
 
     @BeforeMethod
     protected final void initializeContextRunner() {
         contextRunner = new WebApplicationContextRunner()
-            .withPropertyValues("mailspy.enabled=true")
-            .withUserConfiguration(TestUserConfig.class)
-            .withConfiguration(AutoConfigurations.of(MailSpyBaseAutoConfig.class));
+                .withPropertyValues("mailspy.enabled=true")
+                .withUserConfiguration(TestUserConfig.class)
+                .withConfiguration(AutoConfigurations.of(MailSpyBaseAutoConfig.class));
     }
 
     protected final void run(BiContextConsumer<AssertableWebApplicationContext, MockMvc> contextConsumer) {
@@ -62,17 +61,12 @@ public class BaseIntegrationTest {
     }
 
     protected final void run(
-        ContextRunnerCustomizer contextCustomizer,
-        BiContextConsumer<AssertableWebApplicationContext, MockMvc> contextConsumer
-    ) {
-        contextCustomizer.customize(contextRunner)
-            .run(context -> {
-                AbstractMockMvcBuilder<?> mockMvcBuilder = MockMvcBuilders
-                    .webAppContextSetup(context)
-                    .apply(sharedHttpSession());
-                contextConsumer.accept(context, mockMvcBuilder.build());
-            });
+            ContextRunnerCustomizer contextCustomizer,
+            BiContextConsumer<AssertableWebApplicationContext, MockMvc> contextConsumer) {
+        contextCustomizer.customize(contextRunner).run(context -> {
+            AbstractMockMvcBuilder<?> mockMvcBuilder =
+                    MockMvcBuilders.webAppContextSetup(context).apply(sharedHttpSession());
+            contextConsumer.accept(context, mockMvcBuilder.build());
+        });
     }
-
-
 }

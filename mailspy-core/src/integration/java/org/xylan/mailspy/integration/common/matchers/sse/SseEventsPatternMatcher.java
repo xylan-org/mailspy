@@ -25,7 +25,6 @@ package org.xylan.mailspy.integration.common.matchers.sse;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
@@ -87,10 +86,10 @@ public class SseEventsPatternMatcher extends BaseMatcher<String> {
         if (matcher.find()) {
             String key = matcher.group(1);
             String value = matcher.group(2);
-            if (key == null || value == null
-                || !key.equals(sseEventPattern.getKey())
-                || !sseEventPattern.getValueMatcher().matches(value)
-            ) {
+            if (key == null
+                    || value == null
+                    || !key.equals(sseEventPattern.getKey())
+                    || !sseEventPattern.getValueMatcher().matches(value)) {
                 result = false;
             }
         } else {
@@ -102,28 +101,24 @@ public class SseEventsPatternMatcher extends BaseMatcher<String> {
     @Override
     public void describeTo(Description description) {
         description.appendText("\n");
-        sseEventsPattern.getSseEventPatterns()
-            .forEach(sseEventPattern -> {
-                if (sseEventPattern.isEmptyLine()) {
-                    description.appendText("<empty line>");
-                } else {
-                    description.appendText(sseEventPattern.getKey())
-                        .appendText(":(...) <-- this to be ");
-                    sseEventPattern.getValueMatcher().describeTo(description);
-                }
-                description.appendText("\n");
-            });
+        sseEventsPattern.getSseEventPatterns().forEach(sseEventPattern -> {
+            if (sseEventPattern.isEmptyLine()) {
+                description.appendText("<empty line>");
+            } else {
+                description.appendText(sseEventPattern.getKey()).appendText(":(...) <-- this to be ");
+                sseEventPattern.getValueMatcher().describeTo(description);
+            }
+            description.appendText("\n");
+        });
     }
 
     @Override
     public void describeMismatch(Object item, Description description) {
         description.appendText("found:");
         if (item instanceof String) {
-            description.appendText("\n")
-                .appendText(item.toString());
+            description.appendText("\n").appendText(item.toString());
         } else {
             description.appendText("item was not a String.");
         }
     }
-
 }

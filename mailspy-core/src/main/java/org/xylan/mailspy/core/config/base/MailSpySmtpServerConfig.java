@@ -22,6 +22,8 @@
 
 package org.xylan.mailspy.core.config.base;
 
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,8 +32,6 @@ import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.server.SMTPServer;
 import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.subetha.EventPublishingMessageHandler;
-
-import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 /**
  * Configuration for MailSpy's embedded SMTP server.
@@ -55,5 +55,4 @@ public class MailSpySmtpServerConfig {
     public MessageHandler mailSpyMessageHandler() {
         return new EventPublishingMessageHandler();
     }
-
 }

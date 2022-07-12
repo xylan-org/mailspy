@@ -22,6 +22,9 @@
 
 package org.xylan.mailspy.integration.mvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +36,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.BaseIntegrationTest;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class WebMvcConfigurerSupportIntegrationTest extends BaseIntegrationTest {
 
@@ -49,14 +49,13 @@ public class WebMvcConfigurerSupportIntegrationTest extends BaseIntegrationTest 
         @Override
         public void addResourceHandlers(final ResourceHandlerRegistry registry) {
             registry.addResourceHandler("/resources/**")
-                .addResourceLocations("classpath:META-INF/test-resources/")
-                .resourceChain(true);
+                    .addResourceLocations("classpath:META-INF/test-resources/")
+                    .resourceChain(true);
         }
 
         @Override
         public void configurePathMatch(final PathMatchConfigurer configurer) {
-            configurer.addPathPrefix("/test",
-                HandlerTypePredicate.forBasePackage("org.xylan.mailspy.integration"));
+            configurer.addPathPrefix("/test", HandlerTypePredicate.forBasePackage("org.xylan.mailspy.integration"));
         }
     }
 
@@ -71,42 +70,29 @@ public class WebMvcConfigurerSupportIntegrationTest extends BaseIntegrationTest 
 
     @Test
     public void endpointsDefinedByHostAppShouldStillBeAvailableWithMailSpyEnabled() {
-        run(
-            (contextRunner) -> contextRunner.withUserConfiguration(TestWebMvcConfigurer.class),
-            (context, mockMvc) -> {
-                mockMvc.perform(get("/test/test-method"))
-                    .andExpect(status().isOk());
-            });
+        run((contextRunner) -> contextRunner.withUserConfiguration(TestWebMvcConfigurer.class), (context, mockMvc) -> {
+            mockMvc.perform(get("/test/test-method")).andExpect(status().isOk());
+        });
     }
 
     @Test
     public void resourcesDefinedByHostAppShouldStillBeAvailableWithMailSpyEnabled() {
-        run(
-            (contextRunner) -> contextRunner.withUserConfiguration(TestWebMvcConfigurer.class),
-            (context, mockMvc) -> {
-                mockMvc.perform(get("/resources/test.txt"))
-                    .andExpect(status().isOk());
-            });
+        run((contextRunner) -> contextRunner.withUserConfiguration(TestWebMvcConfigurer.class), (context, mockMvc) -> {
+            mockMvc.perform(get("/resources/test.txt")).andExpect(status().isOk());
+        });
     }
 
     @Test
     public void mailSpyShouldStillBeAvailableWhenHostAppDefinedMvcConfigurer() {
-        run(
-            (contextRunner) -> contextRunner.withUserConfiguration(TestWebMvcConfigurer.class),
-            (context, mockMvc) -> {
-                mockMvc.perform(get("/mailspy"))
-                    .andExpect(status().isOk());
-            });
+        run((contextRunner) -> contextRunner.withUserConfiguration(TestWebMvcConfigurer.class), (context, mockMvc) -> {
+            mockMvc.perform(get("/mailspy")).andExpect(status().isOk());
+        });
     }
 
     @Test
     public void mailSpyResourcesShouldStillBeAvailableWhenHostAppDefinedMvcConfigurer() {
-        run(
-            (contextRunner) -> contextRunner.withUserConfiguration(TestWebMvcConfigurer.class),
-            (context, mockMvc) -> {
-                mockMvc.perform(get("/mailspy/resources/index.html"))
-                    .andExpect(status().isOk());
-            });
+        run((contextRunner) -> contextRunner.withUserConfiguration(TestWebMvcConfigurer.class), (context, mockMvc) -> {
+            mockMvc.perform(get("/mailspy/resources/index.html")).andExpect(status().isOk());
+        });
     }
-
 }

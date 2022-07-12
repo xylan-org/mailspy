@@ -23,7 +23,6 @@
 package org.xylan.mailspy.core.impl.web.history.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,5 +56,4 @@ public class MailSpyHistoryController {
     public void clearHistory() {
         mailsHistoryStorage.clearHistory();
     }
-
 }
