@@ -23,7 +23,6 @@
 plugins {
     alias libs.plugins.owasp.dependencycheck
     alias libs.plugins.versions
-    alias libs.plugins.jk1.dependencylicensereport
     alias libs.plugins.spotless
 }
 
@@ -143,45 +142,6 @@ tasks.named("dependencyUpdates").configure {
     }
 }
 
-import com.github.jk1.license.importer.DependencyDataImporter
-import com.github.jk1.license.ImportedModuleBundle
-import com.github.jk1.license.ImportedModuleData
-import groovy.json.JsonSlurper
-
-licenseReport {
-    importers = [
-        new DependencyDataImporter() {
-            @Override
-            public String getImporterName() {
-                return "NPM dependency licenses report"
-            }
-
-            @Override
-            public Collection<ImportedModuleBundle> doImport() {
-                def report = new JsonSlurper().parse(file("${project(":mailspy-frontend").buildDir}/reports/licenses/licenses.json"))
-                def modules = report.collect { key, value ->
-                    def versionSeparatorIndex = key.lastIndexOf('@')
-                    return new ImportedModuleData(
-                        name: key.substring(0, versionSeparatorIndex),
-                        version: key.substring(versionSeparatorIndex + 1),
-                        projectUrl: value.url ?: value.repository,
-                        license: value.licenses)
-                }
-                return [
-                    new ImportedModuleBundle("NPM dependencies", modules)
-                ]
-            }
-        }
-    ]
-    allowedLicensesFile = file("$projectDir/config/allowed-licenses.json")
-    excludeBoms = true
-}
-
-generateLicenseReport {
-    dependsOn ":mailspy-frontend:frontendLicenses"
-}
-
 check {
-    dependsOn checkLicense
     dependsOn spotlessCheck
 }

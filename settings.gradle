@@ -55,7 +55,6 @@ dependencyResolutionManagement {
             version("pmd", "6.45.0")
             version("versions-plugin", "0.42.0")
             version("jacoco", "0.8.8")
-            version("dependency-license-report", "2.1")
             version("spotless", "6.8.0")
             version("palantirformat", "2.25.0")
 
@@ -89,7 +88,6 @@ dependencyResolutionManagement {
             plugin("spring-boot-plugin", "org.springframework.boot").versionRef("spring-boot")
             plugin("siouan-frontend", "org.siouan.frontend-jdk11").versionRef("siouan-frontend")
             plugin("versions", "com.github.ben-manes.versions").versionRef("versions-plugin")
-            plugin("jk1-dependencylicensereport", "com.github.jk1.dependency-license-report").versionRef("dependency-license-report")
             plugin("spotless", "com.diffplug.spotless").versionRef("spotless")
 
             bundle("spring-boot-starters", [
