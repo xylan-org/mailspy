@@ -1,0 +1,4 @@
+mailspy:
+  enabled: true
+  path: /mailspy
+  enable-cors: true

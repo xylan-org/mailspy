@@ -38,3 +38,7 @@ dependencies {
 springBoot {
     mainClass = "org.xylan.mailspy.app.MailSpyApplication"
 }
+
+bootRun {
+    args = ["--spring.profiles.active=development"]
+}
