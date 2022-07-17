@@ -186,3 +186,35 @@ button svg,
     margin-top: -2px;
     fill: white;
 }
+
+#about-button:hover svg {
+    color: gray;
+}
+
+.about-modal .modal-body p,
+.about-modal .modal-body h4,
+.about-modal .modal-body li {
+    font-weight: 600;
+}
+
+.about-modal .modal-body svg path {
+    fill: #212529 !important;
+}
+
+.about-modal .modal-body .about-logo-p {
+    text-align: center;
+    font-size: 2em;
+}
+
+.about-modal .modal-body .about-logo-p svg {
+    width: 55px;
+}
+
+.about-modal .modal-body li {
+    margin-bottom: 10px;
+}
+
+.about-attribution-list {
+    height: 250px;
+    overflow-y: scroll;
+}

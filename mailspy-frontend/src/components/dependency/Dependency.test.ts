@@ -21,51 +21,32 @@
  */
 
 import { TestBed } from "test-utils/TestBed";
-import { Navbar } from "./Navbar";
-import BsNavbar from "react-bootstrap/Navbar";
-import { AboutModal } from "components/about/AboutModal";
+import { Dependency } from "./Dependency";
 
-describe("Navbar", () => {
-    let testBed: TestBed<Navbar>;
+describe("Dependency", () => {
+    let testBed: TestBed<Dependency>;
 
     beforeEach(() => {
         testBed = TestBed.create({
-            component: Navbar
+            component: Dependency
         });
     });
 
-    it("should render branding", () => {
+    it("should render props", () => {
         // GIVEN
+        testBed.setProps({
+            name: "Test Dependency",
+            licenseName: "Test License",
+            licenseUrl: "https://example.com/licenseUrl",
+            url: "https://example.com/url"
+        });
+
         // WHEN
         const result = testBed.render();
 
         // THEN
-        expect(result.find(BsNavbar.Brand).text()).toEqual("MailSpy");
-    });
-
-    it("should show about modal when about modal is clicked", () => {
-        // GIVEN
-        const result = testBed.render();
-
-        // WHEN
-        result.find("#about-button").simulate("click");
-
-        // THEN
-        expect(result.find(AboutModal).prop("visible")).toBe(true);
-    });
-
-    it("should hide about modal when its hide prop is called", () => {
-        // GIVEN
-        const result = testBed.render();
-        const aboutButton = result.find("#about-button");
-        const aboutModal = result.find(AboutModal);
-
-        aboutButton.simulate("click");
-
-        // WHEN
-        aboutModal.prop("hide")();
-
-        // THEN
-        expect(aboutModal.prop("visible")).toBe(false);
+        expect(result.find(".dependency-name").text()).toContain("Test Dependency");
+        expect(result.find(".dependency-license").html()).toContain('<a href="https://example.com/licenseUrl" target="_blank">Test License</a>');
+        expect(result.find(".dependency-url").html()).toContain('<a href="https://example.com/url" target="_blank">https://example.com/url</a>');
     });
 });

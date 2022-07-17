@@ -24,9 +24,20 @@ import autobind from "autobind-decorator";
 import React, { Component } from "react";
 import BsNavbar from "react-bootstrap/Navbar";
 import { ReactComponent as Logo } from "../../assets/mailspy.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import type { NavbarState } from "./domain/NavbarState";
+import { AboutModal } from "components/about/AboutModal";
 
 @autobind
-export class Navbar extends Component<Empty, Empty> {
+export class Navbar extends Component<Empty, NavbarState> {
+    public constructor(props: Empty) {
+        super(props);
+        this.state = {
+            aboutModalShown: false
+        };
+    }
+
     public render(): JSX.Element {
         return (
             <header>
@@ -35,7 +46,24 @@ export class Navbar extends Component<Empty, Empty> {
                         <Logo />
                         MailSpy
                     </BsNavbar.Brand>
+                    <BsNavbar.Toggle />
+                    <BsNavbar.Collapse className="justify-content-end">
+                        <BsNavbar.Text>
+                            <button
+                                id="about-button"
+                                className="link-button"
+                                onClick={() =>
+                                    this.setState({
+                                        aboutModalShown: true
+                                    })
+                                }
+                            >
+                                <FontAwesomeIcon icon={faQuestionCircle} />
+                            </button>
+                        </BsNavbar.Text>
+                    </BsNavbar.Collapse>
                 </BsNavbar>
+                <AboutModal visible={this.state.aboutModalShown} hide={() => this.setState({ aboutModalShown: false })} />
             </header>
         );
     }

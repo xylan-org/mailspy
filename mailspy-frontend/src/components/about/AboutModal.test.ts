@@ -20,52 +20,48 @@
  * SOFTWARE.
  */
 
+import { Modal } from "react-bootstrap";
 import { TestBed } from "test-utils/TestBed";
-import { Navbar } from "./Navbar";
-import BsNavbar from "react-bootstrap/Navbar";
-import { AboutModal } from "components/about/AboutModal";
+import { AboutModal } from "./AboutModal";
 
-describe("Navbar", () => {
-    let testBed: TestBed<Navbar>;
+describe("AboutModal", () => {
+    let testBed: TestBed<AboutModal>;
 
     beforeEach(() => {
         testBed = TestBed.create({
-            component: Navbar
+            component: AboutModal
         });
     });
 
-    it("should render branding", () => {
+    it("should set show prop on internal modal", () => {
         // GIVEN
+        testBed.setProps({
+            visible: true,
+            hide: () => {
+                // no action
+            }
+        });
+
         // WHEN
         const result = testBed.render();
 
         // THEN
-        expect(result.find(BsNavbar.Brand).text()).toEqual("MailSpy");
+        expect(result.find(Modal).prop("show")).toBe(true);
     });
 
-    it("should show about modal when about modal is clicked", () => {
+    it("should set onHide prop on internal modal", () => {
         // GIVEN
-        const result = testBed.render();
+        const onHide: () => void = jest.fn();
+        testBed.setProps({
+            visible: true,
+            hide: onHide
+        });
 
         // WHEN
-        result.find("#about-button").simulate("click");
-
-        // THEN
-        expect(result.find(AboutModal).prop("visible")).toBe(true);
-    });
-
-    it("should hide about modal when its hide prop is called", () => {
-        // GIVEN
         const result = testBed.render();
-        const aboutButton = result.find("#about-button");
-        const aboutModal = result.find(AboutModal);
-
-        aboutButton.simulate("click");
-
-        // WHEN
-        aboutModal.prop("hide")();
+        result.find(Modal).prop("onHide")();
 
         // THEN
-        expect(aboutModal.prop("visible")).toBe(false);
+        expect(onHide).toHaveBeenCalled();
     });
 });
