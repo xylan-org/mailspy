@@ -87,13 +87,6 @@ task frontendDependencyUpdates(type: RunNpm) {
     dependsOn installFrontend
 }
 
-task frontendLicenses(type: RunNpm) {
-    description = "Generates a report of the frontend dependency licenses."
-    group = "verification"
-    script = "run licenses"
-    dependsOn installFrontend
-}
-
 check {
     dependsOn testFrontend
     dependsOn prettierCheck

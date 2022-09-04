@@ -97,6 +97,9 @@ def setJacocoExclusions = { classDirectories ->
 
 jacocoTestReport {
     dependsOn test
+    reports {
+        xml.required = true
+    }
     afterEvaluate {
         setJacocoExclusions(classDirectories)
     }
