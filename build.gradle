@@ -20,6 +20,8 @@
  * SOFTWARE.
  */
 
+// test comment
+
 plugins {
     alias libs.plugins.owasp.dependencycheck
     alias libs.plugins.versions
