@@ -80,7 +80,7 @@ spotless {
         licenseHeaderFile file("$rootDir/config/license/c_like.txt"), "^(?!(\\/\\*| \\*| \\*\\/)).+"
     }
     format "generic", {
-        target "**/*.gradle", "**/*.java", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.css", "**/*.json", "**/*.properties"
+        target "**/*.gradle", "**/*.java", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.css", "**/*.json", "**/*.properties", "**/*.yml"
         targetExclude exclusions
         trimTrailingWhitespace()
         endWithNewline()
