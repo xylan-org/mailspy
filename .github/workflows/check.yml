@@ -25,10 +25,3 @@ jobs:
         uses: gradle/gradle-build-action@v2.3.0
         with:
           arguments: check
-      - name: Report JaCoCo coverage
-        uses: PavanMudigonda/jacoco-reporter@v4.5
-        with:
-          coverage_results_path: mailspy-core/build/reports/jacoco/test/jacocoTestReport.xml
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Add coverage report to summary
-        run: echo "${{ steps.jacoco_reporter.outputs.coverageSummary }}" >> $GITHUB_STEP_SUMMARY
