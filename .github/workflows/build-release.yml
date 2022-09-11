@@ -1,13 +1,13 @@
-name: Check
+name: Build Release
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "**" ]
-
-permissions:
-  contents: read
+  workflow_dispatch:
+    inputs:
+      forceNextVersion:
+        description: "Force next version"
+        required: false
+        default: ""
+        type: string
 
 jobs:
   check:
@@ -24,4 +24,4 @@ jobs:
       - name: Invoke Gradle check
         uses: gradle/gradle-build-action@v2.3.0
         with:
-          arguments: check
+          arguments: doBuild -Prelease=true

@@ -25,13 +25,10 @@ plugins {
     alias libs.plugins.versions
     alias libs.plugins.spotless
     alias libs.plugins.spotless.changelog
+    alias libs.plugins.grgit
 }
 
 description = "MailSpy :: Root"
-
-apply from: "gradle/versioning.gradle"
-
-updateBuildVersion('1.2.3');
 
 wrapper {
     gradleVersion = libs.versions.gradle.get()
@@ -39,7 +36,7 @@ wrapper {
 
 allprojects {
     group = "org.xylan.mailspy"
-    version = "1.0.0-SNAPSHOT"
+    version = "0.0.0"
 
     repositories {
         mavenCentral()
@@ -106,7 +103,7 @@ spotlessChangelog {
     changelogFile "CHANGELOG.md"
     ifFoundBumpBreaking "**BREAKING**"
     ifFoundBumpAdded "### Added"
-    appendDashSnapshotUnless_dashPrelease true
+    appendDashSnapshotUnless_dashPrelease=true
 }
 
 dependencyCheck {
@@ -158,3 +155,60 @@ check {
     dependsOn spotlessCheck
 }
 
+task updateBuildGradleVersion {
+    description = "Updates the version in the build.gradle file. New version is inferred from the changelog."
+    group = "versioning"
+    doLast {
+        def buildFileContents = buildFile.getText()
+            .replaceFirst("version = \".*\"", "version = \"" + spotlessChangelog.versionNext + "\"")
+        buildFile.setText(buildFileContents)
+    }
+}
+
+task updateVersion {
+    description = "Updates the version in files which contain it. New version is inferred from the changelog."
+    group = "versioning"
+    dependsOn updateBuildGradleVersion
+}
+
+task commitVersion {
+    description = "Commits files updated by versioning."
+    group = "versioning"
+    doLast {
+        def version = rootProject.version
+        grgit.add(patterns: [
+            "build.gradle",
+            "mailspy-frontend/package.json",
+            "CHANGELOG.md"
+        ])
+        if (!grgit.status().staged.allChanges.isEmpty()) {
+            grgit.commit(message: "Update version to $version")
+            grgit.push(all: true)
+        }
+    }
+    mustRunAfter build
+}
+
+task tagVersion {
+    description = "Creates git tag for the current version."
+    group = "versioning"
+    doLast {
+        def version = rootProject.version
+        grgit.tag.add(name: version, message: "Version $version")
+        grgit.push(tags: true)
+    }
+    mustRunAfter build
+}
+
+build {
+    mustRunAfter updateVersion
+}
+
+task doBuild {
+    def release = project.findProperty("release") as boolean
+    if (release) {
+        dependsOn updateVersion, changelogBump, build, tagVersion
+    } else {
+        dependsOn updateVersion, build, commitVersion
+    }
+}
