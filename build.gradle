@@ -36,7 +36,7 @@ wrapper {
 
 allprojects {
     group = "org.xylan.mailspy"
-    version = "0.0.0"
+    version = "0.1.0-SNAPSHOT"
 
     repositories {
         mavenCentral()
@@ -169,13 +169,15 @@ task updateVersion {
     description = "Updates the version in files which contain it. New version is inferred from the changelog."
     group = "versioning"
     dependsOn updateBuildGradleVersion
+    doLast {
+        version = spotlessChangelog.versionNext
+    }
 }
 
 task commitVersion {
     description = "Commits files updated by versioning."
     group = "versioning"
     doLast {
-        def version = rootProject.version
         grgit.add(patterns: [
             "build.gradle",
             "mailspy-frontend/package.json",
@@ -193,7 +195,6 @@ task tagVersion {
     description = "Creates git tag for the current version."
     group = "versioning"
     doLast {
-        def version = rootProject.version
         grgit.tag.add(name: version, message: "Version $version")
         grgit.push(tags: true)
     }
