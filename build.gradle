@@ -24,9 +24,14 @@ plugins {
     alias libs.plugins.owasp.dependencycheck
     alias libs.plugins.versions
     alias libs.plugins.spotless
+    alias libs.plugins.spotless.changelog
 }
 
 description = "MailSpy :: Root"
+
+apply from: "gradle/versioning.gradle"
+
+updateBuildVersion('1.2.3');
 
 wrapper {
     gradleVersion = libs.versions.gradle.get()
@@ -97,6 +102,13 @@ spotless {
     }
 }
 
+spotlessChangelog {
+    changelogFile "CHANGELOG.md"
+    ifFoundBumpBreaking "**BREAKING**"
+    ifFoundBumpAdded "### Added"
+    appendDashSnapshotUnless_dashPrelease true
+}
+
 dependencyCheck {
     suppressionFile "$rootDir/config/owasp-suppressions.xml"
     scanConfigurations = ["runtimeClasspath", "compileClasspath"]
@@ -145,3 +157,4 @@ tasks.named("dependencyUpdates").configure {
 check {
     dependsOn spotlessCheck
 }
+

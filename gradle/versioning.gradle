@@ -1,0 +1,6 @@
+
+ext.updateBuildVersion = { newVersion ->
+    def buildFileContents = buildFile.getText()
+        .replaceFirst("version = \".*\"", "version = \"" + newVersion + "\"")
+    buildFile.setText(buildFileContents)
+}
