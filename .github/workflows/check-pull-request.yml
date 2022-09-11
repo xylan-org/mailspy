@@ -19,4 +19,4 @@ jobs:
       - name: Invoke Gradle check
         uses: gradle/gradle-build-action@v2.3.0
         with:
-          arguments: clean check
+          arguments: "clean check"
