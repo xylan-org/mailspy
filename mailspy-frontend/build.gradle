@@ -39,9 +39,6 @@ frontend {
 assembleFrontend {
     inputs.files("public", "src", "package.json", "tsconfig.json", "craco.config.js")
     outputs.dir("$buildDir/webpack")
-    onlyIf {
-        project.findProperty("production") ?: false
-    }
 }
 
 jar {

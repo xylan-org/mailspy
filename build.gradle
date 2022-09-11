@@ -101,6 +101,7 @@ spotless {
 
 spotlessChangelog {
     changelogFile "CHANGELOG.md"
+    enforceCheck true
     ifFoundBumpBreaking "**BREAKING**"
     ifFoundBumpAdded "### Added"
     appendDashSnapshotUnless_dashPrelease=true
