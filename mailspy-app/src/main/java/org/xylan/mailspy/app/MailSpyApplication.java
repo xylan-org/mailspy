@@ -22,10 +22,10 @@
 
 package org.xylan.mailspy.app;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.xylan.mailspy.app.banner.BuildInfoBanner;
 
 /**
  * Entry point of the standalone MailSpy application.
@@ -39,11 +39,15 @@ public class MailSpyApplication extends SpringBootServletInitializer {
      * @param args The command-line arguments.
      */
     public static void main(final String[] args) {
-        SpringApplication.run(MailSpyApplication.class, args);
+        doConfigure(new SpringApplicationBuilder()).run(args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(MailSpyApplication.class);
+        return doConfigure(builder);
+    }
+
+    private static SpringApplicationBuilder doConfigure(SpringApplicationBuilder builder) {
+        return builder.sources(MailSpyApplication.class).banner(new BuildInfoBanner());
     }
 }

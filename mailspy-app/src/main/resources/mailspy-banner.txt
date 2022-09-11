@@ -1,0 +1,6 @@
+     __  ___      _ _______
+    /  |/  /___ _(_) / ___/____  __  __
+   / /|_/ / __ `/ / /\__ \/ __ \/ / / /        MailSpy version:  v${build.version}
+  / /  / / /_/ / / /___/ / /_/ / /_/ /     Spring Boot version:  v${spring-boot.version}
+ /_/  /_/\__,_/_/_//____/ .___/\__, /               Build time:  ${build.time}
+                       /_/    /____/

@@ -32,11 +32,16 @@ dependencies {
     runtimeOnly project(":mailspy-core")
     implementation libs.logback.classic
     implementation libs.bundles.spring.boot.starters
+    compileOnly libs.lombok
+    testCompileOnly libs.lombok
+    annotationProcessor libs.lombok
+    testAnnotationProcessor libs.lombok
     developmentOnly libs.spring.boot.devtools
 }
 
 springBoot {
     mainClass = "org.xylan.mailspy.app.MailSpyApplication"
+    buildInfo()
 }
 
 bootRun {

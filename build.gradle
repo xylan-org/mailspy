@@ -73,7 +73,8 @@ spotless {
         ".idea/**",
         ".settings/**",
         ".vscode/**",
-        "**/node_modules/**",
+        "mailspy-frontend/node_modules/**",
+        "mailspy-frontend/node/**",
         "mailspy-frontend/package-lock.json"
     ]
     format "licenseHeader", {
