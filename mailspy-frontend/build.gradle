@@ -91,6 +91,7 @@ task updatePackageJsonVersion(type: RunNpm) {
     description = "Updates the version in the package.json file. New version is inferred from the changelog."
     group = "verification"
     script = "version ${rootProject.spotlessChangelog.versionNext}"
+    dependsOn installNode
 }
 
 check {
