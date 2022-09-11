@@ -187,6 +187,10 @@ button svg,
     fill: white;
 }
 
+#about-button {
+    vertical-align: middle;
+}
+
 #about-button:hover svg {
     color: gray;
 }
@@ -217,4 +221,11 @@ button svg,
 .about-attribution-list {
     height: 250px;
     overflow-y: scroll;
+}
+
+.version {
+    margin-right: 10px;
+    font-size: 0.8em;
+    vertical-align: middle;
+    color: #fff;
 }

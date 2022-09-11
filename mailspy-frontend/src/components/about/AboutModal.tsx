@@ -44,6 +44,7 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                     <p className="about-logo-p">
                         <Logo /> MailSpy
                     </p>
+                    <p className="text-center">Version {process.env.REACT_APP_VERSION}</p>
                     <p className="text-center mb-0">&copy; 2022 xylan.org</p>
                     <p className="text-center">
                         Licensed under the{" "}

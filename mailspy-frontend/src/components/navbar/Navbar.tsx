@@ -49,6 +49,7 @@ export class Navbar extends Component<Empty, NavbarState> {
                     <BsNavbar.Toggle />
                     <BsNavbar.Collapse className="justify-content-end">
                         <BsNavbar.Text>
+                            <span className="version">v{process.env.REACT_APP_VERSION}</span>
                             <button
                                 id="about-button"
                                 className="link-button"
