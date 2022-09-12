@@ -105,7 +105,11 @@ spotlessChangelog {
     enforceCheck true
     ifFoundBumpBreaking "**BREAKING**"
     ifFoundBumpAdded "### Added"
-    appendDashSnapshotUnless_dashPrelease=true
+    appendDashSnapshotUnless_dashPrelease true
+    tagPrefix "v"
+    commitMessage "Release version {{version}}"
+    remote "origin"
+    branch "master"
 }
 
 dependencyCheck {
@@ -193,24 +197,18 @@ task commitVersion {
     mustRunAfter build
 }
 
-task tagVersion {
-    description = "Creates git tag for the current version."
-    group = "versioning"
-    doLast {
-        grgit.tag.add(name: version, message: "Version $version")
-        grgit.push(tags: true)
-    }
-    mustRunAfter build
-}
-
 build {
     mustRunAfter updateVersion
+}
+
+changelogPush  {
+    mustRunAfter build
 }
 
 task doBuild {
     def release = project.findProperty("release")?.toBoolean()
     if (release) {
-        dependsOn updateVersion, changelogBump, build, tagVersion
+        dependsOn updateVersion, changelogBump, build, changelogPush
     } else {
         dependsOn updateVersion, build, commitVersion
     }
