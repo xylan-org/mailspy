@@ -105,6 +105,7 @@ spotlessChangelog {
     enforceCheck true
     ifFoundBumpBreaking "**BREAKING**"
     ifFoundBumpAdded "### Added"
+    forceNextVersion project.findProperty("forceNextVersion") ?: null
     appendDashSnapshotUnless_dashPrelease true
     tagPrefix "v"
     commitMessage "Release version {{version}}"
