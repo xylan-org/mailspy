@@ -5,8 +5,8 @@ _Please note that MailSpy is currently in the process of publishing its first re
 </p>
 <hr>
 
-![Build Status](https://img.shields.io/github/workflow/status/xylan-org/mailspy/build-snapshot)
-![License](https://img.shields.io/github/license/xylan-org/mailspy)
+![Build Status](https://img.shields.io/github/workflow/status/xylan-org/mailspy/Snapshot%20Build)
+![License](https://img.shields.io/github/license/xylan-org/mailspy?label=license)
 ![Latest Release](https://img.shields.io/gitlab/v/release/xylan-org/mailspy)
 
 MailSpy is a development tool for the manual testing of email sending. It lets you view all emails your application sent without actually sending anything.
