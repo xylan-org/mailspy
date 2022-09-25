@@ -1,7 +1,10 @@
 <p align="center">
-    <img src="docs/mailspy-full.svg" width="45%"/>
+    <img src="docs/mailspy-full.svg" width="40%"/>
 </p>
 <hr>
+
+![](https://github.com/xylan-org/mailspy/actions/workflows/build-snapshot.yml/badge.svg)
+![](https://github.com/xylan-org/mailspy/actions/workflows/build-release.yml/badge.svg)
 
 MailSpy is a development tool for the manual testing of email sending. It lets you view all emails your application sent without actually sending anything.
 
