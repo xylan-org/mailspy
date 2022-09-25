@@ -222,19 +222,13 @@ task pushVersion {
             grgit.push(all: true, tags: true)
         }
     }
-    mustRunAfter build
-}
-
-build {
-    mustRunAfter updateVersion
-    mustRunAfter changelogBump
 }
 
 task doBuild {
     def release = project.findProperty("release")?.toBoolean()
     if (release) {
-        dependsOn updateVersion, changelogBump, build, pushVersion
+        dependsOn updateVersion, changelogBump, pushVersion
     } else {
-        dependsOn updateVersion, build, pushVersion
+        dependsOn updateVersion, pushVersion
     }
 }

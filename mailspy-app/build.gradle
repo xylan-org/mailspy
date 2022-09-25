@@ -47,3 +47,16 @@ springBoot {
 bootRun {
     args = ["--spring.profiles.active=development"]
 }
+
+bootJar {
+    mustRunAfter rootProject.updateVersion
+    mustRunAfter rootProject.changelogBump
+}
+
+rootProject.doBuild {
+    dependsOn bootJar
+}
+
+rootProject.pushVersion {
+    mustRunAfter bootJar
+}
