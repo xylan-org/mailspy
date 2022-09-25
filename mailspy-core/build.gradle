@@ -46,19 +46,15 @@ dependencies {
     api libs.jackson.datatype.jsr310, optional
     compileOnly libs.jakarta.servletapi
     compileOnly libs.jakarta.annotationsapi
-    compileOnly libs.lombok
     testImplementation libs.testng
     testImplementation libs.mockito.core
     testImplementation libs.mockito.testng
     testImplementation libs.logback.classic
-    testCompileOnly libs.lombok
     integrationImplementation libs.spring.boot.test
     integrationImplementation libs.spring.test
     integrationImplementation libs.assertj.core
     integrationImplementation libs.hamcrest
     integrationImplementation libs.jsonpath
-    annotationProcessor libs.lombok
-    testAnnotationProcessor libs.lombok
 }
 
 publishing {

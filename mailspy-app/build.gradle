@@ -21,7 +21,6 @@
  */
 
 plugins {
-    id "java"
     id "war"
     alias libs.plugins.spring.boot.plugin
 }
@@ -32,10 +31,6 @@ dependencies {
     runtimeOnly project(":mailspy-core")
     implementation libs.logback.classic
     implementation libs.bundles.spring.boot.starters
-    compileOnly libs.lombok
-    testCompileOnly libs.lombok
-    annotationProcessor libs.lombok
-    testAnnotationProcessor libs.lombok
     developmentOnly libs.spring.boot.devtools
 }
 

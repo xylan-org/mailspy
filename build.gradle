@@ -20,12 +20,15 @@
  * SOFTWARE.
  */
 
+import io.franzbecker.gradle.lombok.task.DelombokTask
+
 plugins {
     alias libs.plugins.owasp.dependencycheck
     alias libs.plugins.versions
     alias libs.plugins.spotless
     alias libs.plugins.spotless.changelog
     alias libs.plugins.grgit
+    alias libs.plugins.lombok apply false
 }
 
 description = "MailSpy :: Root"
@@ -45,6 +48,12 @@ allprojects {
 
 subprojects {
     if (file("$projectDir/src/main/java").exists()) {
+        apply plugin: "java"
+        java {
+            withJavadocJar()
+            withSourcesJar()
+        }
+
         apply plugin: "checkstyle"
         checkstyle {
             configFile file("$rootDir/config/checkstyle.xml")
@@ -57,6 +66,28 @@ subprojects {
             ruleSetFiles = files("$rootDir/config/pmd.xml")
             toolVersion = libs.versions.pmd.get()
             consoleOutput = true
+        }
+
+        apply plugin: libs.plugins.lombok.get().getPluginId()
+        lombok {
+            version = libs.versions.lombok.get()
+        }
+
+        task delombok(type: DelombokTask) {
+            ext.outputDir = file("$buildDir/delombok")
+            outputs.dir(outputDir)
+            sourceSets.main.java.srcDirs.each { srcDir ->
+                inputs.dir(srcDir)
+                args(srcDir, "-d", outputDir)
+            }
+            dependsOn compileJava
+        }
+
+        javadoc {
+            dependsOn delombok
+            source = delombok.outputDir
+            failOnError = false
+            options.addBooleanOption("Xdoclint:-missing", true)
         }
     }
 
