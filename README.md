@@ -3,8 +3,9 @@
 </p>
 <hr>
 
-![](https://github.com/xylan-org/mailspy/actions/workflows/build-snapshot.yml/badge.svg)
-![](https://github.com/xylan-org/mailspy/actions/workflows/build-release.yml/badge.svg)
+![Build Status](https://img.shields.io/github/workflow/status/xylan-org/mailspy/build-snapshot)
+![License](https://img.shields.io/github/license/xylan-org/mailspy)
+![Latest Release](https://img.shields.io/gitlab/v/release/xylan-org/mailspy)
 
 MailSpy is a development tool for the manual testing of email sending. It lets you view all emails your application sent without actually sending anything.
 
