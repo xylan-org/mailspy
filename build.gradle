@@ -107,10 +107,6 @@ spotlessChangelog {
     ifFoundBumpAdded "### Added"
     forceNextVersion project.findProperty("forceNextVersion") ?: null
     appendDashSnapshotUnless_dashPrelease true
-    tagPrefix "v"
-    commitMessage "Release version {{version}}"
-    remote "origin"
-    branch "master"
 }
 
 dependencyCheck {
@@ -162,6 +158,30 @@ check {
     dependsOn spotlessCheck
 }
 
+def replaceVersionInFile = { file, versionPatterns ->
+    def contents = file.getText()
+    versionPatterns.each { pattern ->
+        def matches = contents =~ pattern
+        matches.each { match ->
+            contents = contents.replace(match[0], match[1] + spotlessChangelog.versionNext + match[3])
+        }
+    }
+    file.setText(contents)
+}
+
+task updateReadmeVersions {
+    description = "Updates the versions in the README.md file. New version is inferred from the changelog."
+    group = "versioning"
+    def versionRegex = "\\d+\\.\\d+\\.\\d+"
+    doLast {
+        replaceVersionInFile(file("README.md"), [
+            "(\"org\\.xylan:mailspy-core:)($versionRegex)(\")",
+            "(<version>)($versionRegex)(</version>)",
+            "(mailspy-app-)($versionRegex)(\\.jar)"
+        ])
+    }
+}
+
 task updateBuildGradleVersion {
     description = "Updates the version in the build.gradle file. New version is inferred from the changelog."
     group = "versioning"
@@ -175,24 +195,34 @@ task updateBuildGradleVersion {
 task updateVersion {
     description = "Updates the version in files which contain it. New version is inferred from the changelog."
     group = "versioning"
-    dependsOn updateBuildGradleVersion
     doLast {
         version = spotlessChangelog.versionNext
     }
+    // see dependency also in mailspy-frontend build
+    dependsOn updateBuildGradleVersion
+    dependsOn updateReadmeVersions
 }
 
-task commitVersion {
-    description = "Commits files updated by versioning."
+task pushVersion {
+    description = "Commits and pushes files updated by versioning. Tags release versions."
     group = "versioning"
     doLast {
-        grgit.add(patterns: [
-            "build.gradle",
-            "mailspy-frontend/package.json",
-            "CHANGELOG.md"
-        ])
+        def release = project.findProperty("release")?.toBoolean()
+        if (release) {
+            grgit.add(patterns: [
+                "CHANGELOG.md",
+                "README.md"
+            ])
+            grgit.tag.add(name: "v$version")
+        } else {
+            grgit.add(patterns: [
+                "build.gradle",
+                "mailspy-frontend/package.json"
+            ])
+        }
         if (!grgit.status().staged.allChanges.isEmpty()) {
             grgit.commit(message: "Update version to $version")
-            grgit.push(all: true)
+            grgit.push(all: true, tags: true)
         }
     }
     mustRunAfter build
@@ -200,17 +230,14 @@ task commitVersion {
 
 build {
     mustRunAfter updateVersion
-}
-
-changelogPush  {
-    mustRunAfter build
+    mustRunAfter changelogBump
 }
 
 task doBuild {
     def release = project.findProperty("release")?.toBoolean()
     if (release) {
-        dependsOn updateVersion, changelogBump, build, changelogPush
+        dependsOn updateVersion, changelogBump, build, pushVersion
     } else {
-        dependsOn updateVersion, build, commitVersion
+        dependsOn updateVersion, build, pushVersion
     }
 }
