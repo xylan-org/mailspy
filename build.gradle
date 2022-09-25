@@ -158,12 +158,12 @@ check {
     dependsOn spotlessCheck
 }
 
-def replaceVersionInFile = { file, versionPatterns ->
+def replaceVersionInFile = { file, newVersion, versionPatterns ->
     def contents = file.getText()
     versionPatterns.each { pattern ->
         def matches = contents =~ pattern
         matches.each { match ->
-            contents = contents.replace(match[0], match[1] + spotlessChangelog.versionNext + match[3])
+            contents = contents.replace(match[0], match[1] + newVersion + match[3])
         }
     }
     file.setText(contents)
@@ -174,7 +174,7 @@ task updateReadmeVersions {
     group = "versioning"
     def versionRegex = "\\d+\\.\\d+\\.\\d+"
     doLast {
-        replaceVersionInFile(file("README.md"), [
+        replaceVersionInFile(file("README.md"), spotlessChangelog.versionNext, [
             "(\"org\\.xylan:mailspy-core:)($versionRegex)(\")",
             "(<version>)($versionRegex)(</version>)",
             "(mailspy-app-)($versionRegex)(\\.jar)"
@@ -186,18 +186,15 @@ task updateBuildGradleVersion {
     description = "Updates the version in the build.gradle file. New version is inferred from the changelog."
     group = "versioning"
     doLast {
-        def buildFileContents = buildFile.getText()
-            .replaceFirst("version = \".*\"", "version = \"" + spotlessChangelog.versionNext + "\"")
-        buildFile.setText(buildFileContents)
+        replaceVersionInFile(file("build.gradle"), spotlessChangelog.versionNext, ["(version = \")(.*)(\")"])
+        // same thing in memory
+        version = spotlessChangelog.versionNext
     }
 }
 
 task updateVersion {
     description = "Updates the version in files which contain it. New version is inferred from the changelog."
     group = "versioning"
-    doLast {
-        version = spotlessChangelog.versionNext
-    }
     // see dependency also in mailspy-frontend build
     dependsOn updateBuildGradleVersion
     dependsOn updateReadmeVersions
