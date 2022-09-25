@@ -29,7 +29,7 @@ include "mailspy-frontend"
 dependencyResolutionManagement {
     versionCatalogs {
         libs {
-            version("gradle", "7.4.2")
+            version("gradle", "7.5.1")
             version("node", "16.15.0")
             version("spring-framework", "5.3.23")
             version("spring-boot", "2.7.4")
