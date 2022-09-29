@@ -30,6 +30,12 @@ import org.siouan.frontendgradleplugin.infrastructure.gradle.RunNpm
 
 description = "MailSpy :: Frontend"
 
+ext {
+    pomName = description
+    pomDescription = "Frontend artifact for MailSpy"
+    artifacts = [jar]
+}
+
 frontend {
     nodeVersion = libs.versions.node.get()
     assembleScript = "run build"
@@ -99,12 +105,4 @@ check {
 
 rootProject.updateVersion {
     dependsOn updatePackageJsonVersion
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            artifact jar
-        }
-    }
 }

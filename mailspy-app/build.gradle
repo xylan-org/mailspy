@@ -27,6 +27,12 @@ plugins {
 
 description = "MailSpy :: App"
 
+ext {
+    pomName = description
+    pomDescription = "Standalone MailSpy web app. View your outgoing emails without sending anything."
+    artifacts = [bootJar, sourcesJar, javadocJar]
+}
+
 dependencies {
     runtimeOnly project(":mailspy-core")
     implementation libs.logback.classic

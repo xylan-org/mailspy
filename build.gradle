@@ -47,6 +47,9 @@ allprojects {
 }
 
 subprojects {
+    apply plugin: "maven-publish"
+    apply plugin: "signing"
+
     if (file("$projectDir/src/main/java").exists()) {
         apply plugin: "java"
         java {
@@ -94,6 +97,55 @@ subprojects {
     tasks.withType(JavaCompile) {
         options.release = 11
         options.compilerArgs << "-Xlint:-processing" << "-Werror"
+    }
+
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
+    }
+
+    afterEvaluate {
+        publishing {
+            repositories {
+                maven {
+                    name = "sonatypeNexus"
+                    url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                    credentials(PasswordCredentials)
+                }
+            }
+            publications {
+                mailSpy(MavenPublication) {
+                    from components.java
+                    artifacts = project.ext.artifacts
+                    pom {
+                        name = project.ext.pomName
+                        description = project.ext.pomDescription
+                        url = "https://xylan.org"
+                        licenses {
+                            license {
+                                name = "MIT License"
+                                url = "https://spdx.org/licenses/MIT.html"
+                            }
+                        }
+                        developers {
+                            developer {
+                                id = "abelk2"
+                                name = "Abel Keszei"
+                                email = "keszeiabel@gmail.com"
+                            }
+                        }
+                        scm {
+                            connection = "scm:git:git://github.com/xylan-org/mailspy.git"
+                            developerConnection = "scm:git:ssh://github.com:xylan-org/mailspy.git"
+                            url = "https://github.com/xylan-org/mailspy/tree/master"
+                        }
+                    }
+                }
+            }
+        }
+
+        signing {
+            sign publishing.publications.mailSpy
+        }
     }
 }
 

@@ -30,6 +30,12 @@ plugins {
 
 description = "MailSpy :: Core"
 
+ext {
+    pomName = description
+    pomDescription = "MailSpy Spring Boot auto-configuration. View your outgoing emails without sending anything."
+    artifacts = [jar, sourcesJar, javadocJar]
+}
+
 configurations {
     testImplementation.extendsFrom compileOnly
 }
@@ -55,14 +61,6 @@ dependencies {
     integrationImplementation libs.assertj.core
     integrationImplementation libs.hamcrest
     integrationImplementation libs.jsonpath
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
-        }
-    }
 }
 
 check {
