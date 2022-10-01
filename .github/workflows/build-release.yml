@@ -10,10 +10,11 @@ on:
         type: string
 
 jobs:
-  buildRelease:
+  createReleaseBranch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v3
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
@@ -21,7 +22,95 @@ jobs:
           distribution: "adopt"
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1.0.4
-      - name: Invoke Gradle check
+      - name: Update release version
         uses: gradle/gradle-build-action@v2.3.0
         with:
-          arguments: "clean doBuild -Prelease=true -PforceNextVersion=${{ github.event.inputs.forceNextVersion }}"
+          arguments: "updateVersion -Prelease=true -PforceNextVersion=${{ github.event.inputs.forceNextVersion }}"
+      - name: Read version
+        id: read_version
+        uses: andstor/file-reader-action@v1
+        with:
+          path: build/version.txt
+      - name: Create release branch
+        run: |
+          git checkout -b "release/v${{ steps.read_version.outputs.contents }}"
+          git add .
+          git commit "Update version to v${{ steps.read_version.outputs.contents }}"
+          git push -u
+    outputs:
+      version: ${{ steps.read_version.outputs.contents }}
+  check:
+    runs-on: ubuntu-latest
+    needs: createReleaseBranch
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          ref: "release/v${{ needs.createReleaseBranch.outputs.version }}"
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: "11"
+          distribution: "adopt"
+      - name: Run checks
+        uses: gradle/gradle-build-action@v2.3.0
+        with:
+          arguments: "check"
+  publishToNexus:
+    runs-on: ubuntu-latest
+    needs: createReleaseBranch, check
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          ref: "release/v${{ needs.createReleaseBranch.outputs.version }}"
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: "11"
+          distribution: "adopt"
+      - name: Read GPG key ring
+        run: echo "${{ secrets.SIGNING_KEYRING }}" | base64 -d > build/secring.gpg
+      - name: Publish to Sonatype Nexus
+        uses: gradle/gradle-build-action@v2.3.0
+        with:
+          arguments: >
+            publish
+            -PsonatypeNexusUsername=${{ secrets.NEXUS_USERNAME }}
+            -PsonatypeNexusPassword=${{ secrets.NEXUS_PASSWORD }}
+            -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
+            -Psigning.keyId=${{ secrets.SIGNING_KEY_ID }}
+            -Psigning.secretKeyRingFile=build/secring.gpg
+      - name: Clear GPG key ring
+        run: rm build/secring.gpg
+  publishToGithubReleases:
+    runs-on: ubuntu-latest
+    needs: createReleaseBranch, check
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          ref: "release/v${{ needs.createReleaseBranch.outputs.version }}"
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: "11"
+          distribution: "adopt"
+      - name: Build artifacts
+        uses: gradle/gradle-build-action@v2.3.0
+        with:
+          arguments: "bootJar bootWar"
+      - name: Read changes
+        id: read_changes
+        uses: zogot/kacl-parser@1.0.0
+        with:
+          version: ${{ needs.createReleaseBranch.outputs.version }}
+      - name: Publish to GitHub Releases
+        uses: ncipollo/release-action@v1
+        with:
+          name: "Release v${{ needs.createReleaseBranch.outputs.version }}"
+          body: "${{ steps.read_changes.outputs.release }}"
+          artifacts: "mailspy-app/build/libs/*.jar,mailspy-app/build/libs/*.war"
+          artifactErrorsFailBuild: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+

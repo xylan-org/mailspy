@@ -103,6 +103,6 @@ check {
     dependsOn eslint
 }
 
-rootProject.updateVersion {
+rootProject.updateBuildVersion {
     dependsOn updatePackageJsonVersion
 }

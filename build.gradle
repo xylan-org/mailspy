@@ -27,7 +27,6 @@ plugins {
     alias libs.plugins.versions
     alias libs.plugins.spotless
     alias libs.plugins.spotless.changelog
-    alias libs.plugins.grgit
     alias libs.plugins.lombok apply false
 }
 
@@ -252,8 +251,8 @@ def replaceVersionInFile = { file, newVersion, versionPatterns ->
     file.setText(contents)
 }
 
-task updateReadmeVersions {
-    description = "Updates the versions in the README.md file. New version is inferred from the changelog."
+task updateReadmeVersion {
+    description = "Updates the version in the README.md file. New version is inferred from the changelog."
     group = "versioning"
     def versionRegex = "\\d+\\.\\d+\\.\\d+"
     doLast {
@@ -275,43 +274,25 @@ task updateBuildGradleVersion {
     }
 }
 
-task updateVersion {
-    description = "Updates the version in files which contain it. New version is inferred from the changelog."
+task versionToFile {
+    description = "Outputs the project version to the build/version.txt file."
+    group = "versioning"
+    doLast {
+        file(buildDir).mkdir()
+        file("$buildDir/version.txt").text = version
+    }
+}
+
+task updateBuildVersion {
+    description = "Updates the version in build files. New version is inferred from the changelog."
     group = "versioning"
     // see dependency also in mailspy-frontend build
     dependsOn updateBuildGradleVersion
-    dependsOn updateReadmeVersions
+    finalizedBy versionToFile
 }
 
-task pushVersion {
-    description = "Commits and pushes files updated by versioning. Tags release versions."
+task updateVersion {
+    description = "Updates the version in files which contain it. New version is inferred from the changelog."
     group = "versioning"
-    doLast {
-        def release = project.findProperty("release")?.toBoolean()
-        if (release) {
-            grgit.add(patterns: [
-                "CHANGELOG.md",
-                "README.md"
-            ])
-            grgit.tag.add(name: "v$version")
-        } else {
-            grgit.add(patterns: [
-                "build.gradle",
-                "mailspy-frontend/package.json"
-            ])
-        }
-        if (!grgit.status().staged.allChanges.isEmpty()) {
-            grgit.commit(message: "Update version to $version")
-            grgit.push(all: true, tags: true)
-        }
-    }
-}
-
-task doBuild {
-    def release = project.findProperty("release")?.toBoolean()
-    if (release) {
-        dependsOn updateVersion, changelogBump, pushVersion
-    } else {
-        dependsOn updateVersion, pushVersion
-    }
+    dependsOn updateBuildVersion, updateReadmeVersion, changelogBump
 }
