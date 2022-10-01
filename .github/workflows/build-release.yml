@@ -113,4 +113,3 @@ jobs:
           artifacts: "mailspy-app/build/libs/*.jar,mailspy-app/build/libs/*.war"
           artifactErrorsFailBuild: true
           token: ${{ secrets.GITHUB_TOKEN }}
-
