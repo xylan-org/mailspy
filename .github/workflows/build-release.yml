@@ -108,6 +108,7 @@ jobs:
       - name: Publish to GitHub Releases
         uses: ncipollo/release-action@v1
         with:
+          tag: "v${{ needs.createReleaseBranch.outputs.version }}"
           name: "Release v${{ needs.createReleaseBranch.outputs.version }}"
           artifacts: "mailspy-app/build/libs/*.jar,mailspy-app/build/libs/*.war"
           artifactErrorsFailBuild: true
