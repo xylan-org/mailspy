@@ -73,7 +73,9 @@ jobs:
           java-version: "11"
           distribution: "adopt"
       - name: Read GPG key ring
-        run: echo "${{ secrets.SIGNING_KEYRING }}" | base64 -d > build/secring.gpg
+        run: |
+          mkdir -p build
+          echo "${{ secrets.SIGNING_KEYRING }}" | base64 -d > build/secring.gpg
       - name: Publish to Sonatype Nexus
         uses: gradle/gradle-build-action@v2.3.0
         with:
@@ -103,16 +105,10 @@ jobs:
         uses: gradle/gradle-build-action@v2.3.0
         with:
           arguments: "bootJar bootWar"
-      - name: Read changes
-        id: read_changes
-        uses: zogot/kacl-parser@1.0.0
-        with:
-          version: ${{ needs.createReleaseBranch.outputs.version }}
       - name: Publish to GitHub Releases
         uses: ncipollo/release-action@v1
         with:
           name: "Release v${{ needs.createReleaseBranch.outputs.version }}"
-          body: "${{ steps.read_changes.outputs.release }}"
           artifacts: "mailspy-app/build/libs/*.jar,mailspy-app/build/libs/*.war"
           artifactErrorsFailBuild: true
           token: ${{ secrets.GITHUB_TOKEN }}
