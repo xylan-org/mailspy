@@ -7,7 +7,7 @@ _Please note that MailSpy is currently in the process of publishing its first re
 
 ![Build Status](https://img.shields.io/github/workflow/status/xylan-org/mailspy/Snapshot%20Build)
 ![License](https://img.shields.io/github/license/xylan-org/mailspy?label=license)
-![Latest Release](https://img.shields.io/gitlab/v/release/xylan-org/mailspy)
+![Latest Release](https://img.shields.io/github/v/release/xylan-org/mailspy)
 
 MailSpy is a development tool for the manual testing of email sending. It lets you view all emails your application sent without actually sending anything.
 
@@ -17,10 +17,10 @@ It supports Spring Boot applications via auto-configuration, and a standalone bu
 Using Gradle:
 ```groovy
 dependencies {
-    implementation "org.xylan:mailspy-core:0.0.0"
+    implementation "org.xylan:mailspy-core:1.0.0"
 
     // or using the Spring Boot Gradle plugin (excludes from production builds)
-    developmentOnly "org.xylan:mailspy-core:0.0.0"
+    developmentOnly "org.xylan:mailspy-core:1.0.0"
 }
 ```
 
@@ -29,7 +29,7 @@ Using Maven:
 <dependency>
     <groupId>org.xylan</groupId>
     <artifactId>mailspy-core</artifactId>
-    <version>0.0.0</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -47,7 +47,7 @@ Download the [latest release build](https://github.com/xylan-org/mailspy/mailspy
 
 Then lauch MailSpy:
 ```sh
-java -jar mailspy-app-0.0.0.jar
+java -jar mailspy-app-1.0.0.jar
 ```
 
 By default, MailSpy listens on SMTP host `localhost:2525` and serves its Web UI on `localhost:8099`. The easiest way to change that is to create an `application.properties` file next to the jar:
