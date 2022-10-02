@@ -1,5 +1,3 @@
-_Please note that MailSpy is currently in the process of publishing its first release version on Maven Central. This process requires a few days to go through while this repository has to be public. For this reason, the guide below is not yet correct._
-
 <p align="center">
     <img src="docs/mailspy-full.svg" width="40%"/>
 </p>
