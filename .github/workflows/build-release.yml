@@ -85,7 +85,7 @@ jobs:
             -PsonatypeNexusPassword=${{ secrets.NEXUS_PASSWORD }}
             -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
             -Psigning.keyId=${{ secrets.SIGNING_KEY_ID }}
-            -Psigning.secretKeyRingFile=build/secring.gpg
+            -Psigning.secretKeyRingFile=${{ github.workspace }}/build/secring.gpg
       - name: Clear GPG key ring
         run: rm build/secring.gpg
   publishToGithubReleases:
