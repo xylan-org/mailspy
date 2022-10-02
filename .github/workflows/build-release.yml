@@ -35,7 +35,7 @@ jobs:
         run: |
           git checkout -b "release/v${{ steps.read_version.outputs.contents }}"
           git add .
-          git commit "Update version to v${{ steps.read_version.outputs.contents }}"
+          git commit -m "Update version to v${{ steps.read_version.outputs.contents }}"
           git tag "v${{ steps.read_version.outputs.contents }}"
           git push --atomic origin "release/v${{ steps.read_version.outputs.contents }}" "v${{ steps.read_version.outputs.contents }}"
     outputs:
