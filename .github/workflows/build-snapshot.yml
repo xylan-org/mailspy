@@ -30,6 +30,8 @@ jobs:
         uses: gradle/gradle-build-action@v2.3.0
         with:
           arguments: "check bootJar bootWar"
+      - name: Setup git user
+        uses: fregante/setup-git-user@v1
       - name: Push version update
         run: |
           git add .
