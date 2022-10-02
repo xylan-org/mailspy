@@ -33,5 +33,5 @@ jobs:
       - name: Push version update
         run: |
           git add .
-          git commit "Update version to v${{ steps.read_version.outputs.contents }}" || true
+          git commit -m "Update version to v${{ steps.read_version.outputs.contents }}" || true
           git push -u
