@@ -124,6 +124,8 @@ jobs:
         with:
           java-version: "11"
           distribution: "adopt"
+      - name: Setup git user
+        uses: fregante/setup-git-user@v1
       - name: Merge release branch
         run: |
           git fetch
@@ -137,8 +139,6 @@ jobs:
         uses: andstor/file-reader-action@v1
         with:
           path: build/version.txt
-      - name: Setup git user
-        uses: fregante/setup-git-user@v1
       - name: Commit and push changes
         run: |
           git add .
