@@ -139,5 +139,5 @@ jobs:
       - name: Commit and push changes
         run: |
           git add .
-          git commit "Update version to v${{ steps.read_version.outputs.contents }}"
+          git commit -m "Update version to v${{ steps.read_version.outputs.contents }}"
           git push -u
