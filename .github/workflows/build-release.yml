@@ -59,7 +59,7 @@ jobs:
           arguments: "check"
   publishToNexus:
     runs-on: ubuntu-latest
-    needs: createReleaseBranch, check
+    needs: [createReleaseBranch, check]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -86,7 +86,7 @@ jobs:
         run: rm build/secring.gpg
   publishToGithubReleases:
     runs-on: ubuntu-latest
-    needs: createReleaseBranch, check
+    needs: [createReleaseBranch, check]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -116,7 +116,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
   mergeReleaseBranch:
     runs-on: ubuntu-latest
-    needs: createReleaseBranch, publishToNexus, publishToGithubReleases
+    needs: [createReleaseBranch, publishToNexus, publishToGithubReleases]
     steps:
       - name: Check out master branch
         uses: actions/checkout@v3
