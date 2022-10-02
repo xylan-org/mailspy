@@ -129,7 +129,7 @@ jobs:
       - name: Merge release branch
         run: |
           git fetch
-          git merge "release/v${{ needs.createReleaseBranch.outputs.version }}"
+          git merge origin/release/v${{ needs.createReleaseBranch.outputs.version }}
       - name: Restore snapshot version
         uses: gradle/gradle-build-action@v2.3.0
         with:
