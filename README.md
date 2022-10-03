@@ -15,17 +15,17 @@ It supports Spring Boot applications via auto-configuration, and a standalone bu
 Using Gradle:
 ```groovy
 dependencies {
-    implementation "org.xylan:mailspy-core:1.0.0"
+    implementation "org.xylan.mailspy:mailspy-core:1.0.0"
 
     // or using the Spring Boot Gradle plugin (excludes from production builds)
-    developmentOnly "org.xylan:mailspy-core:1.0.0"
+    developmentOnly "org.xylan.mailspy:mailspy-core:1.0.0"
 }
 ```
 
 Using Maven:
 ```xml
 <dependency>
-    <groupId>org.xylan</groupId>
+    <groupId>org.xylan.mailspy</groupId>
     <artifactId>mailspy-core</artifactId>
     <version>1.0.0</version>
 </dependency>
