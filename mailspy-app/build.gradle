@@ -23,6 +23,7 @@
 plugins {
     id "war"
     alias libs.plugins.spring.boot.plugin
+    alias libs.plugins.cargo
 }
 
 description = "MailSpy :: App"
@@ -47,4 +48,21 @@ springBoot {
 
 bootRun {
     args = ["--spring.profiles.active=development"]
+}
+
+cargo {
+    containerId = "tomcat9x"
+    port = 443
+    deployable {
+        context = "mailspy-demo"
+    }
+    remote {
+        containerProperties {
+            property "cargo.remote.uri", findProperty("cargoUri")
+        }
+        protocol = ""
+        hostname = ""
+        username = findProperty("cargoUsername")
+        password = findProperty("cargoPassword")
+    }
 }
