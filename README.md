@@ -1,5 +1,3 @@
-_Please note that MailSpy is currently in the process of publishing its first release version on Maven Central. This process requires a few days to go through while this repository has to be public. For this reason, the guide below is not yet correct._
-
 <p align="center">
     <img src="docs/mailspy-full.svg" width="40%"/>
 </p>
@@ -17,17 +15,17 @@ It supports Spring Boot applications via auto-configuration, and a standalone bu
 Using Gradle:
 ```groovy
 dependencies {
-    implementation "org.xylan:mailspy-core:1.0.0"
+    implementation "org.xylan.mailspy:mailspy-core:1.0.0"
 
     // or using the Spring Boot Gradle plugin (excludes from production builds)
-    developmentOnly "org.xylan:mailspy-core:1.0.0"
+    developmentOnly "org.xylan.mailspy:mailspy-core:1.0.0"
 }
 ```
 
 Using Maven:
 ```xml
 <dependency>
-    <groupId>org.xylan</groupId>
+    <groupId>org.xylan.mailspy</groupId>
     <artifactId>mailspy-core</artifactId>
     <version>1.0.0</version>
 </dependency>
@@ -43,7 +41,7 @@ By default, MailSpy auto-configures a `JavaMailSenderImpl` pointing to the embed
 You can view sent emails on MailSpy's Web UI, hosted by default on the `/mailspy` path, relative to you app's context root.
 
 ## Using the Standalone build
-Download the [latest release build](https://github.com/xylan-org/mailspy/mailspy/releases/latest/) from our Releases page. You'll also need the [Standard Edition of Java Runtime Environment](https://www.oracle.com/java/technologies/java-se-glance.html), at least version 11.
+Download the [latest release build](https://github.com/xylan-org/mailspy/releases/latest/) from our Releases page. You'll also need the [Standard Edition of Java Runtime Environment](https://www.oracle.com/java/technologies/java-se-glance.html), at least version 11.
 
 Then lauch MailSpy:
 ```sh
