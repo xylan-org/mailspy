@@ -72,9 +72,7 @@ public class MailSpyWebMvcConfig {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             if (properties.isEnableCors()) {
-                registry.addMapping("/**")
-                    .allowedOriginPatterns("*")
-                    .allowedMethods("*");
+                registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*");
             }
         }
     }
