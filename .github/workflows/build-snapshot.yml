@@ -18,6 +18,12 @@ jobs:
         with:
           java-version: "11"
           distribution: "adopt"
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+          cache-dependency-path: mailspy-frontend/package-lock.json
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1.0.4
       - name: Update snapshot version
