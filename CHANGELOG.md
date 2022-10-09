@@ -3,6 +3,7 @@
 ### Added
 * Cargo Gradle plugin for demo deployment
 * Demo mode for Standalone app
+* Workflow job for demo deployment
 
 ### Fixed
 * CORS allowed only GET, HEAD, and POST (broke clear button in development mode). Now allows all methods.
