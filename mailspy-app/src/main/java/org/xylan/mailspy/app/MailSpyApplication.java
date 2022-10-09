@@ -50,4 +50,5 @@ public class MailSpyApplication extends SpringBootServletInitializer {
     private static SpringApplicationBuilder doConfigure(SpringApplicationBuilder builder) {
         return builder.sources(MailSpyApplication.class).banner(new BuildInfoBanner());
     }
+
 }

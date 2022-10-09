@@ -11,6 +11,8 @@ MailSpy is a development tool for the manual testing of email sending. It lets y
 
 It supports Spring Boot applications via auto-configuration, and a standalone build is also provided for apps based on other frameworks, or technological stacks.
 
+You can try out MailSpy on [this demo page](https://xylan.org/mailspy-demo/).
+
 ## Using in Spring Boot applications
 Using Gradle:
 ```groovy
