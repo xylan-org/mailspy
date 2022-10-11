@@ -34,7 +34,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "mailspy.app")
 public class MailSpyAppProperties {
 
-    private Demo demo;
+    private Demo demo = new Demo();
 
     /**
      * Configuration properties of the demo mode.
