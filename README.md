@@ -75,7 +75,7 @@ Please also see Spring Boot's [Common Application Properties](https://docs.sprin
 
 ### Spring Security
 
-MailSpy currently does not support the of auto-configuration Spring Security. You'll probably want to allow MailSpy's paths through security (`/mailspy/**` by default) if your app uses it.
+MailSpy currently does not support the auto-configuration of Spring Security. You'll probably want to allow MailSpy's paths through security (`/mailspy/**` by default) if your app uses it.
 
 ### Required JSON serializer
 
