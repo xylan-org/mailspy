@@ -71,6 +71,20 @@ Don't forget to point your application's mail sender client to the SMTP port you
 
 Please also see Spring Boot's [Common Application Properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html).
 
+## Possible issues
+
+### Spring Security
+
+MailSpy currently does not support the of auto-configuration Spring Security. You'll probably want to allow MailSpy's paths through security (`/mailspy/**` by default) if your app uses it.
+
+### Required JSON serializer
+
+MailSpy's REST API serializes responses in JSON format. For that, the host application's JSON serializer will be used. If no such thing is present (e.g. host app uses XML REST), MailSpy cannot function properly. You'll need to apply the [jackson-databind](https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind) and [jackson-datatype-jsr310](https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310) dependencies manually.
+
+### XML namespace configuration
+
+If your host application's MVC configuration is done in XML, chances are, MailSpy won't be compatible with it, as it uses JavaConfig approach instead. We recommend porting obsolete XML namespace configs to JavaConfig.
+
 ## See also
 
 - [Contibutors' Guide](./CONTRIBUTING.md)
