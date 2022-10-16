@@ -70,3 +70,9 @@ Don't forget to point your application's mail sender client to the SMTP port you
 | `mailspy.enable-cors` | false | false | Enable [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for MailSpy's REST API |
 
 Please also see Spring Boot's [Common Application Properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html).
+
+## See also
+
+- [Contibutors' Guide](./CONTRIBUTING.md)
+- [Changelog](./CHANGELOG.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
