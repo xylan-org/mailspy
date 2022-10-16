@@ -1,6 +1,6 @@
 Please make sure the follow our guidelines before creating PRs:
-- Read the [Code of Conduct](https://github.com/xylan-org/mailspy/blob/master/CODE_OF_CONDUCT.md) if you haven't yet
-- Please summarize your changes by adding a bullet-point to the `[Unreleased]` section of the [Changelog file](https://github.com/xylan-org/mailspy/blob/master/CHANGELOG.md)
+- Read our [Code of Conduct](./CODE_OF_CONDUCT.md) and [Contribution Guide](./CONTRIBUTING.md) if you haven't yet
+- Please summarize your changes by adding a bullet-point to the `[Unreleased]` section of the [Changelog file](./CHANGELOG.md)
   - Depending on the kind of the change, use the `### Added`, `### Fixed`, or `### Changed` sub-section. Create them when missing.
   - Add a link to your PR
   - Breaking changes should be marked with `**BREAKING**`
