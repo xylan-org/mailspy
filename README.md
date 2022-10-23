@@ -89,6 +89,6 @@ If your host application's MVC configuration is done in XML, chances are, MailSp
 
 ## See also
 
-- [Contibutors' Guide](./CONTRIBUTING.md)
+- [Contributors' Guide](./CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
