@@ -21,8 +21,8 @@ MailSpy is built of three parts:
 
 - Fork and clone MailSpy. You can easily do that on the [project's main page](https://github.com/xylan-org/mailspy).
 - Install your IDE, and import MailSpy
-  - For back end development, we recomment [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/).
-    - Choose **Open** and choose the repository folder you've just cloned.
+  - For back end development, we recommend [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/).
+    - Choose **Open** and pick the repository folder you've just cloned.
     - Open the **Terminal** view and type `./gradlew bootRun` into the terminal window.
     - By default, the development back end will be hosted on `localhost:8099`.
   - For front end development, we recommend [Visual Studio Code](https://code.visualstudio.com/).
@@ -61,7 +61,7 @@ Version changes are automated throughout the project - no manual version bump is
 Releases are triggered manually by invoking the [build-release.yml](.github/workflows/build-release.yml) workflow. The current release version is always inferred from the changelog, by checking the presence of fixes/additions/breaking changes (incrementing the path/minor/major version part accordingly).
 
 ### Snapshot versions
-Snapshot builds ([build-snapshot.yml](.github/workflows/build-snapshot.yml)) are triggered automatically on pushes to the master branch. This includes accepted PRs. The generation of snapshot version follows the same principles as the release ones, except they're suffixed with `-SNAPSHOT`. In other words, snapshot versions predict the next release version.
+Snapshot builds ([build-snapshot.yml](.github/workflows/build-snapshot.yml)) are triggered automatically on pushes to the master branch. This includes accepted PRs. The generation of snapshot versions follows the same principles as the release ones, except they're suffixed with `-SNAPSHOT`. In other words, snapshot versions predict the next release version.
 
 Document pages are not updated with snapshot version bumps - we always want to display the latest release version there.
 
