@@ -3,6 +3,9 @@ name: Snapshot Build
 on:
   push:
     branches: [ "master" ]
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
 
 jobs:
   buildSnapshot:
