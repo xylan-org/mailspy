@@ -39,37 +39,15 @@ jobs:
         uses: gradle/gradle-build-action@v2.3.0
         with:
           arguments: "check bootJar bootWar"
-      - name: Collect total line count for back end coverage
-        id: "coverage_total_lines_be"
-        uses: QwerMike/xpath-action@v1
-        with:
-          filename: mailspy-core/build/reports/jacoco/test/jacocoTestReport.xml
-          expression: "number(//report/counter[@type='LINE']/@covered)+number(//report/counter[@type='LINE']/@missed)"
-      - name: Collect covered line count for back end coverage
-        id: "coverage_covered_lines_be"
-        uses: QwerMike/xpath-action@v1
-        with:
-          filename: mailspy-core/build/reports/jacoco/test/jacocoTestReport.xml
-          expression: "number(//report/counter[@type='LINE']/@covered)"
-      - name: Collect total line count for front end coverage
-        id: "coverage_total_lines_fe"
-        uses: QwerMike/xpath-action@v1
-        with:
-          filename: mailspy-frontend/build/reports/coverage/cobertura-coverage.xml
-          expression: "number(//coverage/@lines-valid)"
-      - name: Collect covered line count for front end coverage
-        id: "coverage_covered_lines_fe"
-        uses: QwerMike/xpath-action@v1
-        with:
-          filename: mailspy-frontend/build/reports/coverage/cobertura-coverage.xml
-          expression: "number(//coverage/@lines-covered)"
-      - name: Calculate line coverage
-        id: "coverage_covered_lines_percent"
-        run: >
-          echo "::set-output name=result::$((
-            ((${{ steps.coverage_covered_lines_be.outputs.result }} + ${{ steps.coverage_covered_lines_fe.outputs.result }}) * 100) /
-            (${{ steps.coverage_total_lines_be.outputs.result }} + ${{ steps.coverage_total_lines_fe.outputs.result }})
-          ))"
+      - name: Collect line coverage metrics
+        id: collect_line_coverage
+        run: |
+          sudo apt-get install -y libxml2-utils
+          total_lines_be=$(xmllint mailspy-core/build/reports/jacoco/test/jacocoTestReport.xml --xpath "number(//report/counter[@type='LINE']/@covered)+number(//report/counter[@type='LINE']/@missed)")
+          total_lines_fe=$(xmllint mailspy-frontend/build/reports/coverage/cobertura-coverage.xml --xpath "number(//coverage/@lines-valid)")
+          covered_lines_be=$(xmllint mailspy-core/build/reports/jacoco/test/jacocoTestReport.xml --xpath "number(//report/counter[@type='LINE']/@covered)")
+          covered_lines_fe=$(xmllint mailspy-frontend/build/reports/coverage/cobertura-coverage.xml --xpath "number(//coverage/@lines-covered)")
+          echo "result=$((((covered_lines_be + covered_lines_fe) * 100) / (total_lines_be + total_lines_fe)))" >> $GITHUB_OUTPUT
       - name: Update line coverage badge
         uses: schneegans/dynamic-badges-action@v1.6.0
         with:
@@ -77,8 +55,8 @@ jobs:
           gistID: e0159b67e62fe9b4c7657e58419b6cc1
           filename: coverage_badge.json
           label: coverage
-          message: "${{ steps.coverage_covered_lines_percent.outputs.result }}%"
-          valColorRange: "${{ steps.coverage_covered_lines_percent.outputs.result }}"
+          message: "${{ steps.collect_line_coverage.outputs.result }}%"
+          valColorRange: "${{ steps.collect_line_coverage.outputs.result }}"
           maxColorRange: 100
           minColorRange: 0
       - name: Setup git user
