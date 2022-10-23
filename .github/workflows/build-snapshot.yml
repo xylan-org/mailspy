@@ -63,6 +63,24 @@ jobs:
         with:
           filename: mailspy-frontend/build/reports/coverage/cobertura-coverage.xml
           expression: "number(//coverage/@lines-covered)"
+      - name: Calculate line coverage
+        id: "coverage_covered_lines_percent"
+        run: >
+          echo "::set-output name=result::$((
+            ((${{ steps.coverage_covered_lines_be.outputs.result }} + ${{ steps.coverage_covered_lines_fe.outputs.result }}) * 100) /
+            (${{ steps.coverage_total_lines_be.outputs.result }} + ${{ steps.coverage_total_lines_fe.outputs.result }})
+          ))"
+      - name: Update line coverage badge
+        uses: schneegans/dynamic-badges-action@v1.6.0
+        with:
+          auth: ${{ secrets.GIST_ACCESS_TOKEN }}
+          gistID: e0159b67e62fe9b4c7657e58419b6cc1
+          filename: coverage_badge.json
+          label: coverage
+          message: "${{ steps.coverage_covered_lines_percent.outputs.result }}%"
+          valColorRange: "${{ steps.coverage_covered_lines_percent.outputs.result }}"
+          maxColorRange: 100
+          minColorRange: 0
       - name: Setup git user
         uses: fregante/setup-git-user@v1
       - name: Push version update
