@@ -39,6 +39,30 @@ jobs:
         uses: gradle/gradle-build-action@v2.3.0
         with:
           arguments: "check bootJar bootWar"
+      - name: Collect total line count for back end coverage
+        id: "coverage_total_lines_be"
+        uses: QwerMike/xpath-action@v1
+        with:
+          filename: mailspy-core/build/reports/jacoco/test/jacocoTestReport.xml
+          expression: "number(//report/counter[@type='LINE']/@covered)+number(//report/counter[@type='LINE']/@missed)"
+      - name: Collect covered line count for back end coverage
+        id: "coverage_covered_lines_be"
+        uses: QwerMike/xpath-action@v1
+        with:
+          filename: mailspy-core/build/reports/jacoco/test/jacocoTestReport.xml
+          expression: "number(//report/counter[@type='LINE']/@covered)"
+      - name: Collect total line count for front end coverage
+        id: "coverage_total_lines_fe"
+        uses: QwerMike/xpath-action@v1
+        with:
+          filename: mailspy-frontend/build/reports/coverage/cobertura-coverage.xml
+          expression: "number(//coverage/@lines-valid)"
+      - name: Collect covered line count for front end coverage
+        id: "coverage_covered_lines_fe"
+        uses: QwerMike/xpath-action@v1
+        with:
+          filename: mailspy-frontend/build/reports/coverage/cobertura-coverage.xml
+          expression: "number(//coverage/@lines-covered)"
       - name: Setup git user
         uses: fregante/setup-git-user@v1
       - name: Push version update
