@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-import moment from "moment";
 import { Card, Nav } from "react-bootstrap";
 import type { Attachment } from "services/mail/domain/Attachment";
 import type { Mail } from "services/mail/domain/Mail";
@@ -39,7 +38,7 @@ describe("MailPreview", () => {
 
         mail = {
             id: "123",
-            timeReceived: moment("2020-03-28T16:00:00"),
+            timeReceived: "2020-03-28 16:00:00",
             selected: false,
             error: null,
             subject: "mailSubject",
@@ -237,7 +236,7 @@ describe("MailPreview", () => {
 
             // THEN
             expect(result.find(".mail-subject").text()).toEqual("mailSubject");
-            expect(result.find(".mail-date").text()).toEqual("Received: 28/03/2020 04:00:00 PM");
+            expect(result.find(".mail-date").text()).toEqual("Received: 2020-03-28 16:00:00");
             expect(result.find(".mail-to").text()).toEqual("To: recipient@example.com");
             expect(result.find(".mail-from").text()).toEqual("From: sender@example.com");
         });

@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-import moment from "moment";
 import type { Mail } from "./domain/Mail";
 import type { RawMail } from "./domain/RawMail";
 import { ParsedMail, simpleParser } from "mailparser";
@@ -41,7 +40,7 @@ export class MailParserService {
         return new Promise<Mail>((resolve: (value: Mail) => void) => {
             if (rawMail.exception) {
                 resolve({
-                    timeReceived: moment(rawMail.timestamp),
+                    timeReceived: rawMail.timestamp,
                     selected: false,
                     error: rawMail.exception.message,
                     id: rawMail.id
@@ -58,7 +57,7 @@ export class MailParserService {
                         html: this.htmlService.replaceLinksTarget(parsedMail.html),
                         text: this.htmlService.escapeHtml(parsedMail.text),
                         raw: this.htmlService.escapeHtml(mailBuffer.toString()),
-                        timeReceived: moment(rawMail.timestamp),
+                        timeReceived: rawMail.timestamp,
                         selected: false,
                         error: "",
                         id: rawMail.id

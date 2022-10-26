@@ -27,7 +27,8 @@ import static org.mockito.BDDMockito.then;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
@@ -44,7 +45,8 @@ import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
 public class EventPublishingMessageHandlerTest {
 
     private static final String TEST_UUID = "fdadec6a-222c-45b4-89a0-dd0944deecc3";
-    private static final Instant TEST_NOW = Instant.parse("2000-01-01T10:15:30.00Z");
+    private static final ZonedDateTime TEST_NOW = ZonedDateTime.of(2000, 1, 1, 10, 15, 30, 0, ZoneOffset.UTC);
+    private static final String TEST_NOW_STRING = "2000-01-01 10:15:30";
 
     @Mock
     private ApplicationEventPublisher applicationEventPublisher;
@@ -65,7 +67,7 @@ public class EventPublishingMessageHandlerTest {
         MailSpyEmail testMail = MailSpyEmail.builder()
                 .id(TEST_UUID)
                 .rawMessage(new byte[] {0x6d, 0x73, 0x67})
-                .timestamp(TEST_NOW)
+                .timestamp(TEST_NOW_STRING)
                 .exception(null)
                 .build();
         EmailReceivedEvent expected = new EmailReceivedEvent(testMail);
@@ -90,7 +92,7 @@ public class EventPublishingMessageHandlerTest {
         MailSpyEmail testMail = MailSpyEmail.builder()
                 .id(TEST_UUID)
                 .rawMessage(null)
-                .timestamp(TEST_NOW)
+                .timestamp(TEST_NOW_STRING)
                 .exception(expectedException)
                 .build();
         EmailReceivedEvent expected = new EmailReceivedEvent(testMail);

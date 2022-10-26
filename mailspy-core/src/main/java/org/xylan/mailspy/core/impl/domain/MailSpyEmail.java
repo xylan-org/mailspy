@@ -22,7 +22,6 @@
 
 package org.xylan.mailspy.core.impl.domain;
 
-import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,7 +37,7 @@ import lombok.NoArgsConstructor;
 public class MailSpyEmail {
 
     private String id;
-    private Instant timestamp;
+    private String timestamp;
     private Exception exception;
     private byte[] rawMessage;
 }

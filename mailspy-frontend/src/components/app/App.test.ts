@@ -28,7 +28,6 @@ import { MailService } from "services/mail/MailService";
 import FakeTimers from "@sinonjs/fake-timers";
 import { TestBed } from "test-utils/TestBed";
 import { App } from "./App";
-import moment from "moment";
 import { MailList } from "components/mail/list/MailList";
 import { ReconnectingEventSource } from "services/http/ReconnectingEventSource";
 import { ShallowWrapper } from "enzyme";
@@ -63,7 +62,7 @@ class MockReconnectingEventSource extends ReconnectingEventSource {
 describe("App", () => {
     const mail: Mail = {
         id: "id1",
-        timeReceived: moment("2020-03-28T16:00:00"),
+        timeReceived: "2020-03-28 16:00:00",
         selected: false,
         error: null
     };
@@ -141,7 +140,7 @@ describe("App", () => {
             mockEventSource = new MockReconnectingEventSource("");
             newMail = {
                 id: "id2",
-                timeReceived: moment("2020-03-28T16:20:00"),
+                timeReceived: "2020-03-28 16:20:00",
                 selected: false,
                 error: null
             };
@@ -195,7 +194,7 @@ describe("App", () => {
     describe("mail list", () => {
         const selectedMail: Mail = {
             id: "id1",
-            timeReceived: moment("2020-03-28T16:00:00"),
+            timeReceived: "2020-03-28 16:00:00",
             selected: true,
             error: null
         };
@@ -261,7 +260,7 @@ describe("App", () => {
     describe("mail preview", () => {
         const selectedMail: Mail = {
             id: "id1",
-            timeReceived: moment("2020-03-28T16:00:00"),
+            timeReceived: "2020-03-28 16:00:00",
             selected: true,
             error: null
         };

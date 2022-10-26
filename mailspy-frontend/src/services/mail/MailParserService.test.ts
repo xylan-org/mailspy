@@ -23,7 +23,6 @@
 import { mock, MockProxy } from "jest-mock-extended";
 import { when } from "jest-when";
 import { ParsedMail } from "mailparser";
-import moment from "moment";
 import { HtmlService } from "services/html/HtmlService";
 import type { Mail } from "./domain/Mail";
 import type { RawMail } from "./domain/RawMail";
@@ -47,14 +46,14 @@ describe("MailParserService", () => {
             // GIVEN
             const rawMail: RawMail = {
                 id: "id",
-                timestamp: "2020-01-01",
+                timestamp: "2020-01-01 15:00:00",
                 exception: {
                     message: "Oopsie"
                 },
                 rawMessage: ""
             };
             const expected: Mail = {
-                timeReceived: moment("2020-01-01"),
+                timeReceived: "2020-01-01 15:00:00",
                 selected: false,
                 error: "Oopsie",
                 id: "id"
@@ -72,7 +71,7 @@ describe("MailParserService", () => {
             const messageBuffer = Buffer.from("a < b raw");
             const rawMail: RawMail = {
                 id: "id",
-                timestamp: "2020-01-01",
+                timestamp: "2020-01-01 12:00:00",
                 exception: null,
                 rawMessage: "eW91J3JlIGEgY3VyaW91cyBvbmUgYXJlbid0IHlvdT8="
             };
@@ -84,7 +83,7 @@ describe("MailParserService", () => {
                 html: "<a href='http://google.com' target='_blank'>a &lt; b<h2>",
                 text: "a &lt; b",
                 raw: "a &lt; b raw",
-                timeReceived: moment("2020-01-01"),
+                timeReceived: "2020-01-01 12:00:00",
                 selected: false,
                 error: "",
                 id: "id"

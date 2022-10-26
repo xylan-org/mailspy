@@ -21,7 +21,6 @@
  */
 
 import { mock } from "jest-mock-extended";
-import moment from "moment";
 import { FileDownloadService } from "services/download/FileDownloadService";
 import type { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
@@ -31,7 +30,7 @@ import { MailList } from "./MailList";
 describe("MailList", () => {
     const mail: Mail = {
         id: "id",
-        timeReceived: moment("2020-03-28T16:00:00"),
+        timeReceived: "2020-03-28 16:00:00",
         selected: false,
         error: null
     };
@@ -192,7 +191,7 @@ describe("MailList", () => {
             // GIVEN
             const mail: Mail = {
                 id: "id",
-                timeReceived: moment("2020-03-28T16:00:00"),
+                timeReceived: "2020-03-28 16:00:00",
                 selected: true,
                 error: null,
                 raw: "rawMail",

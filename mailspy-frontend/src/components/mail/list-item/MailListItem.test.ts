@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-import moment from "moment";
 import type { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
 import { MailListItem } from "./MailListItem";
@@ -36,7 +35,7 @@ describe("MailListItem", () => {
 
         mail = {
             id: "123",
-            timeReceived: moment("2020-03-28T16:00:00"),
+            timeReceived: "2020-03-28 16:00:00",
             selected: false,
             error: null,
             subject: "mailSubject",
@@ -64,7 +63,7 @@ describe("MailListItem", () => {
         const result = testBed.render();
 
         // THEN
-        expect(result.find("#mail-list-item-123 .mail-list-item-date").text()).toEqual("28/03/2020 04:00:00 PM");
+        expect(result.find("#mail-list-item-123 .mail-list-item-date").text()).toEqual("2020-03-28 16:00:00");
         expect(result.find("#mail-list-item-123 .mail-list-item-error").text()).toEqual("errorMessage");
     });
 
@@ -82,7 +81,7 @@ describe("MailListItem", () => {
 
         // THEN
         const mailListItem = result.find("#mail-list-item-123");
-        expect(mailListItem.find(".mail-list-item-date").text()).toEqual("28/03/2020 04:00:00 PM");
+        expect(mailListItem.find(".mail-list-item-date").text()).toEqual("2020-03-28 16:00:00");
         expect(mailListItem.find(".subject").text()).toEqual("mailSubject");
         expect(mailListItem.find(".mail-to").text()).toEqual("To: recipient@example.com");
         expect(mailListItem.find(".mail-from").text()).toEqual("From: sender@example.com");

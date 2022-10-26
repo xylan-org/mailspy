@@ -28,8 +28,6 @@ import { MailAttachment } from "../attachment/MailAttachment";
 import type { MailPreviewProps } from "./domain/MailPreviewProps";
 import type { MailPreviewState } from "./domain/MailPreviewState";
 
-const DATE_TIME_FORMAT = "DD/MM/YYYY hh:mm:ss A";
-
 @autobind
 export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
     public constructor(props: MailPreviewProps) {
@@ -91,7 +89,7 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
                             <h4 className="mb-1 text-shorten mail-subject">{mail.subject}</h4>
                             <div className="mb-1 text-shorten mail-date">
                                 <strong>Received: </strong>
-                                <span>{mail.timeReceived.format(DATE_TIME_FORMAT)}</span>
+                                <span>{mail.timeReceived}</span>
                             </div>
                             <div className="mb-1 text-shorten mail-to">
                                 <strong>To: </strong>

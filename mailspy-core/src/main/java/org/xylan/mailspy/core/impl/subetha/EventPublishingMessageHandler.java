@@ -24,7 +24,8 @@ package org.xylan.mailspy.core.impl.subetha;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import java.util.function.Supplier;
 import lombok.Setter;
@@ -43,6 +44,8 @@ import org.xylan.mailspy.core.impl.domain.MailSpyEmail.MailSpyEmailBuilder;
 @Slf4j
 public class EventPublishingMessageHandler implements MessageHandler {
 
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
@@ -50,7 +53,7 @@ public class EventPublishingMessageHandler implements MessageHandler {
     private Supplier<UUID> uuidSupplier = UUID::randomUUID;
 
     @Setter
-    private Supplier<Instant> nowSupplier = Instant::now;
+    private Supplier<ZonedDateTime> nowSupplier = ZonedDateTime::now;
 
     @Override
     public void data(final InputStream messageStream) {
@@ -61,7 +64,7 @@ public class EventPublishingMessageHandler implements MessageHandler {
             builder.exception(exception);
             log.error("Exception thrown while reading mail message.", exception);
         }
-        builder.id(uuidSupplier.get().toString()).timestamp(nowSupplier.get());
+        builder.id(uuidSupplier.get().toString()).timestamp(nowSupplier.get().format(DATE_TIME_FORMATTER));
         applicationEventPublisher.publishEvent(new EmailReceivedEvent(builder.build()));
     }
 

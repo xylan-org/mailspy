@@ -27,8 +27,6 @@ import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import autobind from "autobind-decorator";
 import type { MailListItemProps } from "./domain/MailListItemProps";
 
-const DATE_TIME_FORMAT = "DD/MM/YYYY hh:mm:ss A";
-
 @autobind
 export class MailListItem extends Component<MailListItemProps, Empty> {
     public render(): JSX.Element {
@@ -40,7 +38,7 @@ export class MailListItem extends Component<MailListItemProps, Empty> {
                 <div className="list-group-item list-group-item-action list-group-item-danger" id={"mail-list-item-" + mail.id}>
                     <div className="d-flex w-100 justify-content-between text-max-70">
                         <h5 className="mb-1 font-italic">Failed to receive mail</h5>
-                        <small className="mail-list-item-date">{mail.timeReceived.format(DATE_TIME_FORMAT)}</small>
+                        <small className="mail-list-item-date">{mail.timeReceived}</small>
                     </div>
                     <p className="mb-1">
                         <strong>Reason: </strong>
@@ -75,7 +73,7 @@ export class MailListItem extends Component<MailListItemProps, Empty> {
                             </div>
                         </div>
                         <div className="col-sm-4 text-right">
-                            <small className="mail-list-item-date">{mail.timeReceived.format(DATE_TIME_FORMAT)}</small>
+                            <small className="mail-list-item-date">{mail.timeReceived}</small>
                             <div>{mail.attachments.length !== 0 ? attachmentBadge : ""}</div>
                         </div>
                     </div>

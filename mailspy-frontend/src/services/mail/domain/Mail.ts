@@ -20,14 +20,13 @@
  * SOFTWARE.
  */
 
-import { Moment } from "moment";
 import { Attachment } from "./Attachment";
 
 export interface Mail {
     html?: string;
     text?: string;
     raw?: string;
-    timeReceived: Moment;
+    timeReceived: string;
     selected: boolean;
     error: string;
     id: string;

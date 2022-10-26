@@ -22,7 +22,6 @@
 
 import { mock, MockProxy } from "jest-mock-extended";
 import { when } from "jest-when";
-import moment from "moment";
 import { HttpService } from "services/http/HttpService";
 import { ReconnectingEventSource } from "services/http/ReconnectingEventSource";
 import type { Mail } from "./domain/Mail";
@@ -56,7 +55,7 @@ describe("MailService", () => {
             ];
             const expected: Mail[] = [
                 {
-                    timeReceived: moment("2020-01-01"),
+                    timeReceived: "2020-01-01 15:00:00",
                     selected: false,
                     error: "Oopsie",
                     id: "id"

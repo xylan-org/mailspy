@@ -162,14 +162,6 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                             </li>
                             <li>
                                 <Dependency
-                                    name="Moment.js"
-                                    licenseName="MIT License"
-                                    licenseUrl="https://spdx.org/licenses/MIT.html"
-                                    url="https://momentjs.com/"
-                                />
-                            </li>
-                            <li>
-                                <Dependency
                                     name="Project Lombok"
                                     licenseName="MIT License"
                                     licenseUrl="https://spdx.org/licenses/MIT.html"
