@@ -96,6 +96,10 @@ main {
     cursor: pointer;
 }
 
+#preview .card-footer .badge:hover {
+    background-color: #0069d9;
+}
+
 .footer {
     background-color: #f5f5f5;
 }
@@ -228,4 +232,9 @@ button svg,
     font-size: 0.8em;
     vertical-align: middle;
     color: #fff;
+}
+
+.mail-list-items .list-group-item.active .attachment-badge {
+    background-color: #fff;
+    color: #007bff;
 }

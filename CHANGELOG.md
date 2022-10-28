@@ -15,6 +15,7 @@
 * Snapshot Build triggered on its own commit when it updated versions. Added `[skip ci]` to commit messages.
 * Snapshot Build will now pull before committing version updates
 * Dates are now rendered correctly regardless of OS
+* Attachment badge of mail list items will now appear white when the item is selected
 
 ## [1.0.0] - 2022-10-02
 * Initial version
