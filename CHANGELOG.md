@@ -8,6 +8,7 @@
 * Overall line coverage badge
   * Includes front end and back end code lines in calculation
   * Added coverage badge to README
+* Icons for attachments based on their MIME type
 
 ### Fixed
 * CORS allowed only GET, HEAD, and POST (broke clear button in development mode). Now allows all methods.

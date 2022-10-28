@@ -20,34 +20,29 @@
  * SOFTWARE.
  */
 
-import React, { Component } from "react";
-import { Badge } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { faCube, faEnvelope, faFile, faFileAlt, faFilm, faFont, faImage, faMusic } from "@fortawesome/free-solid-svg-icons";
 import autobind from "autobind-decorator";
-import type { MailAttachmentProps } from "./domain/MailAttachmentProps";
-import { resolve } from "inversify-react";
-import { FileDownloadService } from "services/download/FileDownloadService";
+import { injectable } from "inversify";
+
+const MIME_TYPE_PREFIX_TO_ICON: { [prefix: string]: IconDefinition } = {
+    "audio/": faMusic,
+    "image/": faImage,
+    "font/": faFont,
+    "model/": faCube,
+    "text/": faFileAlt,
+    "video/": faFilm,
+    "message/": faEnvelope
+};
 
 @autobind
-export class MailAttachment extends Component<MailAttachmentProps, Empty> {
-    @resolve(FileDownloadService)
-    private fileDownloadService: FileDownloadService;
-
-    public render(): JSX.Element {
-        return (
-            <Badge variant="primary" onClick={() => this.downloadAttachment()}>
-                <FontAwesomeIcon icon={this.props.attachment.icon} />
-                <span className="mail-attachment-name">{this.props.attachment.filename}</span>
-            </Badge>
-        );
-    }
-
-    private downloadAttachment(): void {
-        const attachment = this.props.attachment;
-        this.fileDownloadService.downloadFile({
-            name: attachment.filename,
-            contentType: attachment.contentType,
-            content: attachment.content
-        });
+@injectable()
+export class AttachmentIconService {
+    public findIconFor(mimeType: string): IconDefinition {
+        const result = Object.entries(MIME_TYPE_PREFIX_TO_ICON)
+            .filter((entry: [string, IconDefinition]) => mimeType.startsWith(entry[0]))
+            .map((entry: [string, IconDefinition]) => entry[1])
+            .shift();
+        return result ?? faFile;
     }
 }

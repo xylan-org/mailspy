@@ -162,6 +162,14 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                             </li>
                             <li>
                                 <Dependency
+                                    name="mime-types"
+                                    licenseName="MIT License"
+                                    licenseUrl="https://spdx.org/licenses/MIT.html"
+                                    url="https://github.com/jshttp/mime-types"
+                                />
+                            </li>
+                            <li>
+                                <Dependency
                                     name="Project Lombok"
                                     licenseName="MIT License"
                                     licenseUrl="https://spdx.org/licenses/MIT.html"

@@ -22,18 +22,23 @@
 
 import type { Mail } from "./domain/Mail";
 import type { RawMail } from "./domain/RawMail";
-import { ParsedMail, simpleParser } from "mailparser";
+import { ParsedAttachment, ParsedMail, simpleParser } from "mailparser";
 import autobind from "autobind-decorator";
 import { HtmlService } from "services/html/HtmlService";
 import { inject, injectable } from "inversify";
+import { Attachment } from "./domain/Attachment";
+import mime from "mime-types";
+import { AttachmentIconService } from "./AttachmentIconService";
 
 @autobind
 @injectable()
 export class MailParserService {
     public constructor(
         @inject(HtmlService) private htmlService: HtmlService,
-        private doParseMail: (source: unknown, options?: Record<string, unknown>) => Promise<ParsedMail> = simpleParser,
-        private readBase64: (base64: string) => Buffer = (base64: string) => Buffer.from(base64, "base64")
+        @inject(AttachmentIconService) private attachmentIconService: AttachmentIconService,
+        private doParseMail: (source: Buffer, options?: Record<string, unknown>) => Promise<ParsedMail> = simpleParser,
+        private readBase64: (base64: string) => Buffer = (base64: string) => Buffer.from(base64, "base64"),
+        private getMimeExtension: (mimeType: string) => string | false = mime.extension
     ) {}
 
     public parseMail(rawMail: RawMail): Promise<Mail> {
@@ -54,6 +59,7 @@ export class MailParserService {
                 }).then((parsedMail: ParsedMail) => {
                     resolve({
                         ...parsedMail,
+                        attachments: this.convertAttachments(parsedMail.attachments),
                         html: this.htmlService.replaceLinksTarget(parsedMail.html),
                         text: this.htmlService.escapeHtml(parsedMail.text),
                         raw: this.htmlService.escapeHtml(mailBuffer.toString()),
@@ -64,6 +70,24 @@ export class MailParserService {
                     });
                 });
             }
+        });
+    }
+
+    private convertAttachments(attachments: ParsedAttachment[]): Attachment[] {
+        let untitledCount = 1;
+        return attachments.map((attachment: ParsedAttachment) => {
+            let filename: string;
+            if (attachment.filename) {
+                filename = attachment.filename;
+            } else {
+                const extension = this.getMimeExtension(attachment.contentType);
+                filename = "untitled" + untitledCount++ + (extension ? "." + extension : "");
+            }
+            return {
+                ...attachment,
+                filename: filename,
+                icon: this.attachmentIconService.findIconFor(attachment.contentType)
+            };
         });
     }
 

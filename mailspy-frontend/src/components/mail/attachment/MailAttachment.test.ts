@@ -61,23 +61,6 @@ describe("MailAttachment", () => {
         expect(result.find(".mail-attachment-name").text()).toEqual(filename);
     });
 
-    it("should display 'untitled' when the attachment name is falsy", () => {
-        // GIVEN
-        testBed.setProps({
-            attachment: {
-                filename: null,
-                contentType: "text/plain",
-                content: ""
-            }
-        });
-
-        // WHEN
-        const result = testBed.render();
-
-        // THEN
-        expect(result.find(".mail-attachment-name").text()).toEqual("untitled");
-    });
-
     it("should download attachment when clicked", () => {
         // GIVEN
         const filename = "filename";

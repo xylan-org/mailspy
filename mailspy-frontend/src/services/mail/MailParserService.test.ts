@@ -20,25 +20,31 @@
  * SOFTWARE.
  */
 
+import { faFile, faFileAlt } from "@fortawesome/free-solid-svg-icons";
 import { mock, MockProxy } from "jest-mock-extended";
 import { when } from "jest-when";
-import { ParsedMail } from "mailparser";
+import type { ParsedMail } from "mailparser";
 import { HtmlService } from "services/html/HtmlService";
+import { AttachmentIconService } from "./AttachmentIconService";
 import type { Mail } from "./domain/Mail";
 import type { RawMail } from "./domain/RawMail";
 import { MailParserService } from "./MailParserService";
 
 describe("MailParserService", () => {
     let htmlService: HtmlService & MockProxy<HtmlService>;
-    let parseMailMock: jest.Mock<Promise<ParsedMail>>;
-    let readBase64Mock: jest.Mock<Buffer>;
+    let attachmentIconService: AttachmentIconService & MockProxy<AttachmentIconService>;
+    let doParseMail: jest.Mock<Promise<ParsedMail>, [Buffer]>;
+    let readBase64: jest.Mock<Buffer, [string]>;
+    let getMimeExtension: jest.Mock<string | false, [string]>;
     let underTest: MailParserService;
 
     beforeEach(() => {
         htmlService = mock<HtmlService>();
-        parseMailMock = jest.fn();
-        readBase64Mock = jest.fn();
-        underTest = new MailParserService(htmlService, parseMailMock, readBase64Mock);
+        attachmentIconService = mock<AttachmentIconService>();
+        doParseMail = jest.fn();
+        readBase64 = jest.fn();
+        getMimeExtension = jest.fn();
+        underTest = new MailParserService(htmlService, attachmentIconService, doParseMail, readBase64, getMimeExtension);
     });
 
     describe("parseMail", () => {
@@ -77,7 +83,24 @@ describe("MailParserService", () => {
             };
             const parsedMail: ParsedMail = {
                 text: "a < b",
-                html: "<a href='http://google.com'>a &lt; b<h2>"
+                html: "<a href='http://google.com'>a &lt; b<h2>",
+                attachments: [
+                    {
+                        filename: "test-file.txt", // has file name
+                        contentType: "text/plain",
+                        content: Buffer.from("content1")
+                    },
+                    {
+                        filename: undefined, // has no file name, but extension can be inferred
+                        contentType: "text/plain",
+                        content: Buffer.from("content2")
+                    },
+                    {
+                        filename: undefined, // has no file name, and extension cannot be inferred
+                        contentType: "application/binary",
+                        content: Buffer.from("content3")
+                    }
+                ]
             };
             const expected: Mail = {
                 html: "<a href='http://google.com' target='_blank'>a &lt; b<h2>",
@@ -86,21 +109,45 @@ describe("MailParserService", () => {
                 timeReceived: "2020-01-01 12:00:00",
                 selected: false,
                 error: "",
-                id: "id"
+                id: "id",
+                attachments: [
+                    {
+                        filename: "test-file.txt",
+                        contentType: "text/plain",
+                        content: Buffer.from("content1"),
+                        icon: faFileAlt
+                    },
+                    {
+                        filename: "untitled1.txt",
+                        contentType: "text/plain",
+                        content: Buffer.from("content2"),
+                        icon: faFileAlt
+                    },
+                    {
+                        filename: "untitled2",
+                        contentType: "application/binary",
+                        content: Buffer.from("content3"),
+                        icon: faFile
+                    }
+                ]
             };
 
-            readBase64Mock.mockReturnValue(messageBuffer);
-            parseMailMock.mockResolvedValue(parsedMail);
+            readBase64.mockReturnValue(messageBuffer);
+            doParseMail.mockResolvedValue(parsedMail);
+            htmlService.replaceLinksTarget.mockReturnValue("<a href='http://google.com' target='_blank'>a &lt; b<h2>");
 
             when(htmlService.escapeHtml).calledWith("a < b").mockReturnValue("a &lt; b");
             when(htmlService.escapeHtml).calledWith("a < b raw").mockReturnValue("a &lt; b raw");
-            htmlService.replaceLinksTarget.mockReturnValue("<a href='http://google.com' target='_blank'>a &lt; b<h2>");
+            when(getMimeExtension).calledWith("text/plain").mockReturnValue("txt");
+            when(getMimeExtension).calledWith("application/binary").mockReturnValue(false);
+            when(attachmentIconService.findIconFor).calledWith("text/plain").mockReturnValue(faFileAlt);
+            when(attachmentIconService.findIconFor).calledWith("application/binary").mockReturnValue(faFile);
 
             // WHEN
             const result = underTest.parseMail(rawMail);
 
             // THEN
-            expect(parseMailMock).toHaveBeenCalledWith(messageBuffer, {
+            expect(doParseMail).toHaveBeenCalledWith(messageBuffer, {
                 skipHtmlToText: true,
                 skipTextToHtml: true,
                 skipTextLinks: true

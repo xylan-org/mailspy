@@ -20,8 +20,11 @@
  * SOFTWARE.
  */
 
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+
 export interface Attachment {
     filename: string;
     contentType: string;
     content: BlobPart;
+    icon: IconDefinition;
 }
