@@ -52,6 +52,7 @@ public class BaseIntegrationTest {
     protected final void initializeContextRunner() {
         contextRunner = new WebApplicationContextRunner()
                 .withPropertyValues("mailspy.enabled=true")
+                .withPropertyValues("mailspy.path=/mailspy")
                 .withUserConfiguration(TestUserConfig.class)
                 .withConfiguration(AutoConfigurations.of(MailSpyBaseAutoConfig.class));
     }
