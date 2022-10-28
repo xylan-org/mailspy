@@ -35,7 +35,7 @@ public class MailSpyProperties {
 
     private int smtpPort = 2525;
     private InetAddress smtpBindAddress = InetAddress.getLoopbackAddress();
-    private String path = "/mailspy";
+    private String path = "/devtools/mailspy";
     private int retainEmails = 100;
     private boolean enableCors;
 
