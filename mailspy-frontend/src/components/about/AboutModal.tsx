@@ -205,6 +205,14 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                             </li>
                             <li>
                                 <Dependency
+                                    name="SockJS-client"
+                                    licenseName="MIT License"
+                                    licenseUrl="https://spdx.org/licenses/MIT.html"
+                                    url="https://github.com/sockjs/sockjs-client"
+                                />
+                            </li>
+                            <li>
+                                <Dependency
                                     name="Spring Boot"
                                     licenseName="Apache 2.0 License"
                                     licenseUrl="https://spdx.org/licenses/Apache-2.0.html"
@@ -217,6 +225,14 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                                     licenseName="Apache 2.0 License"
                                     licenseUrl="https://spdx.org/licenses/Apache-2.0.html"
                                     url="https://spring.io/projects/spring-framework"
+                                />
+                            </li>
+                            <li>
+                                <Dependency
+                                    name="STOMP.js"
+                                    licenseName="Apache 2.0 License"
+                                    licenseUrl="https://spdx.org/licenses/Apache-2.0.html"
+                                    url="https://github.com/stomp-js/stompjs"
                                 />
                             </li>
                             <li>

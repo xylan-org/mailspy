@@ -30,7 +30,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         libs {
             version("gradle", "7.5.1")
-            version("node", "16.15.0")
+            version("node", "16.18.0")
             version("spring-framework", "5.3.23")
             version("spring-boot", "2.7.5")
             version("slf4j", "1.7.36")
@@ -71,6 +71,8 @@ dependencyResolutionManagement {
             library("spring-boot-starter-web", "org.springframework.boot", "spring-boot-starter-web").versionRef("spring-boot")
             library("spring-context-support", "org.springframework", "spring-context-support").versionRef("spring-framework")
             library("spring-webmvc", "org.springframework", "spring-webmvc").versionRef("spring-framework")
+            library("spring-messaging", "org.springframework", "spring-messaging").versionRef("spring-framework")
+            library("spring-websocket", "org.springframework", "spring-websocket").versionRef("spring-framework")
             library("spring-test", "org.springframework", "spring-test").versionRef("spring-framework")
             library("slf4j-api", "org.slf4j", "slf4j-api").versionRef("slf4j")
             library("subetha", "org.subethamail", "subethasmtp").versionRef("subetha")

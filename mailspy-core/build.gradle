@@ -45,6 +45,8 @@ dependencies {
     api libs.spring.boot.autoconfigure
     api libs.spring.context.support
     api libs.spring.webmvc
+    api libs.spring.messaging
+    api libs.spring.websocket
     api libs.slf4j.api
     api libs.subetha
     api libs.apache.commons.io
