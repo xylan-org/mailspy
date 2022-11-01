@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.StompWebSocketEndpointRegistration;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.xylan.mailspy.core.config.MailSpyProperties;
 
@@ -17,14 +18,18 @@ public class MailSpyWebSocketConfig implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.setApplicationDestinationPrefixes(properties.getPathNoTrailingSlash() + "/ws/dest")
-            .enableSimpleBroker(properties.getPathNoTrailingSlash() + "/ws/topic");
+        config.setApplicationDestinationPrefixes("/ws/dest")
+            .setPreservePublishOrder(true)
+            .enableSimpleBroker("/ws/topic");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint(properties.getPathNoTrailingSlash() + "/ws")
-            .withSockJS();
+        StompWebSocketEndpointRegistration endpointRegistration = registry.addEndpoint(properties.getPathNoTrailingSlash() + "/ws");
+        if (properties.isEnableCors()) {
+            endpointRegistration.setAllowedOriginPatterns("*");
+        }
+        endpointRegistration.withSockJS();
     }
 
 }

@@ -14,15 +14,12 @@ public class MailSpyClearedWebSocketSender {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @Autowired
-    private MailSpyProperties properties;
-
     @MessageMapping("/clear")
     public void clearMails() {
         WebSocketMessage webSocketMessage = WebSocketMessage.builder()
             .type(WebSocketMessageType.CLEARED)
             .build();
-        simpMessagingTemplate.convertAndSend(properties.getPathNoTrailingSlash() + "/ws/topic/messages", webSocketMessage);
+        simpMessagingTemplate.convertAndSend("/ws/topic/messages", webSocketMessage);
     }
 
 }

@@ -33,11 +33,18 @@ import type { Mail } from "services/mail/domain/Mail";
 import autobind from "autobind-decorator";
 import { MailService } from "services/mail/MailService";
 import { resolve } from "inversify-react";
+import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+import { MailParserService } from "services/mail/MailParserService";
+import { RawMail } from "services/mail/domain/RawMail";
 
 @autobind
 export class App extends Component<Empty, AppState> {
     @resolve(MailService)
     private mailService: MailService;
+
+    @resolve(MailParserService)
+    private mailParserService: MailParserService;
 
     public constructor(props: Empty) {
         super(props);
@@ -50,7 +57,30 @@ export class App extends Component<Empty, AppState> {
     }
 
     public componentDidMount(): void {
-        this.fetchMails();
+        //this.fetchMails();
+        const webSocket: WebSocket = new SockJS(this.getBackendRoot() + "/ws");
+        const stompClient: CompatClient = Stomp.over(webSocket);
+        stompClient.connect({}, () => {
+            console.log("Connected!");
+            stompClient.subscribe("/ws/topic/messages", (message: IMessage) => {
+                console.log(JSON.parse(message.body));
+                this.mailParserService.parseMail(JSON.parse(message.body).payload as RawMail)
+                    .then((parsedMail: Mail) => {
+                        this.addMail(parsedMail);
+                    });
+            });
+        });
+
+    }
+
+    private getBackendRoot(): string {
+        let result: string;
+        if (process.env.NODE_ENV === "development") {
+            result = process.env.REACT_APP_BACKEND_ROOT;
+        } else {
+            result = (window.location.origin + window.location.pathname).replace(/\/$/, "");
+        }
+        return result;
     }
 
     private fetchMails(): void {

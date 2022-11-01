@@ -15,16 +15,13 @@ public class MailSpyEmailReceivedWebSocketSender implements ApplicationListener<
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @Autowired
-    private MailSpyProperties properties;
-
     @Override
     public void onApplicationEvent(EmailReceivedEvent event) {
         WebSocketMessage webSocketMessage = WebSocketMessage.builder()
             .type(WebSocketMessageType.EMAIL_RECEIVED)
             .payload(event.getSource())
             .build();
-        simpMessagingTemplate.convertAndSend(properties.getPathNoTrailingSlash() + "/ws/topic/messages", webSocketMessage);
+        simpMessagingTemplate.convertAndSend("/ws/topic/messages", webSocketMessage);
     }
 
 }
