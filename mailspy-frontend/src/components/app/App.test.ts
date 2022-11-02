@@ -238,7 +238,7 @@ describe("App", () => {
             // GIVEN
             // WHEN
             render.setState({
-                fetchState: LoadingStatus.STATUS_OK
+                fetchState: LoadingStatus.OK
             });
 
             // THEN
@@ -249,7 +249,7 @@ describe("App", () => {
             // GIVEN
             // WHEN
             render.setState({
-                fetchState: LoadingStatus.STATUS_LOADING
+                fetchState: LoadingStatus.LOADING
             });
 
             // THEN

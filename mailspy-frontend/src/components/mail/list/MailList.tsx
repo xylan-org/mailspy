@@ -25,11 +25,12 @@ import { MailListItem } from "../list-item/MailListItem";
 import Button from "react-bootstrap/Button";
 import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
 import type { MailListProps } from "./domain/MailListProps";
 import autobind from "autobind-decorator";
 import { FileDownloadService } from "services/download/FileDownloadService";
 import { resolve } from "inversify-react";
+import { LoadingStatus } from "components/app/domain/LoadingStatus";
 
 @autobind
 export class MailList extends Component<MailListProps, Empty> {
@@ -48,9 +49,12 @@ export class MailList extends Component<MailListProps, Empty> {
                         className="mail-list-clear-button"
                         variant="primary"
                         onClick={this.props.clearMails}
-                        disabled={!this.props.canClearMails || this.props.mails.length === 0}
+                        disabled={this.props.clearStatus !== LoadingStatus.OK || this.props.mails.length === 0}
                     >
-                        <FontAwesomeIcon icon={faTimes} />
+                        <FontAwesomeIcon
+                            spin={this.props.clearStatus == LoadingStatus.LOADING}
+                            icon={this.props.clearStatus == LoadingStatus.LOADING ? faSpinner : faTimes}
+                        />
                         Clear
                     </Button>
                     <Button

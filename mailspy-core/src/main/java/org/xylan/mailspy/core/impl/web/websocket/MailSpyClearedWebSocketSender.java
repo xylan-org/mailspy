@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.xylan.mailspy.core.config.MailSpyProperties;
-import org.xylan.mailspy.core.impl.domain.WebSocketMessage;
-import org.xylan.mailspy.core.impl.domain.WebSocketMessageType;
+import org.xylan.mailspy.core.impl.web.history.storage.MailSpyHistoryStorage;
 
 @Controller
 public class MailSpyClearedWebSocketSender {
@@ -14,12 +12,13 @@ public class MailSpyClearedWebSocketSender {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    @Autowired
+    private MailSpyHistoryStorage mailSpyHistoryStorage;
+
     @MessageMapping("/clear")
     public void clearMails() {
-        WebSocketMessage webSocketMessage = WebSocketMessage.builder()
-            .type(WebSocketMessageType.CLEARED)
-            .build();
-        simpMessagingTemplate.convertAndSend("/ws/topic/messages", webSocketMessage);
+        mailSpyHistoryStorage.clearHistory();
+        simpMessagingTemplate.convertAndSend("/ws/topic/clear", "");
     }
 
 }

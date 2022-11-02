@@ -29,10 +29,23 @@ import { MailParserService } from "services/mail/MailParserService";
 import { HtmlService } from "services/html/HtmlService";
 import { FileDownloadService } from "services/download/FileDownloadService";
 import { AttachmentIconService } from "services/mail/AttachmentIconService";
+import { WebSocketService } from "services/websocket/WebSocketService";
+import { CompatClient, Stomp } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 const container = new Container({
     defaultScope: "Singleton"
 });
+
+const getBackendRoot = () => {
+    let result: string;
+    if (process.env.NODE_ENV === "development") {
+        result = process.env.REACT_APP_BACKEND_ROOT;
+    } else {
+        result = (window.location.origin + window.location.pathname).replace(/\/$/, "");
+    }
+    return result;
+};
 
 container.bind<MailService>(MailService).toSelf();
 container.bind<HttpService>(HttpService).toSelf();
@@ -40,8 +53,10 @@ container.bind<MailParserService>(MailParserService).toSelf();
 container.bind<HtmlService>(HtmlService).toSelf();
 container.bind<FileDownloadService>(FileDownloadService).toSelf();
 container.bind<AttachmentIconService>(AttachmentIconService).toSelf();
+container.bind<WebSocketService>(WebSocketService).toSelf();
 
 container.bind<DOMParser>(DOMParser).toConstantValue(new DOMParser());
 container.bind<XMLSerializer>(XMLSerializer).toConstantValue(new XMLSerializer());
+container.bind<CompatClient>(CompatClient).toConstantValue(Stomp.over(new SockJS(getBackendRoot() + "/ws")));
 
 export default container;

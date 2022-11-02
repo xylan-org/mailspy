@@ -28,25 +28,38 @@ import { MailParserService } from "services/mail/MailParserService";
 import { ReconnectingEventSource } from "services/http/ReconnectingEventSource";
 import type { CustomEvent } from "services/http/domain/CustomEvent";
 import { inject, injectable } from "inversify";
+import { WebSocketService } from "services/websocket/WebSocketService";
 
 @autobind
 @injectable()
 export class MailService {
-    public constructor(@inject(HttpService) private httpService: HttpService, @inject(MailParserService) private mailParserService: MailParserService) {}
+    public constructor(
+        @inject(HttpService) private httpService: HttpService,
+        @inject(MailParserService) private mailParserService: MailParserService,
+        @inject(WebSocketService) private webSocketService: WebSocketService
+    ) {}
 
     public getMails(): Promise<Mail[]> {
         return this.httpService.fetch<RawMail[]>("/mails/history").then((mails: RawMail[]) => this.mailParserService.parseMails(mails));
     }
 
-    public clearMails(): Promise<void> {
-        return this.httpService.fetch("/mails/history", {
-            method: "DELETE"
-        });
+    public clearMails(): void {
+        this.webSocketService.send("clear");
     }
 
     public subscribeMails(callback: (mail: Mail) => void): ReconnectingEventSource {
         return this.httpService.createEventSource("/mails/subscribe").onCustomEvent("mail", (event: CustomEvent) => {
             this.mailParserService.parseMail(JSON.parse(event.data)).then(callback);
         });
+    }
+
+    public subscribeOnMails(callback: (mail: Mail) => void): void {
+        this.webSocketService.subscribe("email", (rawMail: RawMail) => {
+            this.mailParserService.parseMail(rawMail).then(callback);
+        });
+    }
+
+    public subscribeOnClears(callback: () => void): void {
+        this.webSocketService.subscribe("clear", callback);
     }
 }

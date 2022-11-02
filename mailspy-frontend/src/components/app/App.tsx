@@ -33,58 +33,37 @@ import type { Mail } from "services/mail/domain/Mail";
 import autobind from "autobind-decorator";
 import { MailService } from "services/mail/MailService";
 import { resolve } from "inversify-react";
-import { CompatClient, IMessage, Stomp } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
-import { MailParserService } from "services/mail/MailParserService";
-import { RawMail } from "services/mail/domain/RawMail";
 
 @autobind
 export class App extends Component<Empty, AppState> {
     @resolve(MailService)
     private mailService: MailService;
 
-    @resolve(MailParserService)
-    private mailParserService: MailParserService;
-
     public constructor(props: Empty) {
         super(props);
         this.state = {
             mails: [],
             selectedMail: null,
-            fetchState: LoadingStatus.STATUS_OK,
-            clearState: LoadingStatus.STATUS_OK
+            fetchState: LoadingStatus.OK,
+            clearState: LoadingStatus.OK
         };
     }
 
     public componentDidMount(): void {
-        //this.fetchMails();
-        const webSocket: WebSocket = new SockJS(this.getBackendRoot() + "/ws");
-        const stompClient: CompatClient = Stomp.over(webSocket);
-        stompClient.connect({}, () => {
-            console.log("Connected!");
-            stompClient.subscribe("/ws/topic/messages", (message: IMessage) => {
-                console.log(JSON.parse(message.body));
-                this.mailParserService.parseMail(JSON.parse(message.body).payload as RawMail)
-                    .then((parsedMail: Mail) => {
-                        this.addMail(parsedMail);
-                    });
-            });
+        this.mailService.subscribeOnMails((mail: Mail) => {
+            this.addMail(mail);
         });
-
-    }
-
-    private getBackendRoot(): string {
-        let result: string;
-        if (process.env.NODE_ENV === "development") {
-            result = process.env.REACT_APP_BACKEND_ROOT;
-        } else {
-            result = (window.location.origin + window.location.pathname).replace(/\/$/, "");
-        }
-        return result;
+        this.mailService.subscribeOnClears(() => {
+            this.setState({
+                mails: [],
+                selectedMail: null
+            });
+            this.setState({ clearState: LoadingStatus.OK });
+        });
     }
 
     private fetchMails(): void {
-        this.setState({ fetchState: LoadingStatus.STATUS_LOADING });
+        this.setState({ fetchState: LoadingStatus.LOADING });
         this.mailService
             .getMails()
             .then((mails: Mail[]) => {
@@ -97,7 +76,7 @@ export class App extends Component<Empty, AppState> {
                 this.subscribeMails();
             })
             .catch(() => {
-                this.setState({ fetchState: LoadingStatus.STATUS_ERROR });
+                this.setState({ fetchState: LoadingStatus.ERROR });
             });
     }
 
@@ -105,10 +84,10 @@ export class App extends Component<Empty, AppState> {
         this.mailService
             .subscribeMails(this.addMail)
             .onError(() => {
-                this.setState({ fetchState: LoadingStatus.STATUS_ERROR });
+                this.setState({ fetchState: LoadingStatus.ERROR });
             })
             .onConnected(() => {
-                this.setState({ fetchState: LoadingStatus.STATUS_OK });
+                this.setState({ fetchState: LoadingStatus.OK });
             })
             .connect();
     }
@@ -135,21 +114,21 @@ export class App extends Component<Empty, AppState> {
     }
 
     private clearMails(): void {
-        this.setState({ clearState: LoadingStatus.STATUS_LOADING });
-        this.mailService
-            .clearMails()
-            .then(() => {
+        this.setState({ clearState: LoadingStatus.LOADING });
+        // TODO handle error - timeout on loading
+        this.mailService.clearMails();
+            /*.then(() => {
                 this.setState({
                     mails: [],
                     selectedMail: null
                 });
             })
             .catch(() => {
-                this.setState({ clearState: LoadingStatus.STATUS_ERROR });
+                this.setState({ clearState: LoadingStatus.ERROR });
                 setTimeout(() => {
-                    this.setState({ clearState: LoadingStatus.STATUS_OK });
+                    this.setState({ clearState: LoadingStatus.OK });
                 }, 3000);
-            });
+            });*/
     }
 
     public render(): JSX.Element {
@@ -161,17 +140,17 @@ export class App extends Component<Empty, AppState> {
                         mails={this.state.mails}
                         selectMail={this.selectMail}
                         clearMails={this.clearMails}
-                        canClearMails={this.state.fetchState === LoadingStatus.STATUS_OK}
                         selectedMail={this.state.selectedMail}
+                        clearStatus={this.state.clearState}
                     />
                     <MailPreview selectedMail={this.state.selectedMail} />
                 </main>
-                <LoadingToast show={this.state.fetchState === LoadingStatus.STATUS_LOADING} />
+                <LoadingToast show={this.state.fetchState === LoadingStatus.LOADING} />
                 <aside id="error-toast-fetch">
-                    <ErrorToast show={this.state.fetchState === LoadingStatus.STATUS_ERROR} retry={this.fetchMails} message="Connection failed." />
+                    <ErrorToast show={this.state.fetchState === LoadingStatus.ERROR} retry={this.fetchMails} message="Connection failed." />
                 </aside>
                 <aside id="error-toast-clear">
-                    <ErrorToast show={this.state.clearState === LoadingStatus.STATUS_ERROR} message="Action failed. Check console." />
+                    <ErrorToast show={this.state.clearState === LoadingStatus.ERROR} message="Action failed. Check console." />
                 </aside>
             </div>
         );
