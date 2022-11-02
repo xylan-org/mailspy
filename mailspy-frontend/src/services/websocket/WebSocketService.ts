@@ -29,7 +29,6 @@ export class WebSocketService {
             this.subscriptions.push(subscription);
             if (this.connectionStatus === ConnectionStatus.DISCONNECTED) {
                 this.connectionStatus = ConnectionStatus.CONNECTING;
-                // TODO handle error callback
                 this.stompClient.connect({}, () => {
                     this.subscriptions.forEach((subscription: Subscription) => {
                         this.doSubscribe(subscription);
@@ -58,7 +57,6 @@ export class WebSocketService {
             (message: IMessage) => {
                 let body: unknown;
                 if (message.headers["content-type"] === "application/json") {
-                    // TODO handle parse error
                     body = JSON.parse(message.body);
                 } else {
                     body = message.body;

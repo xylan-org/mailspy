@@ -21,12 +21,9 @@
  */
 
 import autobind from "autobind-decorator";
-import { HttpService } from "services/http/HttpService";
 import type { RawMail } from "services/mail/domain/RawMail";
 import type { Mail } from "services/mail/domain/Mail";
 import { MailParserService } from "services/mail/MailParserService";
-import { ReconnectingEventSource } from "services/http/ReconnectingEventSource";
-import type { CustomEvent } from "services/http/domain/CustomEvent";
 import { inject, injectable } from "inversify";
 import { WebSocketService } from "services/websocket/WebSocketService";
 
@@ -34,23 +31,12 @@ import { WebSocketService } from "services/websocket/WebSocketService";
 @injectable()
 export class MailService {
     public constructor(
-        @inject(HttpService) private httpService: HttpService,
         @inject(MailParserService) private mailParserService: MailParserService,
         @inject(WebSocketService) private webSocketService: WebSocketService
     ) {}
 
-    public getMails(): Promise<Mail[]> {
-        return this.httpService.fetch<RawMail[]>("/mails/history").then((mails: RawMail[]) => this.mailParserService.parseMails(mails));
-    }
-
     public clearMails(): void {
         this.webSocketService.send("clear");
-    }
-
-    public subscribeMails(callback: (mail: Mail) => void): ReconnectingEventSource {
-        return this.httpService.createEventSource("/mails/subscribe").onCustomEvent("mail", (event: CustomEvent) => {
-            this.mailParserService.parseMail(JSON.parse(event.data)).then(callback);
-        });
     }
 
     public subscribeOnMails(callback: (mail: Mail) => void): void {

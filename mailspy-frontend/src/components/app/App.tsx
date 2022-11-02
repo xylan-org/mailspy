@@ -44,7 +44,6 @@ export class App extends Component<Empty, AppState> {
         this.state = {
             mails: [],
             selectedMail: null,
-            fetchState: LoadingStatus.OK,
             clearState: LoadingStatus.OK
         };
     }
@@ -60,36 +59,6 @@ export class App extends Component<Empty, AppState> {
             });
             this.setState({ clearState: LoadingStatus.OK });
         });
-    }
-
-    private fetchMails(): void {
-        this.setState({ fetchState: LoadingStatus.LOADING });
-        this.mailService
-            .getMails()
-            .then((mails: Mail[]) => {
-                this.setState({
-                    mails: mails,
-                    selectedMail: null
-                });
-            })
-            .then(() => {
-                this.subscribeMails();
-            })
-            .catch(() => {
-                this.setState({ fetchState: LoadingStatus.ERROR });
-            });
-    }
-
-    private subscribeMails() {
-        this.mailService
-            .subscribeMails(this.addMail)
-            .onError(() => {
-                this.setState({ fetchState: LoadingStatus.ERROR });
-            })
-            .onConnected(() => {
-                this.setState({ fetchState: LoadingStatus.OK });
-            })
-            .connect();
     }
 
     private addMail(mail: Mail): void {
@@ -115,20 +84,7 @@ export class App extends Component<Empty, AppState> {
 
     private clearMails(): void {
         this.setState({ clearState: LoadingStatus.LOADING });
-        // TODO handle error - timeout on loading
         this.mailService.clearMails();
-            /*.then(() => {
-                this.setState({
-                    mails: [],
-                    selectedMail: null
-                });
-            })
-            .catch(() => {
-                this.setState({ clearState: LoadingStatus.ERROR });
-                setTimeout(() => {
-                    this.setState({ clearState: LoadingStatus.OK });
-                }, 3000);
-            });*/
     }
 
     public render(): JSX.Element {
@@ -145,9 +101,9 @@ export class App extends Component<Empty, AppState> {
                     />
                     <MailPreview selectedMail={this.state.selectedMail} />
                 </main>
-                <LoadingToast show={this.state.fetchState === LoadingStatus.LOADING} />
+                <LoadingToast show={false/*this.state.fetchState === LoadingStatus.LOADING*/} />
                 <aside id="error-toast-fetch">
-                    <ErrorToast show={this.state.fetchState === LoadingStatus.ERROR} retry={this.fetchMails} message="Connection failed." />
+                    <ErrorToast show={false/*this.state.fetchState === LoadingStatus.ERROR*/} retry={() => {}} message="Connection failed." />
                 </aside>
                 <aside id="error-toast-clear">
                     <ErrorToast show={this.state.clearState === LoadingStatus.ERROR} message="Action failed. Check console." />
