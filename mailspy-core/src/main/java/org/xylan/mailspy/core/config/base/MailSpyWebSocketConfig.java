@@ -19,6 +19,7 @@ public class MailSpyWebSocketConfig implements WebSocketMessageBrokerConfigurer 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.setApplicationDestinationPrefixes("/ws/dest")
+            .setUserDestinationPrefix("/ws/topic/user")
             .setPreservePublishOrder(true)
             .enableSimpleBroker("/ws/topic");
     }

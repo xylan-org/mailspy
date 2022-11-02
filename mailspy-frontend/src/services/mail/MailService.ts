@@ -40,9 +40,12 @@ export class MailService {
     }
 
     public subscribeOnMails(callback: (mail: Mail) => void): void {
-        this.webSocketService.subscribe("email", (rawMail: RawMail) => {
+        const mailHandler = (rawMail: RawMail) => {
             this.mailParserService.parseMail(rawMail).then(callback);
-        });
+        };
+        this.webSocketService.subscribe("user/{userId}/history", mailHandler);
+        this.webSocketService.send("history");
+        this.webSocketService.subscribe("email", mailHandler);
     }
 
     public subscribeOnClears(callback: () => void): void {

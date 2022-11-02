@@ -243,6 +243,14 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                                     url="https://github.com/voodoodyne/subethasmtp"
                                 />
                             </li>
+                            <li>
+                                <Dependency
+                                    name="uuid"
+                                    licenseName="MIT License"
+                                    licenseUrl="https://spdx.org/licenses/MIT.html"
+                                    url="https://github.com/uuidjs/uuid"
+                                />
+                            </li>
                         </ul>
                     </div>
                 </Modal.Body>
