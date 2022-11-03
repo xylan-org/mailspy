@@ -84,10 +84,11 @@ MailSpy currently does not support the auto-configuration of Spring Security. Yo
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(customizer -> customizer
-        .antMatchers("/mailspy/**").permitAll());
+        .antMatchers("/devtools/mailspy/**").permitAll());
     return http.build();
 }
 ```
+Please note that the above example assumes that MailSpy will only be used in a local development environment (for other environments `mailspy.enabled=false`, or MailSpy is included as `developmentOnly` in Gradle). **If MailSpy is used in other environments, you'll probably want more restrictive security rules.**
 
 ### Required JSON serializer
 
