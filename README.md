@@ -67,7 +67,7 @@ Don't forget to point your application's mail sender client to the SMTP port you
 | `mailspy.enabled` | false | true | Enables MailSpy |
 | `mailspy.smtp-port` | 2525 | 2525 | The port of MailSpy's embedded SMTP server |
 | `mailspy.smtp-bind-address` | localhost | localhost | The host of MailSpy's embedded SMTP server |
-| `mailspy.path` | /mailspy | / | The path for MailSpy's Web UI |
+| `mailspy.path` | /devtools/mailspy | / | The path for MailSpy's Web UI |
 | `mailspy.retain-emails` | 100 | 100 | The number of emails kept in memory |
 | `mailspy.enable-cors` | false | false | Enable [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for MailSpy's REST API |
 | `mailspy.websocket.max-message-bytes` | 524,288,000 | 524,288,000 | The maximum size of inbound WebSocket messages. |
