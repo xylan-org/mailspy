@@ -41,7 +41,7 @@ jobs:
       - name: Verify and build
         uses: gradle/gradle-build-action@v2.3.0
         with:
-          arguments: "check bootJar bootWar"
+          arguments: "check bootJar bootWar -PincludeFrontend"
       - name: Collect line coverage metrics
         id: collect_line_coverage
         run: |

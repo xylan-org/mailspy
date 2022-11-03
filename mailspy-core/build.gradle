@@ -41,7 +41,9 @@ configurations {
 }
 
 dependencies {
-    runtimeOnly project(":mailspy-frontend")
+    if (project.hasProperty("includeFrontend")) {
+        runtimeOnly project(":mailspy-frontend")
+    }
     api libs.spring.boot.autoconfigure
     api libs.spring.context.support
     api libs.spring.webmvc
