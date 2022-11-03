@@ -28,7 +28,6 @@ import { MailPreview } from "../mail/preview/MailPreview";
 import { LoadingToast } from "../loading/LoadingToast";
 import { ErrorToast } from "../error/ErrorToast";
 import type { AppState } from "./domain/AppState";
-import { LoadingStatus } from "./domain/LoadingStatus";
 import type { Mail } from "services/mail/domain/Mail";
 import autobind from "autobind-decorator";
 import { MailService } from "services/mail/MailService";
@@ -44,7 +43,8 @@ export class App extends Component<Empty, AppState> {
         this.state = {
             mails: [],
             selectedMail: null,
-            clearState: LoadingStatus.OK
+            clearLoading: false,
+            clearToastTimeoutId: null
         };
     }
 
@@ -57,7 +57,7 @@ export class App extends Component<Empty, AppState> {
                 mails: [],
                 selectedMail: null
             });
-            this.setState({ clearState: LoadingStatus.OK });
+            this.setState({ clearLoading: false });
         });
     }
 
@@ -83,8 +83,20 @@ export class App extends Component<Empty, AppState> {
     }
 
     private clearMails(): void {
-        this.setState({ clearState: LoadingStatus.LOADING });
+        this.setState({ clearLoading: true });
         this.mailService.clearMails();
+        window.setTimeout(() => {
+            if (this.state.clearLoading) {
+                window.clearTimeout(this.state.clearToastTimeoutId);
+                const timeoutId = window.setTimeout(() => {
+                    this.setState({ clearToastTimeoutId: null });
+                }, 10000);
+                this.setState({
+                    clearToastTimeoutId: timeoutId,
+                    clearLoading: false
+                });
+            }
+        }, 5000);
     }
 
     public render(): JSX.Element {
@@ -97,16 +109,22 @@ export class App extends Component<Empty, AppState> {
                         selectMail={this.selectMail}
                         clearMails={this.clearMails}
                         selectedMail={this.state.selectedMail}
-                        clearStatus={this.state.clearState}
+                        clearLoading={this.state.clearLoading}
                     />
                     <MailPreview selectedMail={this.state.selectedMail} />
                 </main>
-                <LoadingToast show={false/*this.state.fetchState === LoadingStatus.LOADING*/} />
+                <LoadingToast show={false /*this.state.fetchState === LoadingStatus.LOADING*/} />
                 <aside id="error-toast-fetch">
-                    <ErrorToast show={false/*this.state.fetchState === LoadingStatus.ERROR*/} retry={() => {}} message="Connection failed." />
+                    <ErrorToast
+                        show={false /*this.state.fetchState === LoadingStatus.ERROR*/}
+                        retry={() => {
+                            /** */
+                        }}
+                        message="Connection failed."
+                    />
                 </aside>
                 <aside id="error-toast-clear">
-                    <ErrorToast show={this.state.clearState === LoadingStatus.ERROR} message="Action failed. Check console." />
+                    <ErrorToast show={!!this.state.clearToastTimeoutId} message="Clear action timed out." />
                 </aside>
             </div>
         );

@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-import { LoadingStatus } from "components/app/domain/LoadingStatus";
 import type { Mail } from "services/mail/domain/Mail";
 
 export interface MailListProps {
@@ -28,5 +27,5 @@ export interface MailListProps {
     selectedMail: Mail;
     selectMail: (mailId: string) => void;
     clearMails: () => void;
-    clearStatus: LoadingStatus;
+    clearLoading: boolean;
 }
