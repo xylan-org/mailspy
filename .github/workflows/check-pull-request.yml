@@ -6,7 +6,7 @@ on:
 
 jobs:
   checkPullRequest:
-    if: ! github.event.pull_request.draft
+    if: ${{ ! github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
