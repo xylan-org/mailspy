@@ -104,6 +104,6 @@ export class WebSocketService {
     }
 
     private getSubscriptionId(topic: string): string {
-        return "subscription-" + topic;
+        return "subscription/" + topic;
     }
 }

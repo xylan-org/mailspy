@@ -3,10 +3,7 @@ package org.xylan.mailspy.core.config.base;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.StompWebSocketEndpointRegistration;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.*;
 import org.xylan.mailspy.core.config.MailSpyProperties;
 
 @Configuration
@@ -33,4 +30,9 @@ public class MailSpyWebSocketConfig implements WebSocketMessageBrokerConfigurer 
         endpointRegistration.withSockJS();
     }
 
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
+        registry.setMessageSizeLimit(properties.getWebSocket().getMaxMessageBytes());
+        registry.setSendBufferSizeLimit(properties.getWebSocket().getMaxSendBufferBytes());
+    }
 }

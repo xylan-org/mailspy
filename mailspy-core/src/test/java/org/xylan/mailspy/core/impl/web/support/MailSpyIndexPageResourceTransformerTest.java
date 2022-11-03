@@ -43,6 +43,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyProperties;
+import org.xylan.mailspy.core.impl.web.index.resourcetransformer.MailSpyIndexPageResourceTransformer;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpyIndexPageResourceTransformerTest {

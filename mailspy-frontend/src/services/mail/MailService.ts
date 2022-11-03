@@ -36,7 +36,7 @@ export class MailService {
     ) {}
 
     public clearMails(): void {
-        this.webSocketService.send("clear");
+        this.webSocketService.send("clear-history");
     }
 
     public subscribeOnMails(callback: (mail: Mail) => void): void {
@@ -44,7 +44,7 @@ export class MailService {
             this.mailParserService.parseMail(rawMail).then(callback);
         };
         this.webSocketService.subscribe("user/{userId}/history", mailHandler);
-        this.webSocketService.send("history");
+        this.webSocketService.send("get-history");
         this.webSocketService.subscribe("email", mailHandler);
     }
 

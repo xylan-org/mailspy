@@ -22,9 +22,10 @@
 
 package org.xylan.mailspy.core.config;
 
-import java.net.InetAddress;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.net.InetAddress;
 
 /**
  * Configuration properties of MailSpy.
@@ -38,6 +39,7 @@ public class MailSpyProperties {
     private String path = "/devtools/mailspy";
     private int retainEmails = 100;
     private boolean enableCors;
+    private WebSocketProperties webSocket = new WebSocketProperties();
 
     /**
      * Returns the path without trailing slashes.
@@ -45,5 +47,11 @@ public class MailSpyProperties {
      */
     public String getPathNoTrailingSlash() {
         return path.replaceAll("/$", "");
+    }
+
+    @Data
+    public static class WebSocketProperties {
+        private int maxMessageBytes = 1_073_741_824;
+        private int maxSendBufferBytes = 524_288_000;
     }
 }

@@ -38,6 +38,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyProperties;
+import org.xylan.mailspy.core.impl.web.index.controller.MailSpyForwardIndexController;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpyForwardIndexControllerTest {
