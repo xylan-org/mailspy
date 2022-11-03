@@ -39,7 +39,7 @@ public class MailSpyProperties {
     private String path = "/devtools/mailspy";
     private int retainEmails = 100;
     private boolean enableCors;
-    private WebSocketProperties webSocket = new WebSocketProperties();
+    private WebSocketProperties websocket = new WebSocketProperties();
 
     /**
      * Returns the path without trailing slashes.
@@ -51,7 +51,7 @@ public class MailSpyProperties {
 
     @Data
     public static class WebSocketProperties {
-        private int maxMessageBytes = 1_073_741_824;
+        private int maxMessageBytes = 524_288_000;
         private int maxSendBufferBytes = 524_288_000;
     }
 }

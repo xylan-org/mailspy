@@ -32,7 +32,7 @@ public class MailSpyWebSocketConfig implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
-        registry.setMessageSizeLimit(properties.getWebSocket().getMaxMessageBytes());
-        registry.setSendBufferSizeLimit(properties.getWebSocket().getMaxSendBufferBytes());
+        registry.setMessageSizeLimit(properties.getWebsocket().getMaxMessageBytes());
+        registry.setSendBufferSizeLimit(properties.getWebsocket().getMaxSendBufferBytes());
     }
 }

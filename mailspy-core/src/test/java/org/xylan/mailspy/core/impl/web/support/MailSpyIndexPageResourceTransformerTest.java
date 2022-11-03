@@ -22,13 +22,6 @@
 
 package org.xylan.mailspy.core.impl.web.support;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
-import static org.testng.Assert.assertEquals;
-
-import java.nio.charset.StandardCharsets;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;
@@ -44,6 +37,14 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.web.index.resourcetransformer.MailSpyIndexPageResourceTransformer;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.testng.Assert.assertEquals;
 
 @Listeners(MockitoTestNGListener.class)
 public class MailSpyIndexPageResourceTransformerTest {
@@ -84,7 +85,7 @@ public class MailSpyIndexPageResourceTransformerTest {
 
     @Test
     @SneakyThrows
-    public void transformShouldReplaceBaseTagAndCsrfTokenInContentWhenFileIsIndexHtml() {
+    public void transformShouldReplaceBaseTagInContentWhenFileIsIndexHtml() {
         // GIVEN
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         ResourceTransformerChain transformerChain = Mockito.mock(ResourceTransformerChain.class);
