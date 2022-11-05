@@ -36,13 +36,6 @@ export class ErrorToast extends Component<ErrorToastProps, Empty> {
                     <FontAwesomeIcon icon={faExclamationTriangle} size="lg" />
                     <span>
                         <span className="error-toast-message">{this.props.message}</span>
-                        {this.props.retry !== undefined ? (
-                            <button className="link-button error-toast-retry" onClick={this.props.retry}>
-                                Retry
-                            </button>
-                        ) : (
-                            ""
-                        )}
                     </span>
                 </Toast.Body>
             </Toast>

@@ -1,11 +1,12 @@
-import { CompatClient } from "@stomp/stompjs";
 import type { IMessage } from "@stomp/stompjs";
 import autobind from "autobind-decorator";
 import { inject, injectable } from "inversify";
-import { ConnectionStatus } from "./domain/ConnectionStatus";
 import type { Subscription } from "./domain/Subscription";
 import { v4 as uuidV4 } from "uuid";
 import { OutboundMessage } from "./domain/OutboundMessage";
+import { EventType } from "./domain/EventType";
+import { Client as StompClient } from "@stomp/stompjs";
+import { ConnectionStatus } from "./domain/ConnectionStatus";
 
 @autobind
 @injectable()
@@ -15,10 +16,10 @@ export class WebSocketService {
     private connectionStatus: ConnectionStatus;
     private userId: string;
 
-    public constructor(@inject(CompatClient) private stompClient: CompatClient, private getRandomUuid: () => string = uuidV4) {
+    public constructor(@inject(StompClient) private stompClient: StompClient, private getRandomUuid: () => string = uuidV4) {
         this.subscriptions = [];
         this.outboundMessages = [];
-        this.connectionStatus = ConnectionStatus.DISCONNECTED;
+        this.connectionStatus = ConnectionStatus.NOT_CONNECTED_YET;
         this.userId = this.getRandomUuid();
     }
 
@@ -28,27 +29,25 @@ export class WebSocketService {
             body: body
         };
         this.outboundMessages.push(message);
-        if (this.connectionStatus === ConnectionStatus.DISCONNECTED) {
-            this.connectionStatus = ConnectionStatus.CONNECTING;
-            this.connect();
-        } else if (this.connectionStatus === ConnectionStatus.CONNECTED) {
+        if (this.connectionStatus == ConnectionStatus.CONNECTED) {
             this.doSend(message);
+        } else if (this.connectionStatus == ConnectionStatus.NOT_CONNECTED_YET) {
+            this.connect();
         }
     }
 
-    public subscribe<T>(topic: string, onMessage: (body: T) => void): void {
+    public subscribe<T>(topic: string, onEvent: (type: EventType, body?: T) => void): void {
         const resolvedTopic = this.resolveTopicName(topic);
         const subscription: Subscription = {
             topic: resolvedTopic,
-            onMessage: onMessage
+            onEvent
         };
         if (!this.alreadySubscribed(resolvedTopic)) {
             this.subscriptions.push(subscription);
-            if (this.connectionStatus === ConnectionStatus.DISCONNECTED) {
-                this.connectionStatus = ConnectionStatus.CONNECTING;
-                this.connect();
-            } else if (this.connectionStatus === ConnectionStatus.CONNECTED) {
+            if (this.connectionStatus == ConnectionStatus.CONNECTED) {
                 this.doSubscribe(subscription);
+            } else if (this.connectionStatus == ConnectionStatus.NOT_CONNECTED_YET) {
+                this.connect();
             }
         }
     }
@@ -57,21 +56,31 @@ export class WebSocketService {
         const index: number = this.subscriptions.findIndex((subscription: Subscription) => subscription.topic === topic);
         if (index !== -1) {
             this.subscriptions.splice(index, 1);
-            if (this.connectionStatus === ConnectionStatus.CONNECTED) {
+            if (this.connectionStatus == ConnectionStatus.CONNECTED) {
                 this.stompClient.unsubscribe(this.getSubscriptionId(topic));
             }
         }
     }
 
     private connect(): void {
-        this.stompClient.connect({}, () => {
+        this.stompClient.onConnect = () => {
             this.subscriptions.forEach((subscription: Subscription) => {
                 this.doSubscribe(subscription);
+                subscription.onEvent(EventType.CONNECTED);
             });
             this.outboundMessages.forEach((outboundMessage: OutboundMessage) => {
                 this.doSend(outboundMessage);
             });
             this.connectionStatus = ConnectionStatus.CONNECTED;
+        };
+        this.stompClient.onWebSocketClose = this.onDisconnect;
+        this.stompClient.activate();
+    }
+
+    private onDisconnect(): void {
+        this.connectionStatus = ConnectionStatus.DISCONNECTED;
+        this.subscriptions.forEach((subscription: Subscription) => {
+            subscription.onEvent(EventType.DISCONNECTED);
         });
     }
 
@@ -85,22 +94,26 @@ export class WebSocketService {
                 } else {
                     body = message.body;
                 }
-                subscription.onMessage(body);
+                subscription.onEvent(EventType.MESSAGE_RECEIVED, body);
             },
             { id: this.getSubscriptionId(subscription.topic), userId: this.userId }
         );
     }
 
     private doSend(outboundMessage: OutboundMessage) {
-        this.stompClient.send("/ws/dest/" + outboundMessage.destination, { userId: this.userId }, JSON.stringify(outboundMessage.body));
-    }
-
-    private resolveTopicName(topic: string) {
-        return topic.replaceAll("{userId}", this.userId);
+        this.stompClient.publish({
+            destination: "/ws/dest/" + outboundMessage.destination,
+            headers: { userId: this.userId },
+            body: JSON.stringify(outboundMessage.body)
+        });
     }
 
     private alreadySubscribed(topic: string) {
         return this.subscriptions.some((subscription: Subscription) => subscription.topic === topic);
+    }
+
+    private resolveTopicName(topic: string) {
+        return topic.replaceAll("{userId}", this.userId);
     }
 
     private getSubscriptionId(topic: string): string {

@@ -26,53 +26,149 @@ import Button from "react-bootstrap/Button";
 import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
-import type { MailListProps } from "./domain/MailListProps";
 import autobind from "autobind-decorator";
 import { FileDownloadService } from "services/download/FileDownloadService";
 import { resolve } from "inversify-react";
+import type { MailListState } from "./domain/MailListState";
+import { MailService } from "services/mail/MailService";
+import { EventType } from "services/websocket/domain/EventType";
+import { ErrorToast } from "components/error/ErrorToast";
+import type { Mail } from "services/mail/domain/Mail";
+import type { MailListProps } from "./domain/MailListProps";
+import { LoadingToast } from "components/loading/LoadingToast";
 
 @autobind
-export class MailList extends Component<MailListProps, Empty> {
+export class MailList extends Component<MailListProps, MailListState> {
     @resolve(FileDownloadService)
     private fileDownloadService: FileDownloadService;
 
+    @resolve(MailService)
+    private mailService: MailService;
+
+    public constructor(props: MailListProps) {
+        super(props);
+        this.state = {
+            mails: [],
+            selectedMail: null,
+            clearLoading: false,
+            clearErrorToastTimeoutId: null,
+            disconnected: true
+        };
+    }
+
+    public componentDidMount(): void {
+        this.subscribe(this.mailService.subscribeOnMails, (mail: Mail) => {
+            this.addMail(mail);
+        });
+        this.subscribe(this.mailService.subscribeOnClears, () => {
+            this.setState({
+                mails: [],
+                selectedMail: null,
+                clearLoading: false
+            });
+        });
+    }
+
+    private subscribe<T>(subscriber: (callback: (eventType: EventType, message?: T) => void) => void, handleMessage: (message: T) => void): void {
+        subscriber((eventType: EventType, message: T) => {
+            if (eventType == EventType.MESSAGE_RECEIVED) {
+                handleMessage(message);
+            } else if (eventType == EventType.CONNECTED) {
+                this.setState({
+                    disconnected: false
+                });
+            } else if (eventType == EventType.DISCONNECTED) {
+                this.setState({
+                    disconnected: true
+                });
+            }
+        });
+    }
+
+    private addMail(mail: Mail): void {
+        this.setState((prevState) => {
+            return {
+                mails: [mail, ...prevState.mails]
+            };
+        });
+    }
+
+    private selectMail(mailId: string): void {
+        const updatedMails = this.state.mails.map((mail: Mail) => {
+            return {
+                ...mail,
+                selected: mail.id === mailId
+            };
+        });
+        const selectedMail = updatedMails.find((mail: Mail) => mail.id === mailId) || null;
+        this.setState({
+            mails: updatedMails,
+            selectedMail
+        });
+        this.props.selectMail(selectedMail);
+    }
+
     public render(): JSX.Element {
-        const listItems = this.props.mails.map((mail) => {
-            return <MailListItem key={mail.id} mail={mail} selectMail={this.props.selectMail} />;
+        const listItems = this.state.mails.map((mail) => {
+            return <MailListItem key={mail.id} mail={mail} selectMail={this.selectMail} />;
         });
 
         return (
-            <Card id="list">
-                <Card.Header>
-                    <Button
-                        className="mail-list-clear-button"
-                        variant="primary"
-                        onClick={this.props.clearMails}
-                        disabled={this.props.clearLoading || this.props.mails.length === 0}
-                    >
-                        <FontAwesomeIcon
-                            spin={this.props.clearLoading}
-                            icon={this.props.clearLoading ? faSpinner : faTimes}
-                        />
-                        Clear
-                    </Button>
-                    <Button
-                        className="mail-list-download-button"
-                        variant="primary"
-                        onClick={this.downloadSelectedMail}
-                        disabled={this.props.selectedMail === null}
-                    >
-                        <FontAwesomeIcon icon={faDownload} />
-                        Download
-                    </Button>
-                </Card.Header>
-                <Card.Body className="mail-list-items">{listItems}</Card.Body>
-            </Card>
+            <>
+                <Card id="list">
+                    <Card.Header>
+                        <Button
+                            className="mail-list-clear-button"
+                            variant="primary"
+                            onClick={this.clearMails}
+                            disabled={this.state.disconnected || this.state.clearLoading || this.state.mails.length === 0}
+                        >
+                            <FontAwesomeIcon spin={this.state.clearLoading} icon={this.state.clearLoading ? faSpinner : faTimes} />
+                            Clear
+                        </Button>
+                        <Button
+                            className="mail-list-download-button"
+                            variant="primary"
+                            onClick={this.downloadSelectedMail}
+                            disabled={this.state.selectedMail === null}
+                        >
+                            <FontAwesomeIcon icon={faDownload} />
+                            Download
+                        </Button>
+                    </Card.Header>
+                    <Card.Body className="mail-list-items">{listItems}</Card.Body>
+                </Card>
+                <LoadingToast show={this.state.disconnected} />
+                <aside id="error-toast-clear">
+                    <ErrorToast show={!!this.state.clearErrorToastTimeoutId} message="Clear action timed out." />
+                </aside>
+            </>
         );
     }
 
+    private clearMails(): void {
+        this.setState({ clearLoading: true });
+        this.mailService.clearMails();
+        window.setTimeout(() => {
+            if (this.state.clearLoading) {
+                this.displayClearErrorToast();
+            }
+        }, 5000);
+    }
+
+    private displayClearErrorToast() {
+        window.clearTimeout(this.state.clearErrorToastTimeoutId);
+        const timeoutId = window.setTimeout(() => {
+            this.setState({ clearErrorToastTimeoutId: null });
+        }, 10000);
+        this.setState({
+            clearErrorToastTimeoutId: timeoutId,
+            clearLoading: false
+        });
+    }
+
     private downloadSelectedMail(): void {
-        const mail = this.props.selectedMail;
+        const mail = this.state.selectedMail;
         this.fileDownloadService.downloadFile({
             name: mail.subject + ".eml",
             contentType: "message/rfc822",

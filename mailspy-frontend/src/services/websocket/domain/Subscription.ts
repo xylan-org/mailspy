@@ -1,4 +1,6 @@
+import { EventType } from "./EventType";
+
 export interface Subscription {
     topic: string;
-    onMessage: (body: any) => void;
+    onEvent: (type: EventType, body?: any) => void;
 }

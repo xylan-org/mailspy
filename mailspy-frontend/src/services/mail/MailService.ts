@@ -26,6 +26,7 @@ import type { Mail } from "services/mail/domain/Mail";
 import { MailParserService } from "services/mail/MailParserService";
 import { inject, injectable } from "inversify";
 import { WebSocketService } from "services/websocket/WebSocketService";
+import { EventType } from "services/websocket/domain/EventType";
 
 @autobind
 @injectable()
@@ -39,16 +40,22 @@ export class MailService {
         this.webSocketService.send("clear-history");
     }
 
-    public subscribeOnMails(callback: (mail: Mail) => void): void {
-        const mailHandler = (rawMail: RawMail) => {
-            this.mailParserService.parseMail(rawMail).then(callback);
+    public subscribeOnMails(callback: (eventType: EventType, mail?: Mail) => void): void {
+        const mailHandler = (eventType: EventType, rawMail: RawMail) => {
+            if (rawMail) {
+                this.mailParserService.parseMail(rawMail).then((mail: Mail) => {
+                    callback(eventType, mail);
+                });
+            } else {
+                callback(eventType);
+            }
         };
         this.webSocketService.subscribe("user/{userId}/history", mailHandler);
         this.webSocketService.send("get-history");
         this.webSocketService.subscribe("email", mailHandler);
     }
 
-    public subscribeOnClears(callback: () => void): void {
+    public subscribeOnClears(callback: (eventType: EventType) => void): void {
         this.webSocketService.subscribe("clear", callback);
     }
 }
