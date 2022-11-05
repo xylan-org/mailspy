@@ -58,4 +58,10 @@ export class MailService {
     public subscribeOnClears(callback: (eventType: EventType) => void): void {
         this.webSocketService.subscribe("clear", callback);
     }
+
+    public unsubscribeFromAll(): void {
+        this.webSocketService.unsubscribe("user/{userId}/history");
+        this.webSocketService.unsubscribe("email");
+        this.webSocketService.unsubscribe("clear");
+    }
 }

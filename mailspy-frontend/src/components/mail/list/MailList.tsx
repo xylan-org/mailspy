@@ -69,6 +69,10 @@ export class MailList extends Component<MailListProps, MailListState> {
         });
     }
 
+    public override componentWillUnmount(): void {
+        this.mailService.unsubscribeFromAll();
+    }
+
     private subscribe<T>(subscriber: (callback: (eventType: EventType, message?: T) => void) => void, handleMessage: (message: T) => void): void {
         subscriber((eventType: EventType, message: T) => {
             if (eventType == EventType.MESSAGE_RECEIVED) {

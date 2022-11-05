@@ -53,11 +53,16 @@ export class WebSocketService {
     }
 
     public unsubscribe(topic: string): void {
-        const index: number = this.subscriptions.findIndex((subscription: Subscription) => subscription.topic === topic);
+        const resolvedTopic = this.resolveTopicName(topic);
+        const index: number = this.subscriptions.findIndex((subscription: Subscription) => subscription.topic === resolvedTopic);
         if (index !== -1) {
             this.subscriptions.splice(index, 1);
             if (this.connectionStatus == ConnectionStatus.CONNECTED) {
-                this.stompClient.unsubscribe(this.getSubscriptionId(topic));
+                this.stompClient.unsubscribe(this.getSubscriptionId(resolvedTopic));
+                if (this.subscriptions.length == 0) {
+                    this.stompClient.deactivate();
+                    this.connectionStatus = ConnectionStatus.DISCONNECTED;
+                }
             }
         }
     }
