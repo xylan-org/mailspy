@@ -153,6 +153,7 @@ export class MailList extends Component<MailListProps, MailListState> {
     private clearMails(): void {
         this.setState({ clearLoading: true });
         this.mailService.clearMails();
+        this.props.selectMail(null);
         window.setTimeout(() => {
             if (this.state.clearLoading) {
                 this.displayClearErrorToast();
