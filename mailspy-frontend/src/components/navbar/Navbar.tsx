@@ -38,7 +38,7 @@ export class Navbar extends Component<Empty, NavbarState> {
         };
     }
 
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         return (
             <header>
                 <BsNavbar bg="dark" variant="dark">

@@ -39,6 +39,7 @@ export class HtmlService {
             const dom = this.domParser.parseFromString(html, "text/html");
             dom.querySelectorAll("a").forEach((anchor: HTMLAnchorElement) => {
                 anchor.target = "_blank";
+                anchor.rel = "noreferrer";
             });
             result = this.xmlSerializer.serializeToString(dom);
         }

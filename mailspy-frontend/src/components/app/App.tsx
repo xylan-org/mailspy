@@ -38,7 +38,7 @@ export class App extends Component<Empty, AppState> {
         };
     }
 
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         return (
             <div id="container">
                 <Navbar />

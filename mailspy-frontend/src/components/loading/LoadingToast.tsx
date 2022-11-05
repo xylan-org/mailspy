@@ -28,7 +28,7 @@ import type { LoadingToastProps } from "./domain/LoadingProps";
 
 @autobind
 export class LoadingToast extends Component<LoadingToastProps, Empty> {
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         return (
             <Toast style={{ display: this.props.show ? "block" : "none" }}>
                 <Toast.Body>

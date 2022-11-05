@@ -32,7 +32,7 @@ export class Dependency extends Component<DependencyProps, Empty> {
         super(props);
     }
 
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         return (
             <>
                 <div className="dependency-name">
@@ -40,13 +40,13 @@ export class Dependency extends Component<DependencyProps, Empty> {
                 </div>
                 <div className="dependency-license">
                     <FontAwesomeIcon icon={faSuitcase} />{" "}
-                    <a href={this.props.licenseUrl} target="_blank">
+                    <a href={this.props.licenseUrl} target="_blank" rel="noreferrer">
                         {this.props.licenseName}
                     </a>
                 </div>
                 <div className="dependency-url">
                     <FontAwesomeIcon icon={faLink} />{" "}
-                    <a href={this.props.url} target="_blank">
+                    <a href={this.props.url} target="_blank" rel="noreferrer">
                         {this.props.url}
                     </a>
                 </div>

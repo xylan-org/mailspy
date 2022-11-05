@@ -56,7 +56,7 @@ export class MailList extends Component<MailListProps, MailListState> {
         };
     }
 
-    public componentDidMount(): void {
+    public override componentDidMount(): void {
         this.subscribe(this.mailService.subscribeOnMails, (mail: Mail) => {
             this.addMail(mail);
         });
@@ -108,7 +108,7 @@ export class MailList extends Component<MailListProps, MailListState> {
         this.props.selectMail(selectedMail);
     }
 
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         const listItems = this.state.mails.map((mail) => {
             return <MailListItem key={mail.id} mail={mail} selectMail={this.selectMail} />;
         });

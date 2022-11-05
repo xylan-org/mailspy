@@ -33,7 +33,7 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
         super(props);
     }
 
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         return (
             <Modal show={this.props.visible} onHide={this.props.hide} centered={true} dialogClassName="about-modal">
                 <Modal.Header closeButton>
@@ -48,7 +48,7 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                     <p className="text-center mb-0">&copy; 2022 xylan.org</p>
                     <p className="text-center">
                         Licensed under the{" "}
-                        <a href="https://spdx.org/licenses/MIT.html" target="_blank">
+                        <a href="https://spdx.org/licenses/MIT.html" target="_blank" rel="noreferrer">
                             MIT License
                         </a>
                     </p>

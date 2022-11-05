@@ -23,7 +23,8 @@
 const path = require("path");
 module.exports = {
     babel: {
-        plugins: ["babel-plugin-transform-typescript-metadata"]
+        plugins: ["babel-plugin-transform-typescript-metadata"],
+        presets: ["@babel/preset-typescript", "@babel/preset-react"]
     },
     webpack: {
         configure: (webpackConfig, { env, paths }) => {

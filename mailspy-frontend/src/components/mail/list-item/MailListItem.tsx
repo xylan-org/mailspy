@@ -29,7 +29,7 @@ import type { MailListItemProps } from "./domain/MailListItemProps";
 
 @autobind
 export class MailListItem extends Component<MailListItemProps, Empty> {
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         const mail = this.props.mail;
         let result: JSX.Element;
 

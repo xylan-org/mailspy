@@ -29,7 +29,7 @@ import autobind from "autobind-decorator";
 
 @autobind
 export class ErrorToast extends Component<ErrorToastProps, Empty> {
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         return (
             <Toast style={{ display: this.props.show ? "block" : "none" }}>
                 <Toast.Body className="bg-danger text-white">

@@ -55,7 +55,7 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
         return newState;
     }
 
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         const mail = this.props.selectedMail;
 
         let result: JSX.Element;
