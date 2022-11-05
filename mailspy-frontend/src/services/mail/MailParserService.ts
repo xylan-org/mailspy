@@ -60,9 +60,7 @@ export class MailParserService {
                     resolve({
                         ...parsedMail,
                         attachments: this.convertAttachments(parsedMail.attachments),
-                        html: this.htmlService.replaceLinksTarget(parsedMail.html),
-                        text: this.htmlService.escapeHtml(parsedMail.text),
-                        raw: this.htmlService.escapeHtml(mailBuffer.toString()),
+                        raw: mailBuffer.toString(),
                         timeReceived: rawMail.timestamp,
                         selected: false,
                         error: "",

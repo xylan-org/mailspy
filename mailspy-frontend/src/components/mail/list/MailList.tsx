@@ -73,6 +73,44 @@ export class MailList extends Component<MailListProps, MailListState> {
         this.mailService.unsubscribeFromAll();
     }
 
+    public override render(): JSX.Element {
+        const listItems = this.state.mails.map((mail) => {
+            return <MailListItem key={mail.id} mail={mail} selectMail={this.selectMail} />;
+        });
+
+        return (
+            <>
+                <Card id="list">
+                    <Card.Header>
+                        <Button
+                            className="mail-list-clear-button"
+                            variant="primary"
+                            onClick={this.clearMails}
+                            disabled={this.state.disconnected || this.state.clearLoading || this.state.mails.length === 0}
+                        >
+                            <FontAwesomeIcon spin={this.state.clearLoading} icon={this.state.clearLoading ? faSpinner : faTimes} />
+                            Clear
+                        </Button>
+                        <Button
+                            className="mail-list-download-button"
+                            variant="primary"
+                            onClick={this.downloadSelectedMail}
+                            disabled={this.state.selectedMail === null}
+                        >
+                            <FontAwesomeIcon icon={faDownload} />
+                            Download
+                        </Button>
+                    </Card.Header>
+                    <Card.Body className="mail-list-items">{listItems}</Card.Body>
+                </Card>
+                <LoadingToast show={this.state.disconnected} />
+                <aside id="error-toast-clear">
+                    <ErrorToast show={!!this.state.clearErrorToastTimeoutId} message="Clear action timed out." />
+                </aside>
+            </>
+        );
+    }
+
     private subscribe<T>(subscriber: (callback: (eventType: EventType, message?: T) => void) => void, handleMessage: (message: T) => void): void {
         subscriber((eventType: EventType, message: T) => {
             if (eventType == EventType.MESSAGE_RECEIVED) {
@@ -110,44 +148,6 @@ export class MailList extends Component<MailListProps, MailListState> {
             selectedMail
         });
         this.props.selectMail(selectedMail);
-    }
-
-    public override render(): JSX.Element {
-        const listItems = this.state.mails.map((mail) => {
-            return <MailListItem key={mail.id} mail={mail} selectMail={this.selectMail} />;
-        });
-
-        return (
-            <>
-                <Card id="list">
-                    <Card.Header>
-                        <Button
-                            className="mail-list-clear-button"
-                            variant="primary"
-                            onClick={this.clearMails}
-                            disabled={this.state.disconnected || this.state.clearLoading || this.state.mails.length === 0}
-                        >
-                            <FontAwesomeIcon spin={this.state.clearLoading} icon={this.state.clearLoading ? faSpinner : faTimes} />
-                            Clear
-                        </Button>
-                        <Button
-                            className="mail-list-download-button"
-                            variant="primary"
-                            onClick={this.downloadSelectedMail}
-                            disabled={this.state.selectedMail === null}
-                        >
-                            <FontAwesomeIcon icon={faDownload} />
-                            Download
-                        </Button>
-                    </Card.Header>
-                    <Card.Body className="mail-list-items">{listItems}</Card.Body>
-                </Card>
-                <LoadingToast show={this.state.disconnected} />
-                <aside id="error-toast-clear">
-                    <ErrorToast show={!!this.state.clearErrorToastTimeoutId} message="Clear action timed out." />
-                </aside>
-            </>
-        );
     }
 
     private clearMails(): void {
