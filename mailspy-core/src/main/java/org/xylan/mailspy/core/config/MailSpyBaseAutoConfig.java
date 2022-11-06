@@ -32,7 +32,7 @@ import org.xylan.mailspy.core.config.base.MailSpyWebSocketConfig;
 import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
 
 /**
- * Base autoconfiguration to hold common conditions and import further configuration classes.s
+ * Base autoconfiguration to hold common conditions and import further configuration classes.
  */
 @Configuration
 @ConditionalOnMailSpyEnabled

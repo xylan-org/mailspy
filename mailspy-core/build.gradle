@@ -25,7 +25,6 @@ plugins {
     id "maven-publish"
     id "jacoco"
     alias libs.plugins.coditory.integrationtest
-    alias libs.plugins.nebula.optionalbase
 }
 
 description = "MailSpy :: Core"
@@ -52,8 +51,7 @@ dependencies {
     api libs.slf4j.api
     api libs.subetha
     api libs.apache.commons.io
-    api libs.jackson.databind, optional
-    api libs.jackson.datatype.jsr310, optional
+    api libs.jackson.databind
     compileOnly libs.jakarta.servletapi
     compileOnly libs.jakarta.annotationsapi
     testImplementation libs.testng
