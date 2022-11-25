@@ -30,7 +30,7 @@ import org.xylan.mailspy.app.banner.BuildInfoBanner;
 /**
  * Entry point of the standalone MailSpy application.
  */
-@SpringBootApplication(scanBasePackages = "org.xylan.mailspy.app")
+@SpringBootApplication
 public class MailSpyApplication extends SpringBootServletInitializer {
 
     /**

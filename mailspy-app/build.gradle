@@ -39,7 +39,6 @@ dependencies {
     implementation libs.logback.classic
     implementation libs.bundles.spring.boot.starters
     implementation libs.spring.context.support
-    implementation "org.springframework.boot:spring-boot-starter-websocket:2.7.5"
     compileOnly libs.javax.mail
     compileOnly libs.javax.activation
     developmentOnly libs.spring.boot.devtools
