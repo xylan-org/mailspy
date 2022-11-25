@@ -28,8 +28,6 @@ import { MailPreview } from "../mail/preview/MailPreview";
 import type { AppState } from "./domain/AppState";
 import autobind from "autobind-decorator";
 import type { Mail } from "services/mail/domain/Mail";
-import { Client as StompClient, IMessage } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
 
 @autobind
 export class App extends Component<Empty, AppState> {
@@ -39,26 +37,6 @@ export class App extends Component<Empty, AppState> {
         this.state = {
             selectedMail: null
         };
-    }
-
-    public override componentDidMount(): void {
-        const stompClient = new StompClient({
-            reconnectDelay: 5000,
-            heartbeatIncoming: 4000,
-            heartbeatOutgoing: 4000,
-            webSocketFactory: () => new SockJS("http://localhost:8099/app/ws")
-        });
-        stompClient.onConnect = () => {
-            console.log("connected");
-            stompClient.subscribe("/app/topic/test-response", (message: IMessage) => {
-                console.log(message.body);
-            });
-            stompClient.publish({
-                destination: "/app/dest/test",
-                body: "hello there"
-            });
-        };
-        stompClient.activate();
     }
 
     public override render(): JSX.Element {
