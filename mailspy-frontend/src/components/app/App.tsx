@@ -31,7 +31,6 @@ import type { Mail } from "services/mail/domain/Mail";
 
 @autobind
 export class App extends Component<Empty, AppState> {
-
     public constructor(props: Empty) {
         super(props);
         this.state = {

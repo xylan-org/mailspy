@@ -24,7 +24,6 @@ import type { Mail } from "./domain/Mail";
 import type { RawMail } from "./domain/RawMail";
 import { ParsedAttachment, ParsedMail, simpleParser } from "mailparser";
 import autobind from "autobind-decorator";
-import { HtmlService } from "services/html/HtmlService";
 import { inject, injectable } from "inversify";
 import { Attachment } from "./domain/Attachment";
 import mime from "mime-types";

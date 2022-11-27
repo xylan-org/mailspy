@@ -38,9 +38,9 @@ describe("HtmlService", () => {
     describe("replaceLinksTarget", () => {
         it("should replace all anchor tag targets to _blank", () => {
             // GIVEN
-            const inputHtml = "<html><head></head><body><a href=\"http://example.com\" target=\"_self\"></a></body></html>";
+            const inputHtml = '<html><head></head><body><a href="http://example.com" target="_self"></a></body></html>';
             const expectedHtml =
-                "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head></head><body><a href=\"http://example.com\" target=\"_blank\" rel=\"noreferrer\"></a></body></html>";
+                '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body><a href="http://example.com" target="_blank" rel="noreferrer"></a></body></html>';
 
             // WHEN
             const result = underTest.replaceLinksTarget(inputHtml);

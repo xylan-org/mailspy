@@ -46,7 +46,11 @@ describe("Dependency", () => {
 
         // THEN
         expect(result.find(".dependency-name").text()).toContain("Test Dependency");
-        expect(result.find(".dependency-license").html()).toContain('<a href="https://example.com/licenseUrl" target="_blank" rel="noreferrer">Test License</a>');
-        expect(result.find(".dependency-url").html()).toContain('<a href="https://example.com/url" target="_blank" rel="noreferrer">https://example.com/url</a>');
+        expect(result.find(".dependency-license").html()).toContain(
+            '<a href="https://example.com/licenseUrl" target="_blank" rel="noreferrer">Test License</a>'
+        );
+        expect(result.find(".dependency-url").html()).toContain(
+            '<a href="https://example.com/url" target="_blank" rel="noreferrer">https://example.com/url</a>'
+        );
     });
 });

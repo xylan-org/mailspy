@@ -55,11 +55,13 @@ container.bind<WebSocketService>(WebSocketService).toSelf();
 
 container.bind<DOMParser>(DOMParser).toConstantValue(new DOMParser());
 container.bind<XMLSerializer>(XMLSerializer).toConstantValue(new XMLSerializer());
-container.bind<StompClient>(StompClient).toConstantValue(new StompClient({
-    reconnectDelay: 5000,
-    heartbeatIncoming: 4000,
-    heartbeatOutgoing: 4000,
-    webSocketFactory: () => new SockJS(getBackendRoot() + "/ws")
-}));
+container.bind<StompClient>(StompClient).toConstantValue(
+    new StompClient({
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+        webSocketFactory: () => new SockJS(getBackendRoot() + "/ws")
+    })
+);
 
 export default container;

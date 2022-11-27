@@ -75,8 +75,8 @@ describe("MailPreview", () => {
     describe("tab navigation", () => {
         it("should select html tab by default when selected mail has HTML format", () => {
             // GIVEN
-            const html = "<h1 href=\"https://google.com\">Hello there</h1>";
-            const escapedHtml = "<h1 href=\"https://google.com\" target=\"_blank\">Hello there</h1>";
+            const html = '<h1 href="https://google.com">Hello there</h1>';
+            const escapedHtml = '<h1 href="https://google.com" target="_blank">Hello there</h1>';
             mail.html = html;
             testBed.setProps({
                 selectedMail: mail
@@ -193,8 +193,8 @@ describe("MailPreview", () => {
     describe("tab body", () => {
         it("should display iframe with HTML content when HTML format is selected", () => {
             // GIVEN
-            const html = "<h1 href=\"https://google.com\">Hello there</h1>";
-            const expectedHtml = "<h1 href=\"https://google.com\" target=\"_blank\">Hello there</h1>";
+            const html = '<h1 href="https://google.com">Hello there</h1>';
+            const expectedHtml = '<h1 href="https://google.com" target="_blank">Hello there</h1>';
             mail.html = html;
             testBed.setProps({
                 selectedMail: mail
