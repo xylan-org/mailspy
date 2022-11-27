@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package org.xylan.mailspy.core.impl.web.forward;
+package org.xylan.mailspy.core.impl.web.index.controller;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;

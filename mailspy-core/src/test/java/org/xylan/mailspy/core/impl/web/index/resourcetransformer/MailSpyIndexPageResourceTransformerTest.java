@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package org.xylan.mailspy.core.impl.web.support;
+package org.xylan.mailspy.core.impl.web.index.resourcetransformer;
 
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.xylan.mailspy.core.impl.domain.EmailReceivedEvent;
 
 @Component
-public class MailSpyEmailReceivedEventListener implements ApplicationListener<EmailReceivedEvent> {
+public class MailSpyEmailReceivedEventWebsocketSendingListener implements ApplicationListener<EmailReceivedEvent> {
 
     @Autowired
     @Qualifier("mailSpyBrokerMessagingTemplate")

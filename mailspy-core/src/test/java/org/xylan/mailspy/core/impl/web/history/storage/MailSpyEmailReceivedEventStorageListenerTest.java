@@ -33,13 +33,13 @@ import org.xylan.mailspy.core.impl.domain.EmailReceivedEvent;
 import org.xylan.mailspy.core.impl.domain.MailSpyEmail;
 
 @Listeners(MockitoTestNGListener.class)
-public class MailSpyEmailReceivedListenerTest {
+public class MailSpyEmailReceivedEventStorageListenerTest {
 
     @Mock
     private MailSpyHistoryStorage mailSpyHistoryStorage;
 
     @InjectMocks
-    private MailSpyEmailReceivedListener underTest;
+    private MailSpyEmailReceivedEventStorageListener underTest;
 
     @Test
     public void onApplicationEventShouldAddEmailToMailsHistoryStorage() {
