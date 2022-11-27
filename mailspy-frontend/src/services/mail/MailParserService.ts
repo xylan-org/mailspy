@@ -34,7 +34,6 @@ import { AttachmentIconService } from "./AttachmentIconService";
 @injectable()
 export class MailParserService {
     public constructor(
-        @inject(HtmlService) private htmlService: HtmlService,
         @inject(AttachmentIconService) private attachmentIconService: AttachmentIconService,
         private doParseMail: (source: Buffer, options?: Record<string, unknown>) => Promise<ParsedMail> = simpleParser,
         private readBase64: (base64: string) => Buffer = (base64: string) => Buffer.from(base64, "base64"),

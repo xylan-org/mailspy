@@ -57,6 +57,7 @@ export class MailList extends Component<MailListProps, MailListState> {
     }
 
     public override componentDidMount(): void {
+        console.log(this.mailService);
         this.subscribe(this.mailService.subscribeOnMails, (mail: Mail) => {
             this.addMail(mail);
         });

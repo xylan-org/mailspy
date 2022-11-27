@@ -24,14 +24,12 @@ import { faFile, faFileAlt } from "@fortawesome/free-solid-svg-icons";
 import { mock, MockProxy } from "jest-mock-extended";
 import { when } from "jest-when";
 import type { ParsedMail } from "mailparser";
-import { HtmlService } from "services/html/HtmlService";
 import { AttachmentIconService } from "./AttachmentIconService";
 import type { Mail } from "./domain/Mail";
 import type { RawMail } from "./domain/RawMail";
 import { MailParserService } from "./MailParserService";
 
 describe("MailParserService", () => {
-    let htmlService: HtmlService & MockProxy<HtmlService>;
     let attachmentIconService: AttachmentIconService & MockProxy<AttachmentIconService>;
     let doParseMail: jest.Mock<Promise<ParsedMail>, [Buffer]>;
     let readBase64: jest.Mock<Buffer, [string]>;
@@ -39,12 +37,11 @@ describe("MailParserService", () => {
     let underTest: MailParserService;
 
     beforeEach(() => {
-        htmlService = mock<HtmlService>();
         attachmentIconService = mock<AttachmentIconService>();
         doParseMail = jest.fn();
         readBase64 = jest.fn();
         getMimeExtension = jest.fn();
-        underTest = new MailParserService(htmlService, attachmentIconService, doParseMail, readBase64, getMimeExtension);
+        underTest = new MailParserService(attachmentIconService, doParseMail, readBase64, getMimeExtension);
     });
 
     describe("parseMail", () => {
@@ -103,9 +100,9 @@ describe("MailParserService", () => {
                 ]
             };
             const expected: Mail = {
-                html: "<a href='http://google.com' target='_blank'>a &lt; b<h2>",
-                text: "a &lt; b",
-                raw: "a &lt; b raw",
+                html: "<a href='http://google.com'>a &lt; b<h2>",
+                text: "a < b",
+                raw: "a < b raw",
                 timeReceived: "2020-01-01 12:00:00",
                 selected: false,
                 error: "",
@@ -134,10 +131,6 @@ describe("MailParserService", () => {
 
             readBase64.mockReturnValue(messageBuffer);
             doParseMail.mockResolvedValue(parsedMail);
-            htmlService.replaceLinksTarget.mockReturnValue("<a href='http://google.com' target='_blank'>a &lt; b<h2>");
-
-            when(htmlService.escapeHtml).calledWith("a < b").mockReturnValue("a &lt; b");
-            when(htmlService.escapeHtml).calledWith("a < b raw").mockReturnValue("a &lt; b raw");
             when(getMimeExtension).calledWith("text/plain").mockReturnValue("txt");
             when(getMimeExtension).calledWith("application/binary").mockReturnValue(false);
             when(attachmentIconService.findIconFor).calledWith("text/plain").mockReturnValue(faFileAlt);
