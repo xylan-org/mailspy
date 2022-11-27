@@ -22,6 +22,11 @@
 
 package org.xylan.mailspy.core.impl.web.index.resourcetransformer;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +36,6 @@ import org.springframework.web.servlet.resource.ResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
 import org.xylan.mailspy.core.config.MailSpyProperties;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 /**
  * Resource transformer that sets the proper base tag in the index page specified by the configuration.

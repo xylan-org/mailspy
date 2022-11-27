@@ -22,10 +22,9 @@
 
 package org.xylan.mailspy.core.config;
 
+import java.net.InetAddress;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.net.InetAddress;
 
 /**
  * Configuration properties of MailSpy.

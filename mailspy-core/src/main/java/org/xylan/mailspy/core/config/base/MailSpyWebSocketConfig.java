@@ -1,6 +1,29 @@
+/*
+ * Copyright (c) 2022 xylan.org
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package org.xylan.mailspy.core.config.base;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -30,8 +53,6 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 import org.xylan.mailspy.core.config.MailSpyProperties;
 import org.xylan.mailspy.core.impl.ws.DisabledSimpAnnotationMethodMessageHandler;
 
-import java.util.List;
-
 @Configuration
 public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationSupport {
 
@@ -45,14 +66,15 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.setApplicationDestinationPrefixes(APPLICATION_DESTINATION_PREFIX)
-            .setUserDestinationPrefix(USER_DESTINATION_PREFIX)
-            .setPreservePublishOrder(true)
-            .enableSimpleBroker(BROKER_DESTINATION_PREFIX);
+                .setUserDestinationPrefix(USER_DESTINATION_PREFIX)
+                .setPreservePublishOrder(true)
+                .enableSimpleBroker(BROKER_DESTINATION_PREFIX);
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        StompWebSocketEndpointRegistration endpointRegistration = registry.addEndpoint(properties.getPathNoTrailingSlash() + "/ws");
+        StompWebSocketEndpointRegistration endpointRegistration =
+                registry.addEndpoint(properties.getPathNoTrailingSlash() + "/ws");
         if (properties.isEnableCors()) {
             endpointRegistration.setAllowedOriginPatterns("*");
         }
@@ -102,18 +124,24 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
     @Override
     @Bean("mailSpyWebSocketMessageBrokerStats")
     public WebSocketMessageBrokerStats webSocketMessageBrokerStats(
-           @Qualifier("mailSpyStompBrokerRelayMessageHandler") @Nullable AbstractBrokerMessageHandler stompBrokerRelayMessageHandler,
-           @Qualifier("mailSpySubProtocolWebSocketHandler") WebSocketHandler subProtocolWebSocketHandler,
-           @Qualifier("mailSpyClientInboundChannelExecutor") TaskExecutor inboundExecutor,
-           @Qualifier("mailSpyClientOutboundChannelExecutor") TaskExecutor outboundExecutor,
-           @Qualifier("mailSpyMessageBrokerTaskScheduler") TaskScheduler scheduler) {
-        return super.webSocketMessageBrokerStats(stompBrokerRelayMessageHandler, subProtocolWebSocketHandler,
-                inboundExecutor, outboundExecutor, scheduler);
+            @Qualifier("mailSpyStompBrokerRelayMessageHandler") @Nullable
+                    AbstractBrokerMessageHandler stompBrokerRelayMessageHandler,
+            @Qualifier("mailSpySubProtocolWebSocketHandler") WebSocketHandler subProtocolWebSocketHandler,
+            @Qualifier("mailSpyClientInboundChannelExecutor") TaskExecutor inboundExecutor,
+            @Qualifier("mailSpyClientOutboundChannelExecutor") TaskExecutor outboundExecutor,
+            @Qualifier("mailSpyMessageBrokerTaskScheduler") TaskScheduler scheduler) {
+        return super.webSocketMessageBrokerStats(
+                stompBrokerRelayMessageHandler,
+                subProtocolWebSocketHandler,
+                inboundExecutor,
+                outboundExecutor,
+                scheduler);
     }
 
     @Override
     @Bean("mailSpyClientInboundChannel")
-    public AbstractSubscribableChannel clientInboundChannel(@Qualifier("mailSpyClientInboundChannelExecutor") TaskExecutor executor) {
+    public AbstractSubscribableChannel clientInboundChannel(
+            @Qualifier("mailSpyClientInboundChannelExecutor") TaskExecutor executor) {
         return super.clientInboundChannel(executor);
     }
 
@@ -125,7 +153,8 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
 
     @Override
     @Bean("mailSpyClientOutboundChannel")
-    public AbstractSubscribableChannel clientOutboundChannel(@Qualifier("mailSpyClientOutboundChannelExecutor") TaskExecutor executor) {
+    public AbstractSubscribableChannel clientOutboundChannel(
+            @Qualifier("mailSpyClientOutboundChannelExecutor") TaskExecutor executor) {
         return super.clientOutboundChannel(executor);
     }
 
@@ -159,7 +188,8 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
             @Qualifier("mailSpyClientOutboundChannel") AbstractSubscribableChannel outboundChannel,
             @Qualifier("mailSpyBrokerMessagingTemplate") SimpMessagingTemplate brokerMessagingTemplate,
             @Qualifier("mailSpyBrokerMessageConverter") CompositeMessageConverter brokerMessageConverter) {
-        return super.simpAnnotationMethodMessageHandler(inboundChannel, outboundChannel, brokerMessagingTemplate, brokerMessageConverter);
+        return super.simpAnnotationMethodMessageHandler(
+                inboundChannel, outboundChannel, brokerMessagingTemplate, brokerMessageConverter);
     }
 
     @Override
@@ -167,7 +197,8 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
             AbstractSubscribableChannel clientInboundChannel,
             AbstractSubscribableChannel clientOutboundChannel,
             SimpMessagingTemplate brokerMessagingTemplate) {
-        return new DisabledSimpAnnotationMethodMessageHandler(clientInboundChannel, clientOutboundChannel, brokerMessagingTemplate);
+        return new DisabledSimpAnnotationMethodMessageHandler(
+                clientInboundChannel, clientOutboundChannel, brokerMessagingTemplate);
     }
 
     @Override
@@ -177,8 +208,8 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
             @Qualifier("mailSpyClientOutboundChannel") AbstractSubscribableChannel outboundChannel,
             @Qualifier("mailSpyBrokerChannel") AbstractSubscribableChannel brokerChannel,
             @Qualifier("mailSpyUserDestinationResolver") UserDestinationResolver userDestinationResolver) {
-        return super.simpleBrokerMessageHandler(inboundChannel, outboundChannel,
-                brokerChannel, userDestinationResolver);
+        return super.simpleBrokerMessageHandler(
+                inboundChannel, outboundChannel, brokerChannel, userDestinationResolver);
     }
 
     @Override
@@ -187,14 +218,18 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
             @Qualifier("mailSpyClientInboundChannel") AbstractSubscribableChannel inboundChannel,
             @Qualifier("mailSpyClientOutboundChannel") AbstractSubscribableChannel outboundChannel,
             @Qualifier("mailSpyBrokerChannel") AbstractSubscribableChannel brokerChannel,
-            @Qualifier("mailSpyUserDestinationMessageHandler") UserDestinationMessageHandler userDestinationMessageHandler,
+            @Qualifier("mailSpyUserDestinationMessageHandler")
+                    UserDestinationMessageHandler userDestinationMessageHandler,
             @Qualifier("mailSpyUserRegistryMessageHandler") @Nullable MessageHandler userRegistryMessageHandler,
             @Qualifier("mailSpyUserDestinationResolver") UserDestinationResolver userDestinationResolver) {
         return super.stompBrokerRelayMessageHandler(
-                inboundChannel, outboundChannel, brokerChannel,
-                userDestinationMessageHandler, userRegistryMessageHandler, userDestinationResolver);
+                inboundChannel,
+                outboundChannel,
+                brokerChannel,
+                userDestinationMessageHandler,
+                userRegistryMessageHandler,
+                userDestinationResolver);
     }
-
 
     @Override
     @Bean("mailSpyUserDestinationMessageHandler")
@@ -203,8 +238,8 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
             @Qualifier("mailSpyClientOutboundChannel") AbstractSubscribableChannel clientOutboundChannel,
             @Qualifier("mailSpyBrokerChannel") AbstractSubscribableChannel brokerChannel,
             @Qualifier("mailSpyUserDestinationResolver") UserDestinationResolver userDestinationResolver) {
-        return super.userDestinationMessageHandler(clientInboundChannel, clientOutboundChannel,
-                brokerChannel, userDestinationResolver);
+        return super.userDestinationMessageHandler(
+                clientInboundChannel, clientOutboundChannel, brokerChannel, userDestinationResolver);
     }
 
     @Override
@@ -215,7 +250,8 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
             @Qualifier("mailSpyUserRegistry") SimpUserRegistry userRegistry,
             @Qualifier("mailSpyBrokerMessagingTemplate") SimpMessagingTemplate brokerMessagingTemplate,
             @Qualifier("mailSpyMessageBrokerTaskScheduler") TaskScheduler scheduler) {
-        return super.userRegistryMessageHandler(inboundChannel, outboundChannel, userRegistry, brokerMessagingTemplate, scheduler);
+        return super.userRegistryMessageHandler(
+                inboundChannel, outboundChannel, userRegistry, brokerMessagingTemplate, scheduler);
     }
 
     @Override
@@ -237,7 +273,8 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
     @Bean
     @Primary
     public SimpMessagingTemplate primaryBrokerMessagingTemplate(
-            @Qualifier("brokerMessagingTemplate") @Autowired(required = false) SimpMessagingTemplate brokerMessagingTemplate) {
+            @Qualifier("brokerMessagingTemplate") @Autowired(required = false)
+                    SimpMessagingTemplate brokerMessagingTemplate) {
         return brokerMessagingTemplate;
     }
 
@@ -263,5 +300,4 @@ public class MailSpyWebSocketConfig extends WebSocketMessageBrokerConfigurationS
             @Qualifier("mailSpyClientOutboundChannel") AbstractSubscribableChannel outboundChannel) {
         return super.userRegistry(inboundChannel, outboundChannel);
     }
-
 }

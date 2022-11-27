@@ -22,12 +22,11 @@
 
 package org.xylan.mailspy.core.config.condition;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 import java.lang.annotation.*;
-
-import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 
 /**
  * Conditional to check if MailSpy is enabled by properties and the web app type is Servlet.
