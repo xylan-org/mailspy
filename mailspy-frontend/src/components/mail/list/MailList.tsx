@@ -57,7 +57,6 @@ export class MailList extends Component<MailListProps, MailListState> {
     }
 
     public override componentDidMount(): void {
-        console.log(this.mailService);
         this.subscribe(this.mailService.subscribeOnMails, (mail: Mail) => {
             this.addMail(mail);
         });
@@ -89,7 +88,11 @@ export class MailList extends Component<MailListProps, MailListState> {
                             onClick={this.clearMails}
                             disabled={this.state.disconnected || this.state.clearLoading || this.state.mails.length === 0}
                         >
-                            <FontAwesomeIcon spin={this.state.clearLoading} icon={this.state.clearLoading ? faSpinner : faTimes} />
+                            <FontAwesomeIcon
+                                className="mail-list-clear-icon"
+                                spin={this.state.clearLoading}
+                                icon={this.state.clearLoading ? faSpinner : faTimes}
+                            />
                             Clear
                         </Button>
                         <Button
@@ -98,7 +101,7 @@ export class MailList extends Component<MailListProps, MailListState> {
                             onClick={this.downloadSelectedMail}
                             disabled={this.state.selectedMail === null}
                         >
-                            <FontAwesomeIcon icon={faDownload} />
+                            <FontAwesomeIcon className="mail-list-download-icon" icon={faDownload} />
                             Download
                         </Button>
                     </Card.Header>

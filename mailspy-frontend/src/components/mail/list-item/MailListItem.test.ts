@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 
+import { faFile } from "@fortawesome/free-solid-svg-icons";
 import type { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
 import { MailListItem } from "./MailListItem";
@@ -127,7 +128,8 @@ describe("MailListItem", () => {
             {
                 filename: "fileName",
                 contentType: "contentType",
-                content: "content"
+                content: "content",
+                icon: faFile
             }
         ];
         testBed.setProps({
