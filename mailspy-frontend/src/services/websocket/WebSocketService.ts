@@ -50,10 +50,10 @@ export class WebSocketService {
             destination: destination,
             body: body
         };
-        this.outboundMessages.push(message);
         if (this.connectionStatus == ConnectionStatus.CONNECTED) {
             this.doSend(message);
         } else if (this.connectionStatus == ConnectionStatus.NOT_CONNECTED_YET) {
+            this.outboundMessages.push(message);
             this.connect();
         }
     }
@@ -98,6 +98,7 @@ export class WebSocketService {
             this.outboundMessages.forEach((outboundMessage: OutboundMessage) => {
                 this.doSend(outboundMessage);
             });
+            this.outboundMessages = [];
             this.connectionStatus = ConnectionStatus.CONNECTED;
         };
         this.stompClient.onWebSocketClose = this.onDisconnect;
