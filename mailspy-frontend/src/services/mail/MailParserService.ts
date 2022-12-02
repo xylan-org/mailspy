@@ -86,8 +86,4 @@ export class MailParserService {
             };
         });
     }
-
-    public parseMails(rawMails: RawMail[]): Promise<Mail[]> {
-        return Promise.all(rawMails.map(this.parseMail));
-    }
 }
