@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package org.xylan.mailspy.integration.endpoint.index;
+package org.xylan.mailspy.integration.index;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

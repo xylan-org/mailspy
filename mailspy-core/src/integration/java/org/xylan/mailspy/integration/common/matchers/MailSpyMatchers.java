@@ -24,8 +24,6 @@ package org.xylan.mailspy.integration.common.matchers;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.text.MatchesPattern;
-import org.xylan.mailspy.integration.common.matchers.sse.SseEventsPattern;
-import org.xylan.mailspy.integration.common.matchers.sse.SseEventsPatternMatcher;
 
 /**
  * Static factory for MailSpy's custom Hamcrest matchers.
@@ -62,15 +60,6 @@ public final class MailSpyMatchers {
     }
 
     /**
-     * Creates a matcher to match a list of emitted SSE events.
-     * @param sseEventsPattern The pattern that the list of events will be matched against.
-     * @return The constructed matcher.
-     */
-    public static Matcher<String> sseEventsMatchPattern(SseEventsPattern sseEventsPattern) {
-        return new SseEventsPatternMatcher(sseEventsPattern);
-    }
-
-    /**
      * Creates a matcher that allows extracting values using JSONPath and matching them against any matcher.
      * @param jsonPath The JSONPath expression of the value to extract.
      * @param valueMatcher The matcher to match the extracted value against.
@@ -79,4 +68,5 @@ public final class MailSpyMatchers {
     public static Matcher<String> jsonPathMatches(String jsonPath, Matcher<?> valueMatcher) {
         return new JsonPathMatcher(jsonPath, valueMatcher);
     }
+
 }
