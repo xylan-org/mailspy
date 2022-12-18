@@ -26,6 +26,7 @@ import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
 import static org.springframework.http.HttpHeaders.ORIGIN;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,10 +36,10 @@ import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 public class CrossOriginSupportIntegrationTest extends BaseIntegrationTest {
 
     @Test
-    public void corsSupportShouldAddHeaderToResponseWhenEnabledAndAppHasSecurity() {
+    public void corsSupportShouldAddHeaderToResponseWhenEnabled() {
         run((contextRunner) -> contextRunner.withPropertyValues("mailspy.enable-cors=true"), (context, mockMvc) -> {
-            mockMvc.perform(delete("/mailspy/mails/history")
-                            .header(ACCESS_CONTROL_REQUEST_METHOD, "DELETE")
+            mockMvc.perform(get("/mailspy/ws")
+                            .header(ACCESS_CONTROL_REQUEST_METHOD, "GET")
                             .header(ORIGIN, "http://www.example.com"))
                     .andExpect(status().isOk())
                     .andExpect(header().string(ACCESS_CONTROL_ALLOW_ORIGIN, "http://www.example.com"));
@@ -46,12 +47,12 @@ public class CrossOriginSupportIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void corsSupportShouldNotAddHeaderToResponseWhenDisabled() {
+    public void corsSupportShouldNotAddHeaderToResponseAndRespondForbiddenWhenDisabled() {
         run((contextRunner) -> contextRunner.withPropertyValues("mailspy.enable-cors=false"), (context, mockMvc) -> {
-            mockMvc.perform(delete("/mailspy/mails/history")
-                            .header(ACCESS_CONTROL_REQUEST_METHOD, "DELETE")
+            mockMvc.perform(get("/mailspy/ws")
+                            .header(ACCESS_CONTROL_REQUEST_METHOD, "GET")
                             .header(ORIGIN, "http://www.example.com"))
-                    .andExpect(status().isOk())
+                    .andExpect(status().isForbidden())
                     .andExpect(header().doesNotExist(ACCESS_CONTROL_ALLOW_ORIGIN));
         });
     }
