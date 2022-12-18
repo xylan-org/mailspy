@@ -89,6 +89,7 @@ dependencyResolutionManagement {
             library("javax-mail", "javax.mail", "javax.mail-api").versionRef("javax-mail")
             library("javax-activation", "javax.activation", "javax.activation-api").versionRef("javax-activation")
             library("tomcat-embed-websocket", "org.apache.tomcat.embed", "tomcat-embed-websocket").versionRef("tomcat")
+            library("lombok", "org.projectlombok", "lombok").versionRef("lombok")
 
             plugin("owasp-dependencycheck", "org.owasp.dependencycheck").versionRef("owasp-dependencycheck")
             plugin("spring-boot-plugin", "org.springframework.boot").versionRef("spring-boot")

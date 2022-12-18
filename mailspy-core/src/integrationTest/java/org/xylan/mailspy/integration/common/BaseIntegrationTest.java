@@ -35,6 +35,7 @@ import org.springframework.test.web.servlet.setup.AbstractMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testng.annotations.BeforeMethod;
 import org.xylan.mailspy.core.config.MailSpyBaseAutoConfig;
+import org.xylan.mailspy.integration.common.ws.WebSocketTestStub;
 
 public class BaseIntegrationTest {
 
@@ -68,6 +69,14 @@ public class BaseIntegrationTest {
             AbstractMockMvcBuilder<?> mockMvcBuilder =
                     MockMvcBuilders.webAppContextSetup(context).apply(sharedHttpSession());
             contextConsumer.accept(context, mockMvcBuilder.build());
+        });
+    }
+
+    protected final void runWithWs(
+            ContextRunnerCustomizer contextCustomizer,
+            BiContextConsumer<AssertableWebApplicationContext, WebSocketTestStub> contextConsumer) {
+        contextCustomizer.customize(contextRunner).run(context -> {
+            contextConsumer.accept(context, new WebSocketTestStub(context));
         });
     }
 }

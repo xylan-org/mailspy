@@ -22,12 +22,7 @@
 
 package org.xylan.mailspy.integration.smtp;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailSender;
@@ -36,6 +31,11 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.BaseIntegrationTest;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.jsonPathMatches;
 
 public class SmtpServerIntegrationTest extends BaseIntegrationTest {
 
@@ -53,16 +53,14 @@ public class SmtpServerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void smtpServerShouldReceiveEmailsOnConfiguredHostAndPort() {
-        run(
+        runWithWs(
                 (contextRunner) -> contextRunner
                         .withPropertyValues("mailspy.smtp-port=2526", "mailspy.smtp-bind-address=127.0.0.2")
                         .withUserConfiguration(TestSmtpConfig.class),
-                (context, mockMvc) -> {
+                (context, ws) -> {
                     sendTestEmail(context);
-                    mockMvc.perform(get("/mailspy/mails/history"))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$", hasSize(1)))
-                            .andExpect(jsonPath("$[0].rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))));
+                    String reply = ws.awaitStringReply();
+                    assertThat(reply, jsonPathMatches("$.rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))));
                 });
     }
 

@@ -99,6 +99,8 @@ testing {
                 implementation libs.hamcrest
                 implementation libs.jsonpath
                 implementation libs.tomcat.embed.websocket
+                compileOnly libs.lombok
+                annotationProcessor libs.lombok
             }
         }
     }
