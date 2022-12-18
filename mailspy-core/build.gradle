@@ -91,11 +91,6 @@ testing {
             }
         }
         integrationTest(JvmTestSuite) {
-            sources {
-                java {
-                    srcDirs = ["src/integration/java"]
-                }
-            }
             dependencies {
                 implementation project
                 implementation libs.spring.boot.test
