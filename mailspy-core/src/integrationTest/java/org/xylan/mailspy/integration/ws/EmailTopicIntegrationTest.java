@@ -33,12 +33,14 @@ public class EmailTopicIntegrationTest extends BaseIntegrationTest {
                 Message<?> message = ws.awaitMessage();
 
                 // THEN
-                assertThat(message, messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/email")));
-                assertThat(message, messageHeaderMatches(CONTENT_TYPE, equalTo(MimeType.valueOf("application/json"))));
-                assertThat(message, messagePayloadMatches(allOf(
+                assertThat(message, allOf(
+                    messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/email")),
+                    messageHeaderMatches(CONTENT_TYPE, equalTo(MimeType.valueOf("application/json"))),
+                    messagePayloadMatches(allOf(
                         jsonPathMatches("$.id", equalTo("mailId")),
                         jsonPathMatches("$.timestamp", equalTo("mailTimeStamp")),
-                        jsonPathMatches("$.rawMessage", equalTo("DQ4KDQsODg8=")))));
+                        jsonPathMatches("$.rawMessage", equalTo("DQ4KDQsODg8="))))
+                ));
             });
     }
 
