@@ -53,14 +53,6 @@ public final class MailSpyMatchers {
     }
 
     /**
-     * Creates a matcher to match UUID identifier strings.
-     * @return The constructed matcher.
-     */
-    public static Matcher<String> isValidUuid() {
-        return MatchesPattern.matchesPattern("([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})");
-    }
-
-    /**
      * Creates a matcher that allows extracting values using JSONPath and matching them against any matcher.
      * @param jsonPath The JSONPath expression of the value to extract.
      * @param valueMatcher The matcher to match the extracted value against.

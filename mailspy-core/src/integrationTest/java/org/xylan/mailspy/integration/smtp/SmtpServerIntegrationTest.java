@@ -36,6 +36,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.DESTINATION_HEADER;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailTextMatches;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.jsonPathMatches;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.messageHeaderMatches;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.messagePayloadMatches;
@@ -45,6 +46,7 @@ public class SmtpServerIntegrationTest extends BaseIntegrationTest {
     private static final String RECIPIENT = "recipient@example.com";
     private static final String SENDER = "sender@example.com";
     private static final String SUBJECT = "test subject";
+    private static final String TEXT = "test email text";
 
     public static class TestSmtpConfig {
         @Bean
@@ -72,6 +74,7 @@ public class SmtpServerIntegrationTest extends BaseIntegrationTest {
                     // THEN
                     assertThat(message, messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/email")));
                     assertThat(message, messagePayloadMatches(jsonPathMatches("$.rawMessage", allOf(
+                        emailTextMatches(equalTo(TEXT)),
                         emailHeaderMatches("To", equalTo(RECIPIENT)),
                         emailHeaderMatches("From", equalTo(SENDER)),
                         emailHeaderMatches("Subject", equalTo(SUBJECT))))));
@@ -80,7 +83,7 @@ public class SmtpServerIntegrationTest extends BaseIntegrationTest {
 
     private void sendTestEmail(WebApplicationContext context) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setText("");
+        message.setText(TEXT);
         message.setTo(RECIPIENT);
         message.setFrom(SENDER);
         message.setSubject(SUBJECT);
