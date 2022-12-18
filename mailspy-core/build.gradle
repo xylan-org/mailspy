@@ -24,7 +24,7 @@ plugins {
     id "java-library"
     id "maven-publish"
     id "jacoco"
-    alias libs.plugins.coditory.integrationtest
+    id "jvm-test-suite"
 }
 
 description = "MailSpy :: Core"
@@ -54,15 +54,6 @@ dependencies {
     api libs.jackson.databind
     compileOnly libs.jakarta.servletapi
     compileOnly libs.jakarta.annotationsapi
-    testImplementation libs.testng
-    testImplementation libs.mockito.core
-    testImplementation libs.mockito.testng
-    testImplementation libs.logback.classic
-    integrationImplementation libs.spring.boot.test
-    integrationImplementation libs.spring.test
-    integrationImplementation libs.assertj.core
-    integrationImplementation libs.hamcrest
-    integrationImplementation libs.jsonpath
 }
 
 check {
@@ -70,13 +61,52 @@ check {
     dependsOn jacocoTestCoverageVerification
 }
 
-tasks.withType(Test) {
-    useTestNG()
-    testLogging {
-        events = ["passed", "failed", "skipped"]
-        exceptionFormat = "full"
+testing {
+    suites {
+        configureEach {
+            useTestNG()
+            targets.all {
+                testTask.configure {
+                    testLogging {
+                        events = ["passed", "failed", "skipped"]
+                        exceptionFormat = "full"
+                    }
+                }
+            }
+            dependencies {
+                implementation libs.testng
+                implementation libs.logback.classic
+            }
+        }
+        test {
+            targets.all {
+                testTask.configure {
+                    finalizedBy jacocoTestReport
+                }
+            }
+            dependencies {
+                implementation project
+                implementation libs.mockito.core
+                implementation libs.mockito.testng
+            }
+        }
+        integrationTest(JvmTestSuite) {
+            sources {
+                java {
+                    srcDirs = ["src/integration/java"]
+                }
+            }
+            dependencies {
+                implementation project
+                implementation libs.spring.boot.test
+                implementation libs.spring.test
+                implementation libs.assertj.core
+                implementation libs.hamcrest
+                implementation libs.jsonpath
+                implementation libs.tomcat.embed.websocket
+            }
+        }
     }
-    finalizedBy jacocoTestReport
 }
 
 jacoco {
