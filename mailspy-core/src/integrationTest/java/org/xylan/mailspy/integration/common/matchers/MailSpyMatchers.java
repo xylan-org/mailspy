@@ -24,6 +24,7 @@ package org.xylan.mailspy.integration.common.matchers;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.text.MatchesPattern;
+import org.springframework.messaging.Message;
 
 /**
  * Static factory for MailSpy's custom Hamcrest matchers.
@@ -67,6 +68,14 @@ public final class MailSpyMatchers {
      */
     public static Matcher<String> jsonPathMatches(String jsonPath, Matcher<?> valueMatcher) {
         return new JsonPathMatcher(jsonPath, valueMatcher);
+    }
+
+    public static Matcher<Message<?>> messagePayloadMatches(Matcher<?> valueMatcher) {
+        return new MessagePayloadMatcher(valueMatcher);
+    }
+
+    public static Matcher<Message<?>> messageHeaderMatches(String headerName, Matcher<?> valueMatcher) {
+        return new MessageHeaderMatcher(headerName, valueMatcher);
     }
 
 }

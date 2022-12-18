@@ -72,6 +72,10 @@ public class BaseIntegrationTest {
         });
     }
 
+    protected final void runWithWs(BiContextConsumer<AssertableWebApplicationContext, WebSocketTestStub> contextConsumer) {
+        runWithWs(ContextRunnerCustomizer.identity(), contextConsumer);
+    }
+
     protected final void runWithWs(
             ContextRunnerCustomizer contextCustomizer,
             BiContextConsumer<AssertableWebApplicationContext, WebSocketTestStub> contextConsumer) {

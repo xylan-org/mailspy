@@ -22,24 +22,29 @@
 
 package org.xylan.mailspy.integration.smtp;
 
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.messaging.Message;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
 import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.DESTINATION_HEADER;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emailHeaderMatches;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.jsonPathMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.messageHeaderMatches;
+import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.messagePayloadMatches;
 
 public class SmtpServerIntegrationTest extends BaseIntegrationTest {
 
-    private static final String TEST_RECIPIENT = "test@example.com";
+    private static final String RECIPIENT = "recipient@example.com";
+    private static final String SENDER = "sender@example.com";
+    private static final String SUBJECT = "test subject";
 
     public static class TestSmtpConfig {
         @Bean
@@ -58,16 +63,27 @@ public class SmtpServerIntegrationTest extends BaseIntegrationTest {
                         .withPropertyValues("mailspy.smtp-port=2526", "mailspy.smtp-bind-address=127.0.0.2")
                         .withUserConfiguration(TestSmtpConfig.class),
                 (context, ws) -> {
+                    // GIVEN
                     sendTestEmail(context);
-                    String reply = ws.awaitStringReply();
-                    assertThat(reply, jsonPathMatches("$.rawMessage", emailHeaderMatches("To", equalTo(TEST_RECIPIENT))));
+
+                    // WHEN
+                    Message<?> message = ws.awaitMessage();
+
+                    // THEN
+                    assertThat(message, messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/email")));
+                    assertThat(message, messagePayloadMatches(jsonPathMatches("$.rawMessage", allOf(
+                        emailHeaderMatches("To", equalTo(RECIPIENT)),
+                        emailHeaderMatches("From", equalTo(SENDER)),
+                        emailHeaderMatches("Subject", equalTo(SUBJECT))))));
                 });
     }
 
     private void sendTestEmail(WebApplicationContext context) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setText("");
-        message.setTo(TEST_RECIPIENT);
+        message.setTo(RECIPIENT);
+        message.setFrom(SENDER);
+        message.setSubject(SUBJECT);
         context.getBean(MailSender.class).send(message);
     }
 }
