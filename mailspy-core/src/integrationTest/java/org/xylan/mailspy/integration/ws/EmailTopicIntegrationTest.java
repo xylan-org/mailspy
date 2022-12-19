@@ -30,7 +30,7 @@ public class EmailTopicIntegrationTest extends BaseIntegrationTest {
                     .build()));
 
                 // WHEN
-                Message<?> message = ws.awaitMessage();
+                Message<?> message = ws.awaitMessageSent();
 
                 // THEN
                 assertThat(message, allOf(

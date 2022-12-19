@@ -69,7 +69,7 @@ public class SmtpServerIntegrationTest extends BaseIntegrationTest {
                     sendTestEmail(context);
 
                     // WHEN
-                    Message<?> message = ws.awaitMessage();
+                    Message<?> message = ws.awaitMessageSent();
 
                     // THEN
                     assertThat(message, messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/email")));

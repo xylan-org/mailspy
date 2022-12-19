@@ -80,7 +80,7 @@ public class BaseIntegrationTest {
             ContextRunnerCustomizer contextCustomizer,
             BiContextConsumer<AssertableWebApplicationContext, WebSocketTestStub> contextConsumer) {
         contextCustomizer.customize(contextRunner).run(context -> {
-            contextConsumer.accept(context, new WebSocketTestStub(context));
+            contextConsumer.accept(context, new WebSocketTestStub(context, "mailSpyClientInboundChannel", "mailSpyBrokerChannel", "mailSpyBrokerMessagingTemplate"));
         });
     }
 }
