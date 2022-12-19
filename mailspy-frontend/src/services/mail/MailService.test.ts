@@ -20,82 +20,127 @@
  * SOFTWARE.
  */
 
-import { mock, MockProxy } from "jest-mock-extended";
+import { anyFunction, mock, MockProxy } from "jest-mock-extended";
 import { when } from "jest-when";
-import { HttpService } from "services/http/HttpService";
-import { ReconnectingEventSource } from "services/http/ReconnectingEventSource";
-import type { Mail } from "./domain/Mail";
-import type { RawMail } from "./domain/RawMail";
+import { EventType } from "services/websocket/domain/EventType";
+import { WebSocketService } from "services/websocket/WebSocketService";
+import { Mail } from "./domain/Mail";
+import { RawMail } from "./domain/RawMail";
 import { MailParserService } from "./MailParserService";
 import { MailService } from "./MailService";
+import FakeTimers from "@sinonjs/fake-timers";
 
 describe("MailService", () => {
-    let httpService: MockProxy<HttpService> & HttpService;
-    let mailParserService: MockProxy<MailParserService> & MailParserService;
+    let mailParserService: MailParserService & MockProxy<MailParserService>;
+    let webSocketService: WebSocketService & MockProxy<WebSocketService>;
+    let clock: FakeTimers.Clock;
     let underTest: MailService;
 
     beforeEach(() => {
-        httpService = mock<HttpService>();
         mailParserService = mock<MailParserService>();
-        underTest = new MailService(httpService, mailParserService);
+        webSocketService = mock<WebSocketService>();
+        clock = FakeTimers.install();
+        underTest = new MailService(mailParserService, webSocketService);
     });
 
-    describe("getMails", () => {
-        it("should resolve to the parsed representation of the mail", () => {
-            // GIVEN
-            const rawMails: RawMail[] = [
-                {
-                    id: "id",
-                    timestamp: "2020-01-01",
-                    exception: {
-                        message: "Oopsie"
-                    },
-                    rawMessage: ""
-                }
-            ];
-            const expected: Mail[] = [
-                {
-                    timeReceived: "2020-01-01 15:00:00",
-                    selected: false,
-                    error: "Oopsie",
-                    id: "id"
-                }
-            ];
-
-            when(httpService.fetch).calledWith("/mails/history").mockResolvedValue(rawMails);
-            when(mailParserService.parseMails).calledWith(rawMails).mockResolvedValue(expected);
-
-            // WHEN
-            const result = underTest.getMails();
-
-            // THEN
-            expect(result).resolves.toEqual(expected);
-        });
+    afterEach(() => {
+        clock.uninstall();
     });
 
-    describe("clearMails", () => {
-        it("should invoke the http service with the mail clearing endpoint", () => {
+    describe("clearMails()", () => {
+        it("should delegate to websocket service", () => {
             // GIVEN
             // WHEN
             underTest.clearMails();
 
             // THEN
-            expect(httpService.fetch).toHaveBeenCalledWith("/mails/history", { method: "DELETE" });
+            expect(webSocketService.send).toBeCalledWith("clear-history");
         });
     });
 
-    describe("subscribeMails", () => {
-        it("should return a ReconnectingEventSource with a registered 'mail' custom event", () => {
+    describe("subscribeOnMails()", () => {
+        it("should delegate to websocket service", () => {
             // GIVEN
-            const eventSource = mock<ReconnectingEventSource>();
-            httpService.createEventSource.mockReturnValue(eventSource);
+            const callback = jest.fn();
 
             // WHEN
-            underTest.subscribeMails(jest.fn());
+            underTest.subscribeOnMails(callback);
 
             // THEN
-            expect(httpService.createEventSource).toHaveBeenCalledWith("/mails/subscribe");
-            expect(eventSource.onCustomEvent).toHaveBeenCalledWith(expect.stringMatching("mail"), expect.anything());
+            expect(webSocketService.subscribe).toHaveBeenCalledWith("user/{userId}/history", anyFunction());
+            expect(webSocketService.send).toHaveBeenCalledWith("get-history");
+            expect(webSocketService.subscribe).toHaveBeenCalledWith("email", anyFunction());
+        });
+
+        it("should invoke callback with parsed email when received mail from subscription", async () => {
+            // GIVEN
+            const rawMail: RawMail = {
+                id: "1",
+                timestamp: "2022-01-01 10:00",
+                exception: null,
+                rawMessage: "abcd"
+            };
+            const parsedMail: Mail = {
+                id: "1",
+                html: "<p>Hi</p>",
+                text: "Hi",
+                raw: "abcd",
+                timeReceived: "2022-01-01 10:00",
+                selected: false,
+                error: null
+            };
+
+            when(mailParserService.parseMail).calledWith(rawMail).mockResolvedValue(parsedMail);
+
+            const callback = jest.fn();
+            underTest.subscribeOnMails(callback);
+            const mailHandler = webSocketService.subscribe.mock.calls[0][1];
+
+            // WHEN
+            mailHandler(EventType.MESSAGE_RECEIVED, rawMail);
+            await clock.runAllAsync();
+
+            // THEN
+            expect(callback).toHaveBeenCalledWith(EventType.MESSAGE_RECEIVED, parsedMail);
+        });
+
+        it("should invoke callback with event type only when received event type only from subscription", () => {
+            // GIVEN
+            const callback = jest.fn();
+            underTest.subscribeOnMails(callback);
+            const mailHandler = webSocketService.subscribe.mock.calls[0][1];
+
+            // WHEN
+            mailHandler(EventType.CONNECTED);
+
+            // THEN
+            expect(callback).toHaveBeenCalledWith(EventType.CONNECTED);
+        });
+    });
+
+    describe("subscribeOnClears()", () => {
+        it("should delegate to websocket service", () => {
+            // GIVEN
+            const callback = jest.fn();
+
+            // WHEN
+            underTest.subscribeOnClears(callback);
+
+            // THEN
+            expect(webSocketService.subscribe).toHaveBeenCalledWith("clear", callback);
+        });
+    });
+
+    describe("unsubscribeFromAll()", () => {
+        it("should delegate to websocket service", () => {
+            // GIVEN
+            // WHEN
+            underTest.unsubscribeFromAll();
+
+            // THEN
+            expect(webSocketService.unsubscribe).toHaveBeenCalledWith("user/{userId}/history");
+            expect(webSocketService.unsubscribe).toHaveBeenCalledWith("email");
+            expect(webSocketService.unsubscribe).toHaveBeenCalledWith("clear");
         });
     });
 });

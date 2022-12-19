@@ -24,7 +24,6 @@ import type { Mail } from "./domain/Mail";
 import type { RawMail } from "./domain/RawMail";
 import { ParsedAttachment, ParsedMail, simpleParser } from "mailparser";
 import autobind from "autobind-decorator";
-import { HtmlService } from "services/html/HtmlService";
 import { inject, injectable } from "inversify";
 import { Attachment } from "./domain/Attachment";
 import mime from "mime-types";
@@ -34,7 +33,6 @@ import { AttachmentIconService } from "./AttachmentIconService";
 @injectable()
 export class MailParserService {
     public constructor(
-        @inject(HtmlService) private htmlService: HtmlService,
         @inject(AttachmentIconService) private attachmentIconService: AttachmentIconService,
         private doParseMail: (source: Buffer, options?: Record<string, unknown>) => Promise<ParsedMail> = simpleParser,
         private readBase64: (base64: string) => Buffer = (base64: string) => Buffer.from(base64, "base64"),
@@ -60,9 +58,7 @@ export class MailParserService {
                     resolve({
                         ...parsedMail,
                         attachments: this.convertAttachments(parsedMail.attachments),
-                        html: this.htmlService.replaceLinksTarget(parsedMail.html),
-                        text: this.htmlService.escapeHtml(parsedMail.text),
-                        raw: this.htmlService.escapeHtml(mailBuffer.toString()),
+                        raw: mailBuffer.toString(),
                         timeReceived: rawMail.timestamp,
                         selected: false,
                         error: "",
@@ -89,9 +85,5 @@ export class MailParserService {
                 icon: this.attachmentIconService.findIconFor(attachment.contentType)
             };
         });
-    }
-
-    public parseMails(rawMails: RawMail[]): Promise<Mail[]> {
-        return Promise.all(rawMails.map(this.parseMail));
     }
 }

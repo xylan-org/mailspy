@@ -8,7 +8,7 @@
         <property name="fileNamePattern" value="module\-info\.java$"/>
     </module>
     <module name="SuppressionSingleFilter">
-        <property name="checks" value="MissingJavadocType|MissingJavadocMethod"/>
+        <property name="checks" value="MissingJavadocType|MissingJavadocMethod|VariableDeclarationUsageDistance"/>
         <property name="files" value="^.*Test\.java$"/>
     </module>
     <module name="FileTabCharacter">

@@ -6,6 +6,7 @@ on:
 
 jobs:
   checkPullRequest:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -26,4 +27,4 @@ jobs:
       - name: Invoke Gradle check
         uses: gradle/gradle-build-action@v2.3.0
         with:
-          arguments: "check"
+          arguments: "check -PincludeFrontend"

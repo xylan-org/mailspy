@@ -3,7 +3,7 @@
 </p>
 <hr>
 
-![Build Status](https://img.shields.io/github/workflow/status/xylan-org/mailspy/Snapshot%20Build)
+![Build Status](https://img.shields.io/github/actions/workflow/status/xylan-org/mailspy/build-snapshot.yml?branch=master)
 ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/abelk2/e0159b67e62fe9b4c7657e58419b6cc1/raw/coverage_badge.json)
 ![License](https://img.shields.io/github/license/xylan-org/mailspy?label=license)
 ![Latest Release](https://img.shields.io/github/v/release/xylan-org/mailspy)
@@ -67,9 +67,11 @@ Don't forget to point your application's mail sender client to the SMTP port you
 | `mailspy.enabled` | false | true | Enables MailSpy |
 | `mailspy.smtp-port` | 2525 | 2525 | The port of MailSpy's embedded SMTP server |
 | `mailspy.smtp-bind-address` | localhost | localhost | The host of MailSpy's embedded SMTP server |
-| `mailspy.path` | /mailspy | / | The path for MailSpy's Web UI |
+| `mailspy.path` | /devtools/mailspy | / | The path for MailSpy's Web UI |
 | `mailspy.retain-emails` | 100 | 100 | The number of emails kept in memory |
 | `mailspy.enable-cors` | false | false | Enable [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for MailSpy's REST API |
+| `mailspy.websocket.max-message-bytes` | 524,288,000 | 524,288,000 | The maximum size of inbound WebSocket messages. |
+| `mailspy.websocket.max-send-buffer-bytes` | 524,288,000 | 524,288,000 | The maximum size of data buffer used when sending outbound messages on WebSocket. |
 
 Please also see Spring Boot's [Common Application Properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html).
 
@@ -82,11 +84,11 @@ MailSpy currently does not support the auto-configuration of Spring Security. Yo
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(customizer -> customizer
-        .antMatchers("/mailspy/**").permitAll())
-        .csrf().ignoringAntMatchers("/mailspy/**");
+        .antMatchers("/devtools/mailspy/**").permitAll());
     return http.build();
 }
 ```
+Please note that the above example assumes that MailSpy will only be used in a local development environment (for other environments `mailspy.enabled=false`, or MailSpy is included as `developmentOnly` in Gradle). **If MailSpy is used in other environments, you'll probably want more restrictive security rules.**
 
 ### Required JSON serializer
 

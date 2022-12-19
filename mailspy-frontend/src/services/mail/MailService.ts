@@ -21,32 +21,47 @@
  */
 
 import autobind from "autobind-decorator";
-import { HttpService } from "services/http/HttpService";
 import type { RawMail } from "services/mail/domain/RawMail";
 import type { Mail } from "services/mail/domain/Mail";
 import { MailParserService } from "services/mail/MailParserService";
-import { ReconnectingEventSource } from "services/http/ReconnectingEventSource";
-import type { CustomEvent } from "services/http/domain/CustomEvent";
 import { inject, injectable } from "inversify";
+import { WebSocketService } from "services/websocket/WebSocketService";
+import { EventType } from "services/websocket/domain/EventType";
 
 @autobind
 @injectable()
 export class MailService {
-    public constructor(@inject(HttpService) private httpService: HttpService, @inject(MailParserService) private mailParserService: MailParserService) {}
+    public constructor(
+        @inject(MailParserService) private mailParserService: MailParserService,
+        @inject(WebSocketService) private webSocketService: WebSocketService
+    ) {}
 
-    public getMails(): Promise<Mail[]> {
-        return this.httpService.fetch<RawMail[]>("/mails/history").then((mails: RawMail[]) => this.mailParserService.parseMails(mails));
+    public clearMails(): void {
+        this.webSocketService.send("clear-history");
     }
 
-    public clearMails(): Promise<void> {
-        return this.httpService.fetch("/mails/history", {
-            method: "DELETE"
-        });
+    public subscribeOnMails(callback: (eventType: EventType, mail?: Mail) => void): void {
+        const mailHandler = (eventType: EventType, rawMail: RawMail) => {
+            if (rawMail) {
+                this.mailParserService.parseMail(rawMail).then((mail: Mail) => {
+                    callback(eventType, mail);
+                });
+            } else {
+                callback(eventType);
+            }
+        };
+        this.webSocketService.subscribe("user/{userId}/history", mailHandler);
+        this.webSocketService.send("get-history");
+        this.webSocketService.subscribe("email", mailHandler);
     }
 
-    public subscribeMails(callback: (mail: Mail) => void): ReconnectingEventSource {
-        return this.httpService.createEventSource("/mails/subscribe").onCustomEvent("mail", (event: CustomEvent) => {
-            this.mailParserService.parseMail(JSON.parse(event.data)).then(callback);
-        });
+    public subscribeOnClears(callback: (eventType: EventType) => void): void {
+        this.webSocketService.subscribe("clear", callback);
+    }
+
+    public unsubscribeFromAll(): void {
+        this.webSocketService.unsubscribe("user/{userId}/history");
+        this.webSocketService.unsubscribe("email");
+        this.webSocketService.unsubscribe("clear");
     }
 }

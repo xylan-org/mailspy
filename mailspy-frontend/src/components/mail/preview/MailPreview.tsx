@@ -21,8 +21,10 @@
  */
 
 import autobind from "autobind-decorator";
+import { resolve } from "inversify-react";
 import React, { Component } from "react";
 import { Nav, Card } from "react-bootstrap";
+import { HtmlService } from "services/html/HtmlService";
 import type { Attachment } from "services/mail/domain/Attachment";
 import { MailAttachment } from "../attachment/MailAttachment";
 import type { MailPreviewProps } from "./domain/MailPreviewProps";
@@ -30,6 +32,9 @@ import type { MailPreviewState } from "./domain/MailPreviewState";
 
 @autobind
 export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
+    @resolve(HtmlService)
+    private htmlService: HtmlService;
+
     public constructor(props: MailPreviewProps) {
         super(props);
         this.state = {};
@@ -55,7 +60,7 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
         return newState;
     }
 
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         const mail = this.props.selectedMail;
 
         let result: JSX.Element;
@@ -67,17 +72,17 @@ export class MailPreview extends Component<MailPreviewProps, MailPreviewState> {
 
             let body: JSX.Element = null;
             if (activeKey === "html") {
-                body = <iframe id="html-body" title="html" srcDoc={mail.html} height="100%" width="100%"></iframe>;
+                body = <iframe id="html-body" title="html" srcDoc={this.htmlService.replaceLinksTarget(mail.html)} height="100%" width="100%"></iframe>;
             } else if (activeKey === "text") {
                 body = (
                     <pre id="text-body">
-                        <code dangerouslySetInnerHTML={{ __html: mail.text }} />
+                        <code dangerouslySetInnerHTML={{ __html: this.htmlService.escapeHtml(mail.text) }} />
                     </pre>
                 );
             } else if (activeKey === "raw") {
                 body = (
                     <pre id="raw-body">
-                        <code dangerouslySetInnerHTML={{ __html: mail.raw }} />
+                        <code dangerouslySetInnerHTML={{ __html: this.htmlService.escapeHtml(mail.raw) }} />
                     </pre>
                 );
             }

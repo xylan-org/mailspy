@@ -12,8 +12,9 @@
         "node": true
     },
     "plugins": ["@typescript-eslint"],
-    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier", "react-app"],
     "rules": {
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        "eqeqeq": "off"
     }
 }

@@ -31,7 +31,7 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.xylan.mailspy.core.config.MailSpyProperties;
-import org.xylan.mailspy.core.impl.web.support.MailSpyIndexPageResourceTransformer;
+import org.xylan.mailspy.core.impl.web.index.resourcetransformer.MailSpyIndexPageResourceTransformer;
 
 /**
  * Configuration for MailSpy's web layer.

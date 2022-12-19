@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 
+import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { mock } from "jest-mock-extended";
 import { Badge } from "react-bootstrap";
 import { FileDownloadService } from "services/download/FileDownloadService";
@@ -50,7 +51,8 @@ describe("MailAttachment", () => {
             attachment: {
                 filename,
                 contentType: "text/plain",
-                content: ""
+                content: "",
+                icon: faFile
             }
         });
 
@@ -70,7 +72,8 @@ describe("MailAttachment", () => {
             attachment: {
                 filename,
                 contentType,
-                content
+                content,
+                icon: faFile
             }
         });
 

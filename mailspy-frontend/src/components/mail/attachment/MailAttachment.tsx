@@ -33,7 +33,7 @@ export class MailAttachment extends Component<MailAttachmentProps, Empty> {
     @resolve(FileDownloadService)
     private fileDownloadService: FileDownloadService;
 
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         return (
             <Badge variant="primary" onClick={() => this.downloadAttachment()}>
                 <FontAwesomeIcon icon={this.props.attachment.icon} />

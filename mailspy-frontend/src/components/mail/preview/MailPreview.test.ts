@@ -20,7 +20,11 @@
  * SOFTWARE.
  */
 
+import { faFile } from "@fortawesome/free-solid-svg-icons";
+import { mock } from "jest-mock-extended";
+import { when } from "jest-when";
 import { Card, Nav } from "react-bootstrap";
+import { HtmlService } from "services/html/HtmlService";
 import type { Attachment } from "services/mail/domain/Attachment";
 import type { Mail } from "services/mail/domain/Mail";
 import { TestBed } from "test-utils/TestBed";
@@ -29,11 +33,14 @@ import { MailPreview } from "./MailPreview";
 
 describe("MailPreview", () => {
     let mail: Mail;
+    let htmlService: HtmlService;
     let testBed: TestBed<MailPreview>;
 
     beforeEach(() => {
+        htmlService = mock<HtmlService>();
         testBed = TestBed.create({
-            component: MailPreview
+            component: MailPreview,
+            dependencies: [{ identifier: HtmlService, value: htmlService }]
         });
 
         mail = {
@@ -68,10 +75,14 @@ describe("MailPreview", () => {
     describe("tab navigation", () => {
         it("should select html tab by default when selected mail has HTML format", () => {
             // GIVEN
-            mail.html = "<h1>Hello there</h1>";
+            const html = '<h1 href="https://google.com">Hello there</h1>';
+            const escapedHtml = '<h1 href="https://google.com" target="_blank">Hello there</h1>';
+            mail.html = html;
             testBed.setProps({
                 selectedMail: mail
             });
+
+            when(htmlService.replaceLinksTarget).calledWith(html).mockReturnValue(escapedHtml);
 
             // WHEN
             const result = testBed.render();
@@ -82,11 +93,15 @@ describe("MailPreview", () => {
 
         it("should select text tab by default when selected mail has no HTML format, but has text format", () => {
             // GIVEN
+            const text = "Hello there <name>!";
+            const escapedText = "Hello there &lt;name&gt;!";
             mail.html = null;
-            mail.text = "Hello there";
+            mail.text = text;
             testBed.setProps({
                 selectedMail: mail
             });
+
+            when(htmlService.escapeHtml).calledWith(text).mockReturnValue(escapedText);
 
             // WHEN
             const result = testBed.render();
@@ -97,12 +112,16 @@ describe("MailPreview", () => {
 
         it("should select raw tab by default when selected mail has no HTML or text format", () => {
             // GIVEN
+            const raw = "(some ugly non-human-readable stuff <>)";
+            const escapedRaw = "(some ugly non-human-readable stuff &lt;&gt;)";
             mail.html = null;
             mail.text = null;
-            mail.raw = "(some ugly non-human-readable stuff)";
+            mail.raw = raw;
             testBed.setProps({
                 selectedMail: mail
             });
+
+            when(htmlService.escapeHtml).calledWith(raw).mockReturnValue(escapedRaw);
 
             // WHEN
             const result = testBed.render();
@@ -174,12 +193,14 @@ describe("MailPreview", () => {
     describe("tab body", () => {
         it("should display iframe with HTML content when HTML format is selected", () => {
             // GIVEN
-            const expectedHtml = "<b>Expected HTML content.</b>";
-            mail.html = expectedHtml;
+            const html = '<h1 href="https://google.com">Hello there</h1>';
+            const expectedHtml = '<h1 href="https://google.com" target="_blank">Hello there</h1>';
+            mail.html = html;
             testBed.setProps({
                 selectedMail: mail
             });
 
+            when(htmlService.replaceLinksTarget).calledWith(html).mockReturnValue(expectedHtml);
             const result = testBed.render();
 
             // WHEN
@@ -191,11 +212,14 @@ describe("MailPreview", () => {
 
         it("should display code element with text content when text format is selected", () => {
             // GIVEN
-            const expectedText = "Expected text content.";
-            mail.text = expectedText;
+            const text = "Hello there <name>!";
+            const escapedText = "Hello there &lt;name&gt;!";
+            mail.text = text;
             testBed.setProps({
                 selectedMail: mail
             });
+
+            when(htmlService.escapeHtml).calledWith(text).mockReturnValue(escapedText);
 
             const result = testBed.render();
 
@@ -203,16 +227,19 @@ describe("MailPreview", () => {
             result.find(Nav).prop("onSelect")("text", null);
 
             // THEN
-            expect(result.find(Card.Body).find("#text-body > code").render().text()).toEqual(expectedText);
+            expect(result.find(Card.Body).find("#text-body > code").render().text()).toEqual(text);
         });
 
         it("should display code element with raw content when raw format is selected", () => {
             // GIVEN
-            const expectedRaw = "(Some ugly stuff.)";
-            mail.raw = expectedRaw;
+            const raw = "(some ugly non-human-readable stuff <>)";
+            const escapedRaw = "(some ugly non-human-readable stuff &lt;&gt;)";
+            mail.raw = raw;
             testBed.setProps({
                 selectedMail: mail
             });
+
+            when(htmlService.escapeHtml).calledWith(raw).mockReturnValue(escapedRaw);
 
             const result = testBed.render();
 
@@ -220,7 +247,7 @@ describe("MailPreview", () => {
             result.find(Nav).prop("onSelect")("raw", null);
 
             // THEN
-            expect(result.find(Card.Body).find("#raw-body > code").render().text()).toEqual(expectedRaw);
+            expect(result.find(Card.Body).find("#raw-body > code").render().text()).toEqual(raw);
         });
     });
 
@@ -248,7 +275,8 @@ describe("MailPreview", () => {
             const expectedAttachment: Attachment = {
                 filename: "attachment.txt",
                 contentType: "text/plain",
-                content: "content"
+                content: "content",
+                icon: faFile
             };
             mail.attachments = [expectedAttachment];
             testBed.setProps({

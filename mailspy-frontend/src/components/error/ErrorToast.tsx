@@ -29,20 +29,13 @@ import autobind from "autobind-decorator";
 
 @autobind
 export class ErrorToast extends Component<ErrorToastProps, Empty> {
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         return (
             <Toast style={{ display: this.props.show ? "block" : "none" }}>
                 <Toast.Body className="bg-danger text-white">
                     <FontAwesomeIcon icon={faExclamationTriangle} size="lg" />
                     <span>
                         <span className="error-toast-message">{this.props.message}</span>
-                        {this.props.retry !== undefined ? (
-                            <button className="link-button error-toast-retry" onClick={this.props.retry}>
-                                Retry
-                            </button>
-                        ) : (
-                            ""
-                        )}
                     </span>
                 </Toast.Body>
             </Toast>

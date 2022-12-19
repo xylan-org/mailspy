@@ -35,12 +35,12 @@ describe("HtmlService", () => {
         underTest = new HtmlService(domParser, xmlSerializer, escapeHtml);
     });
 
-    describe("replaceLinksTarget", () => {
+    describe("replaceLinksTarget()", () => {
         it("should replace all anchor tag targets to _blank", () => {
             // GIVEN
-            const inputHtml = "<html>" + "<head></head>" + '<body><a href="http://example.com" target="_self"></a></body>' + "</html>";
+            const inputHtml = '<html><head></head><body><a href="http://example.com" target="_self"></a></body></html>';
             const expectedHtml =
-                '<html xmlns="http://www.w3.org/1999/xhtml">' + "<head></head>" + '<body><a href="http://example.com" target="_blank"></a></body>' + "</html>";
+                '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body><a href="http://example.com" target="_blank" rel="noreferrer"></a></body></html>';
 
             // WHEN
             const result = underTest.replaceLinksTarget(inputHtml);
@@ -48,9 +48,18 @@ describe("HtmlService", () => {
             // THEN
             expect(result).toBe(expectedHtml);
         });
+
+        it("should return null when falsy input given", () => {
+            // GIVEN
+            // WHEN
+            const result = underTest.replaceLinksTarget(null);
+
+            // THEN
+            expect(result).toBeNull();
+        });
     });
 
-    describe("escapeHtml", () => {
+    describe("escapeHtml()", () => {
         it("should return HTML escaped by escapeHtml function", () => {
             // GIVEN
             const input = "<b>escape me!!</b>";

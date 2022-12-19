@@ -28,14 +28,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.xylan.mailspy.core.config.base.MailSpySmtpServerConfig;
 import org.xylan.mailspy.core.config.base.MailSpyWebMvcConfig;
+import org.xylan.mailspy.core.config.base.MailSpyWebSocketConfig;
 import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
 
 /**
- * Base autoconfiguration to hold common conditions and import further configuration classes.s
+ * Base autoconfiguration to hold common conditions and import further configuration classes.
  */
 @Configuration
 @ConditionalOnMailSpyEnabled
 @EnableConfigurationProperties(MailSpyProperties.class)
 @ComponentScan("org.xylan.mailspy.core.impl")
-@Import({MailSpyWebMvcConfig.class, MailSpySmtpServerConfig.class})
+@Import({MailSpyWebMvcConfig.class, MailSpySmtpServerConfig.class, MailSpyWebSocketConfig.class})
 public class MailSpyBaseAutoConfig {}

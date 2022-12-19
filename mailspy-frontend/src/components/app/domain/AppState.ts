@@ -20,12 +20,8 @@
  * SOFTWARE.
  */
 
-import type { Mail } from "services/mail/domain/Mail";
-import { LoadingStatus } from "./LoadingStatus";
+import { Mail } from "services/mail/domain/Mail";
 
 export interface AppState {
-    mails: Mail[];
     selectedMail: Mail;
-    fetchState: LoadingStatus;
-    clearState: LoadingStatus;
 }

@@ -33,7 +33,7 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
         super(props);
     }
 
-    public render(): JSX.Element {
+    public override render(): JSX.Element {
         return (
             <Modal show={this.props.visible} onHide={this.props.hide} centered={true} dialogClassName="about-modal">
                 <Modal.Header closeButton>
@@ -48,7 +48,7 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                     <p className="text-center mb-0">&copy; 2022 xylan.org</p>
                     <p className="text-center">
                         Licensed under the{" "}
-                        <a href="https://spdx.org/licenses/MIT.html" target="_blank">
+                        <a href="https://spdx.org/licenses/MIT.html" target="_blank" rel="noreferrer">
                             MIT License
                         </a>
                     </p>
@@ -205,6 +205,14 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                             </li>
                             <li>
                                 <Dependency
+                                    name="SockJS-client"
+                                    licenseName="MIT License"
+                                    licenseUrl="https://spdx.org/licenses/MIT.html"
+                                    url="https://github.com/sockjs/sockjs-client"
+                                />
+                            </li>
+                            <li>
+                                <Dependency
                                     name="Spring Boot"
                                     licenseName="Apache 2.0 License"
                                     licenseUrl="https://spdx.org/licenses/Apache-2.0.html"
@@ -221,10 +229,26 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                             </li>
                             <li>
                                 <Dependency
+                                    name="STOMP.js"
+                                    licenseName="Apache 2.0 License"
+                                    licenseUrl="https://spdx.org/licenses/Apache-2.0.html"
+                                    url="https://github.com/stomp-js/stompjs"
+                                />
+                            </li>
+                            <li>
+                                <Dependency
                                     name="SubEtha SMTP"
                                     licenseName="Apache 2.0 License"
                                     licenseUrl="https://spdx.org/licenses/Apache-2.0.html"
                                     url="https://github.com/voodoodyne/subethasmtp"
+                                />
+                            </li>
+                            <li>
+                                <Dependency
+                                    name="uuid"
+                                    licenseName="MIT License"
+                                    licenseUrl="https://spdx.org/licenses/MIT.html"
+                                    url="https://github.com/uuidjs/uuid"
                                 />
                             </li>
                         </ul>
