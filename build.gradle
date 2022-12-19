@@ -51,6 +51,11 @@ subprojects {
 
     if (file("$projectDir/src/main/java").exists()) {
         apply plugin: "java"
+
+        dependencies {
+            implementation libs.snakeyaml
+        }
+
         java {
             withJavadocJar()
             withSourcesJar()

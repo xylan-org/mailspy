@@ -74,6 +74,7 @@ testing {
                 }
             }
             dependencies {
+                implementation project()
                 implementation libs.testng
                 implementation libs.logback.classic
             }
@@ -85,14 +86,12 @@ testing {
                 }
             }
             dependencies {
-                implementation project
                 implementation libs.mockito.core
                 implementation libs.mockito.testng
             }
         }
         integrationTest(JvmTestSuite) {
             dependencies {
-                implementation project
                 implementation libs.spring.boot.test
                 implementation libs.spring.test
                 implementation libs.assertj.core

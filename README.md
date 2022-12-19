@@ -88,15 +88,11 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     return http.build();
 }
 ```
-Please note that the above example assumes that MailSpy will only be used in a local development environment (for other environments `mailspy.enabled=false`, or MailSpy is included as `developmentOnly` in Gradle). **If MailSpy is used in other environments, you'll probably want more restrictive security rules.**
-
-### Required JSON serializer
-
-MailSpy's REST API serializes responses in JSON format. For that, the host application's JSON serializer will be used. If no such thing is present (e.g. host app uses XML REST), MailSpy cannot function properly. You'll need to apply the [jackson-databind](https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind) and [jackson-datatype-jsr310](https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310) dependencies manually.
+Please note that the above example assumes that MailSpy will only be used in a local development environment (for other environments `mailspy.enabled=false` should be set, or MailSpy should be included as `developmentOnly` in Gradle). **If MailSpy is used in other environments, you'll probably want more restrictive security rules.**
 
 ### XML namespace configuration
 
-If your host application's MVC configuration is done in XML, chances are, MailSpy won't be compatible with it, as it uses JavaConfig approach instead. We recommend porting obsolete XML namespace configs to JavaConfig.
+If your host application's MVC configuration is done in XML, chances are, MailSpy won't be compatible with it, as it uses Java Based Configuration approach instead. We recommend porting obsolete XML namespace configs to Java.
 
 ## See also
 
