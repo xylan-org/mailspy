@@ -61,10 +61,21 @@ public final class MailSpyMatchers {
         return new JsonPathMatcher(jsonPath, valueMatcher);
     }
 
+    /**
+     * Creates a matcher that allows extracting the payload of a {@link Message}.
+     * @param valueMatcher The matcher to match the payload against.
+     * @return The constructed matcher.
+     */
     public static Matcher<Message<?>> messagePayloadMatches(Matcher<?> valueMatcher) {
         return new MessagePayloadMatcher(valueMatcher);
     }
 
+    /**
+     * Creates a matcher that allows extracting a given header of a {@link Message}.
+     * @param headerName The name of the header to extract.
+     * @param valueMatcher The matcher to match the header value against.
+     * @return The constructed matcher.
+     */
     public static Matcher<Message<?>> messageHeaderMatches(String headerName, Matcher<?> valueMatcher) {
         return new MessageHeaderMatcher(headerName, valueMatcher);
     }

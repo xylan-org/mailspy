@@ -23,7 +23,8 @@
 package org.xylan.mailspy.core.impl.ws;
 
 import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +39,8 @@ import org.testng.annotations.Test;
 @Listeners(MockitoTestNGListener.class)
 public class NativeHeaderExtractorTest {
 
+    private static final String HEADER_NAME = "header";
+
     @InjectMocks
     private NativeHeaderExtractor underTest;
 
@@ -47,7 +50,7 @@ public class NativeHeaderExtractorTest {
         Message<?> message = new GenericMessage<>(new Object(), Collections.emptyMap());
 
         // WHEN
-        String result = underTest.getHeader(message, "header");
+        String result = underTest.getHeader(message, HEADER_NAME);
 
         // THEN
         assertNull(result);
@@ -59,7 +62,7 @@ public class NativeHeaderExtractorTest {
         Message<?> message = new GenericMessage<>(new Object(), Map.of(NATIVE_HEADERS, Collections.emptyMap()));
 
         // WHEN
-        String result = underTest.getHeader(message, "header");
+        String result = underTest.getHeader(message, HEADER_NAME);
 
         // THEN
         assertNull(result);
@@ -68,11 +71,11 @@ public class NativeHeaderExtractorTest {
     @Test
     public void getHeaderShouldReturnNullWhenMessageHasNativeHeaderWithGivenNameButIsEmptyList() {
         // GIVEN
-        Message<?> message =
-                new GenericMessage<>(new Object(), Map.of(NATIVE_HEADERS, Map.of("header", Collections.emptyList())));
+        Message<?> message = new GenericMessage<>(
+                new Object(), Map.of(NATIVE_HEADERS, Map.of(HEADER_NAME, Collections.emptyList())));
 
         // WHEN
-        String result = underTest.getHeader(message, "header");
+        String result = underTest.getHeader(message, HEADER_NAME);
 
         // THEN
         assertNull(result);
@@ -83,10 +86,10 @@ public class NativeHeaderExtractorTest {
         // GIVEN
         String expected = "1234";
         Message<?> message =
-                new GenericMessage<>(new Object(), Map.of(NATIVE_HEADERS, Map.of("header", List.of(expected))));
+                new GenericMessage<>(new Object(), Map.of(NATIVE_HEADERS, Map.of(HEADER_NAME, List.of(expected))));
 
         // WHEN
-        String actual = underTest.getHeader(message, "header");
+        String actual = underTest.getHeader(message, HEADER_NAME);
 
         // THEN
         assertEquals(actual, expected);

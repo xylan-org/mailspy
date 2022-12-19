@@ -35,12 +35,22 @@ import org.springframework.messaging.support.AbstractMessageChannel;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
 
+/**
+ * Testing stub for WebSocket communication in integration tests.
+ */
 public class WebSocketTestStub {
 
     private final TestChannelInterceptor brokerChannelInterceptor;
     private final AbstractMessageChannel inboundChannel;
     private final SimpMessagingTemplate messagingTemplate;
 
+    /**
+     * Creates a new instance.
+     * @param context The Spring Application Context.
+     * @param inboundChannelName The name of the inbound channel bean.
+     * @param brokerChannelName The name of the broker channel bean.
+     * @param messagingTemplateName The name of the messaging template bean.
+     */
     public WebSocketTestStub(
             ApplicationContext context,
             String inboundChannelName,
@@ -54,25 +64,47 @@ public class WebSocketTestStub {
         mailSpyBrokerChannel.addInterceptor(this.brokerChannelInterceptor);
     }
 
+    /**
+     * Acquires the {@link SimpMessagingTemplate} of the WebSocket broker.
+     * @return The messaging template.
+     */
     public SimpMessagingTemplate getMessagingTemplate() {
         return messagingTemplate;
     }
 
+    /**
+     * Awaits for a message to be sent, i.e. to be seen on the broker channel, and returns it.
+     * Breaks test if message is not seen.
+     * @return The message sent.
+     */
     public Message<?> awaitMessageSent() {
         Message<?> message = brokerChannelInterceptor.awaitMessage(2);
         assertNotNull(message);
         return message;
     }
 
+    /**
+     * Awaits for 2 seconds to see if no message was seen on the broker channel.
+     * Breaks test if a message is seen anyway.
+     */
     public void awaitNoMessageSent() {
         Message<?> message = brokerChannelInterceptor.awaitMessage(2);
         assertNull(message);
     }
 
+    /**
+     * Simulates a received message.
+     * @param payload The payload received.
+     * @param headers The headers of the message.
+     */
     public void simulateMessageReceived(String payload, Map<String, Object> headers) {
         simulateMessageReceived(payload.getBytes(StandardCharsets.UTF_8), new MessageHeaders(headers));
     }
 
+    /**
+     * Simulates a received message.
+     * @param headers The headers of the message.
+     */
     public void simulateMessageReceived(Map<String, Object> headers) {
         simulateMessageReceived(new byte[0], headers);
     }

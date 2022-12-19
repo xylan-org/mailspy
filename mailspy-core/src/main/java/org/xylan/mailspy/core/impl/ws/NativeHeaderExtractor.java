@@ -29,9 +29,18 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 import org.springframework.stereotype.Component;
 
+/**
+ * Helper component to extract native headers from WebSocket messages.
+ */
 @Component
 public class NativeHeaderExtractor {
 
+    /**
+     * Extracts the given native header from the message.
+     * @param message The message to extract from.
+     * @param headerName The name of the header to extract.
+     * @return The extracted header value.
+     */
     public String getHeader(Message<?> message, String headerName) {
         Map<String, List<String>> nativeHeaders = getNativeHeaders(message);
         return Optional.ofNullable(nativeHeaders)

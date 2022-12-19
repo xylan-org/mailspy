@@ -35,6 +35,9 @@ import org.springframework.stereotype.Controller;
 import org.xylan.mailspy.core.impl.web.history.storage.MailSpyHistoryStorage;
 import org.xylan.mailspy.core.impl.ws.NativeHeaderExtractor;
 
+/**
+ * Controller for MailSpy's email history WebSocket topics.
+ */
 @Controller
 public class MailSpyEmailHistoryController {
 
@@ -52,6 +55,9 @@ public class MailSpyEmailHistoryController {
     @Autowired
     private MailSpyHistoryStorage mailSpyHistoryStorage;
 
+    /**
+     * Subscribes on the email history topics, and registers reply actions.
+     */
     @PostConstruct
     public void subscribeInboundChannel() {
         inboundChannel.subscribe((Message<?> message) -> {
@@ -64,6 +70,8 @@ public class MailSpyEmailHistoryController {
                         break;
                     case APPLICATION_DESTINATION_PREFIX + "/clear-history":
                         clearHistory();
+                        break;
+                    default:
                         break;
                 }
             }

@@ -29,6 +29,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.xylan.mailspy.core.impl.domain.EmailReceivedEvent;
 
+/**
+ * Event listener that forwards received emails to the WebSocket topic.
+ */
 @Component
 public class MailSpyEmailReceivedEventWebsocketSendingListener implements ApplicationListener<EmailReceivedEvent> {
 

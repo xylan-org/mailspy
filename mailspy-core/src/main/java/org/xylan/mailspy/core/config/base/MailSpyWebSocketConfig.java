@@ -33,7 +33,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.lang.Nullable;
 import org.springframework.messaging.converter.ByteArrayMessageConverter;
 import org.springframework.messaging.converter.CompositeMessageConverter;
 import org.springframework.messaging.converter.DefaultContentTypeResolver;
@@ -44,8 +43,6 @@ import org.springframework.messaging.simp.SimpLogging;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.broker.AbstractBrokerMessageHandler;
 import org.springframework.messaging.simp.broker.SimpleBrokerMessageHandler;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler;
 import org.springframework.messaging.simp.user.DefaultUserDestinationResolver;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.messaging.simp.user.UserDestinationMessageHandler;
@@ -67,14 +64,15 @@ import org.springframework.web.socket.messaging.DefaultSimpUserRegistry;
 import org.springframework.web.socket.messaging.SubProtocolWebSocketHandler;
 import org.xylan.mailspy.core.config.MailSpyProperties;
 
+/**
+ * Configuration for MailSpy's internal WebSocket broker.
+ */
 @Configuration(proxyBeanMethods = false)
 public class MailSpyWebSocketConfig {
 
     public static final String BROKER_DESTINATION_PREFIX = "/ws/topic";
     public static final String USER_DESTINATION_PREFIX = "/ws/topic/user";
     public static final String APPLICATION_DESTINATION_PREFIX = "/ws/dest";
-
-    private MessageBrokerRegistry brokerRegistry;
 
     @Autowired
     private MailSpyProperties properties;
@@ -118,17 +116,12 @@ public class MailSpyWebSocketConfig {
 
     @Bean
     public WebSocketMessageBrokerStats mailSpyWebSocketMessageBrokerStats(
-            @Qualifier("mailSpyStompBrokerRelayMessageHandler") @Nullable
-                    AbstractBrokerMessageHandler stompBrokerRelayMessageHandler,
             @Qualifier("mailSpySubProtocolWebSocketHandler") WebSocketHandler subProtocolWebSocketHandler,
             @Qualifier("mailSpyClientInboundChannelExecutor") TaskExecutor inboundExecutor,
             @Qualifier("mailSpyClientOutboundChannelExecutor") TaskExecutor outboundExecutor,
             @Qualifier("mailSpyMessageBrokerTaskScheduler") TaskScheduler scheduler) {
         WebSocketMessageBrokerStats stats = new WebSocketMessageBrokerStats();
         stats.setSubProtocolWebSocketHandler((SubProtocolWebSocketHandler) subProtocolWebSocketHandler);
-        if (stompBrokerRelayMessageHandler instanceof StompBrokerRelayMessageHandler) {
-            stats.setStompBrokerRelay((StompBrokerRelayMessageHandler) stompBrokerRelayMessageHandler);
-        }
         stats.setInboundChannelExecutor(inboundExecutor);
         stats.setOutboundChannelExecutor(outboundExecutor);
         stats.setSockJsTaskScheduler(scheduler);
@@ -250,12 +243,12 @@ public class MailSpyWebSocketConfig {
     @Bean
     public CompositeMessageConverter mailSpyBrokerMessageConverter(
             @Qualifier("mailSpyObjectMapper") ObjectMapper objectMapper) {
-        List<MessageConverter> converters = new ArrayList<>();
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.setObjectMapper(objectMapper);
         DefaultContentTypeResolver resolver = new DefaultContentTypeResolver();
         resolver.setDefaultMimeType(MimeTypeUtils.APPLICATION_JSON);
         converter.setContentTypeResolver(resolver);
+        List<MessageConverter> converters = new ArrayList<>();
         converters.add(new StringMessageConverter());
         converters.add(new ByteArrayMessageConverter());
         converters.add(converter);

@@ -48,6 +48,9 @@ public class MailSpyProperties {
         return path.replaceAll("/$", "");
     }
 
+    /**
+     * Properties related to the WebSocket configuration.
+     */
     @Data
     public static class WebSocketProperties {
         private int maxMessageBytes = 524_288_000;

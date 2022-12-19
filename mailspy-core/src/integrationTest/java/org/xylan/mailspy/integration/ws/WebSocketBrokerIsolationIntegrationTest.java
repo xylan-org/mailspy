@@ -116,7 +116,7 @@ public class WebSocketBrokerIsolationIntegrationTest extends BaseIntegrationTest
                                     MESSAGE_TYPE_HEADER,
                                     SimpMessageType.MESSAGE,
                                     SESSION_ID_HEADER,
-                                    "sessionId",
+                                    "sessionId1",
                                     SESSION_ATTRIBUTES,
                                     Collections.emptyMap()));
 
@@ -146,7 +146,7 @@ public class WebSocketBrokerIsolationIntegrationTest extends BaseIntegrationTest
                             MESSAGE_TYPE_HEADER,
                             SimpMessageType.MESSAGE,
                             SESSION_ID_HEADER,
-                            "sessionId",
+                            "sessionId2",
                             SESSION_ATTRIBUTES,
                             Collections.emptyMap()));
 
@@ -166,7 +166,7 @@ public class WebSocketBrokerIsolationIntegrationTest extends BaseIntegrationTest
                     WebSocketTestStub hostAppWs = createHostAppWsStub(context);
 
                     // WHEN
-                    hostAppWs.getMessagingTemplate().convertAndSend("/ws/topic/test", "payload");
+                    hostAppWs.getMessagingTemplate().convertAndSend("/ws/topic/test1", "payload1");
 
                     // THEN
                     mailSpyWs.awaitNoMessageSent();
@@ -174,8 +174,8 @@ public class WebSocketBrokerIsolationIntegrationTest extends BaseIntegrationTest
                     assertThat(
                             message,
                             allOf(
-                                    messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/test")),
-                                    messagePayloadMatches(equalTo("payload"))));
+                                    messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/test1")),
+                                    messagePayloadMatches(equalTo("payload1"))));
                 });
     }
 
@@ -188,7 +188,7 @@ public class WebSocketBrokerIsolationIntegrationTest extends BaseIntegrationTest
                     WebSocketTestStub hostAppWs = createHostAppWsStub(context);
 
                     // WHEN
-                    mailSpyWs.getMessagingTemplate().convertAndSend("/ws/topic/test", "payload");
+                    mailSpyWs.getMessagingTemplate().convertAndSend("/ws/topic/test2", "payload2");
 
                     // THEN
                     hostAppWs.awaitNoMessageSent();
@@ -196,8 +196,8 @@ public class WebSocketBrokerIsolationIntegrationTest extends BaseIntegrationTest
                     assertThat(
                             message,
                             allOf(
-                                    messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/test")),
-                                    messagePayloadMatches(equalTo("payload"))));
+                                    messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/test2")),
+                                    messagePayloadMatches(equalTo("payload2"))));
                 });
     }
 
@@ -218,7 +218,7 @@ public class WebSocketBrokerIsolationIntegrationTest extends BaseIntegrationTest
                                     MESSAGE_TYPE_HEADER,
                                     SimpMessageType.MESSAGE,
                                     SESSION_ID_HEADER,
-                                    "sessionId",
+                                    "sessionId3",
                                     SESSION_ATTRIBUTES,
                                     Collections.emptyMap(),
                                     NATIVE_HEADERS,
@@ -257,7 +257,7 @@ public class WebSocketBrokerIsolationIntegrationTest extends BaseIntegrationTest
                                     MESSAGE_TYPE_HEADER,
                                     SimpMessageType.MESSAGE,
                                     SESSION_ID_HEADER,
-                                    "sessionId",
+                                    "sessionId4",
                                     SESSION_ATTRIBUTES,
                                     Collections.emptyMap(),
                                     NATIVE_HEADERS,

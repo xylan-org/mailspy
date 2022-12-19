@@ -27,11 +27,19 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.springframework.messaging.Message;
 
+/**
+ * A Hamcrest matcher that allows matching a given header of a {@link Message}.
+ */
 public class MessageHeaderMatcher extends BaseMatcher<Message<?>> {
 
     private final String headerName;
     private final Matcher<?> valueMatcher;
 
+    /**
+     * Creates a new instance.
+     * @param headerName The name of the header to match.
+     * @param valueMatcher The matcher to apply on the header value.
+     */
     public MessageHeaderMatcher(String headerName, Matcher<?> valueMatcher) {
         this.headerName = headerName;
         this.valueMatcher = valueMatcher;

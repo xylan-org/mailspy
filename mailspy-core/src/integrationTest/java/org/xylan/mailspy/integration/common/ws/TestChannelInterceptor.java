@@ -37,6 +37,11 @@ public class TestChannelInterceptor implements ChannelInterceptor {
 
     private final BlockingQueue<Message<?>> messages = new ArrayBlockingQueue<>(100);
 
+    /**
+     * Waits for a new message for the given amount of seconds.
+     * @param timeoutInSeconds Seconds to wait.
+     * @return The received message, or {@literal null} if none received.
+     */
     @SneakyThrows
     public Message<?> awaitMessage(long timeoutInSeconds) {
         return this.messages.poll(timeoutInSeconds, TimeUnit.SECONDS);

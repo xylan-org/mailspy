@@ -28,10 +28,17 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.springframework.messaging.Message;
 
+/**
+ * A Hamcrest matcher that allows matching the payload of a {@link Message}.
+ */
 public class MessagePayloadMatcher extends BaseMatcher<Message<?>> {
 
     private final Matcher<?> valueMatcher;
 
+    /**
+     * Creates a new instance.
+     * @param valueMatcher The matcher to apply on the payload.
+     */
     public MessagePayloadMatcher(Matcher<?> valueMatcher) {
         this.valueMatcher = valueMatcher;
     }
