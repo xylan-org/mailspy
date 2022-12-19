@@ -23,7 +23,6 @@
 package org.xylan.mailspy.integration.common.matchers;
 
 import org.hamcrest.Matcher;
-import org.hamcrest.text.MatchesPattern;
 import org.springframework.messaging.Message;
 
 /**
@@ -69,5 +68,4 @@ public final class MailSpyMatchers {
     public static Matcher<Message<?>> messageHeaderMatches(String headerName, Matcher<?> valueMatcher) {
         return new MessageHeaderMatcher(headerName, valueMatcher);
     }
-
 }

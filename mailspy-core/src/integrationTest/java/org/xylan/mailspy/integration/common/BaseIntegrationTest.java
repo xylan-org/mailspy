@@ -72,7 +72,8 @@ public class BaseIntegrationTest {
         });
     }
 
-    protected final void runWithWs(BiContextConsumer<AssertableWebApplicationContext, WebSocketTestStub> contextConsumer) {
+    protected final void runWithWs(
+            BiContextConsumer<AssertableWebApplicationContext, WebSocketTestStub> contextConsumer) {
         runWithWs(ContextRunnerCustomizer.identity(), contextConsumer);
     }
 
@@ -80,7 +81,13 @@ public class BaseIntegrationTest {
             ContextRunnerCustomizer contextCustomizer,
             BiContextConsumer<AssertableWebApplicationContext, WebSocketTestStub> contextConsumer) {
         contextCustomizer.customize(contextRunner).run(context -> {
-            contextConsumer.accept(context, new WebSocketTestStub(context, "mailSpyClientInboundChannel", "mailSpyBrokerChannel", "mailSpyBrokerMessagingTemplate"));
+            contextConsumer.accept(
+                    context,
+                    new WebSocketTestStub(
+                            context,
+                            "mailSpyClientInboundChannel",
+                            "mailSpyBrokerChannel",
+                            "mailSpyBrokerMessagingTemplate"));
         });
     }
 }

@@ -22,15 +22,6 @@
 
 package org.xylan.mailspy.integration.smtp;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.messaging.Message;
-import org.springframework.web.context.WebApplicationContext;
-import org.testng.annotations.Test;
-import org.xylan.mailspy.integration.common.BaseIntegrationTest;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
@@ -40,6 +31,15 @@ import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.emai
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.jsonPathMatches;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.messageHeaderMatches;
 import static org.xylan.mailspy.integration.common.matchers.MailSpyMatchers.messagePayloadMatches;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.messaging.Message;
+import org.springframework.web.context.WebApplicationContext;
+import org.testng.annotations.Test;
+import org.xylan.mailspy.integration.common.BaseIntegrationTest;
 
 public class SmtpServerIntegrationTest extends BaseIntegrationTest {
 
@@ -73,11 +73,15 @@ public class SmtpServerIntegrationTest extends BaseIntegrationTest {
 
                     // THEN
                     assertThat(message, messageHeaderMatches(DESTINATION_HEADER, equalTo("/ws/topic/email")));
-                    assertThat(message, messagePayloadMatches(jsonPathMatches("$.rawMessage", allOf(
-                        emailTextMatches(equalTo(TEXT)),
-                        emailHeaderMatches("To", equalTo(RECIPIENT)),
-                        emailHeaderMatches("From", equalTo(SENDER)),
-                        emailHeaderMatches("Subject", equalTo(SUBJECT))))));
+                    assertThat(
+                            message,
+                            messagePayloadMatches(jsonPathMatches(
+                                    "$.rawMessage",
+                                    allOf(
+                                            emailTextMatches(equalTo(TEXT)),
+                                            emailHeaderMatches("To", equalTo(RECIPIENT)),
+                                            emailHeaderMatches("From", equalTo(SENDER)),
+                                            emailHeaderMatches("Subject", equalTo(SUBJECT))))));
                 });
     }
 

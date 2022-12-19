@@ -75,6 +75,5 @@ public class MailSpyWebMvcConfig {
                 registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*");
             }
         }
-
     }
 }

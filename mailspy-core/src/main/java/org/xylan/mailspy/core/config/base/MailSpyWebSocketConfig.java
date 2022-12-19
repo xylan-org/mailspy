@@ -22,11 +22,10 @@
 
 package org.xylan.mailspy.core.config.base;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -96,12 +95,13 @@ public class MailSpyWebSocketConfig {
         transportRegistration.setMessageSizeLimit(properties.getWebsocket().getMaxMessageBytes());
         transportRegistration.setSendBufferSizeLimit(properties.getWebsocket().getMaxSendBufferBytes());
 
-        MailSpyWebMvcStompEndpointRegistry registry =
-                new MailSpyWebMvcStompEndpointRegistry(subProtocolWebSocketHandler, transportRegistration, taskScheduler);
+        MailSpyWebMvcStompEndpointRegistry registry = new MailSpyWebMvcStompEndpointRegistry(
+                subProtocolWebSocketHandler, transportRegistration, taskScheduler);
         if (applicationContext != null) {
             registry.setApplicationContext(applicationContext);
         }
-        StompWebSocketEndpointRegistration endpointRegistration = registry.addEndpoint(properties.getPathNoTrailingSlash() + "/ws");
+        StompWebSocketEndpointRegistration endpointRegistration =
+                registry.addEndpoint(properties.getPathNoTrailingSlash() + "/ws");
         if (properties.isEnableCors()) {
             endpointRegistration.setAllowedOriginPatterns("*");
         }
@@ -118,7 +118,8 @@ public class MailSpyWebSocketConfig {
 
     @Bean
     public WebSocketMessageBrokerStats mailSpyWebSocketMessageBrokerStats(
-            @Qualifier("mailSpyStompBrokerRelayMessageHandler") @Nullable AbstractBrokerMessageHandler stompBrokerRelayMessageHandler,
+            @Qualifier("mailSpyStompBrokerRelayMessageHandler") @Nullable
+                    AbstractBrokerMessageHandler stompBrokerRelayMessageHandler,
             @Qualifier("mailSpySubProtocolWebSocketHandler") WebSocketHandler subProtocolWebSocketHandler,
             @Qualifier("mailSpyClientInboundChannelExecutor") TaskExecutor inboundExecutor,
             @Qualifier("mailSpyClientOutboundChannelExecutor") TaskExecutor outboundExecutor,
@@ -135,7 +136,8 @@ public class MailSpyWebSocketConfig {
     }
 
     @Bean
-    public AbstractSubscribableChannel mailSpyClientInboundChannel(@Qualifier("mailSpyClientInboundChannelExecutor") TaskExecutor executor) {
+    public AbstractSubscribableChannel mailSpyClientInboundChannel(
+            @Qualifier("mailSpyClientInboundChannelExecutor") TaskExecutor executor) {
         ExecutorSubscribableChannel channel = new ExecutorSubscribableChannel(executor);
         channel.setLogger(SimpLogging.forLog(channel.getLogger()));
         channel.setInterceptors(List.of(new ImmutableMessageChannelInterceptor()));
@@ -152,7 +154,8 @@ public class MailSpyWebSocketConfig {
     }
 
     @Bean
-    public AbstractSubscribableChannel mailSpyClientOutboundChannel(@Qualifier("mailSpyClientOutboundChannelExecutor") TaskExecutor executor) {
+    public AbstractSubscribableChannel mailSpyClientOutboundChannel(
+            @Qualifier("mailSpyClientOutboundChannelExecutor") TaskExecutor executor) {
         ExecutorSubscribableChannel channel = new ExecutorSubscribableChannel(executor);
         channel.setLogger(SimpLogging.forLog(channel.getLogger()));
         channel.setInterceptors(List.of(new ImmutableMessageChannelInterceptor()));
@@ -169,7 +172,8 @@ public class MailSpyWebSocketConfig {
     }
 
     @Bean
-    public AbstractSubscribableChannel mailSpyBrokerChannel(@Qualifier("mailSpyBrokerChannelExecutor") TaskExecutor executor) {
+    public AbstractSubscribableChannel mailSpyBrokerChannel(
+            @Qualifier("mailSpyBrokerChannelExecutor") TaskExecutor executor) {
         ExecutorSubscribableChannel channel = new ExecutorSubscribableChannel(executor);
         channel.setLogger(SimpLogging.forLog(channel.getLogger()));
         channel.setInterceptors(List.of(new ImmutableMessageChannelInterceptor()));
@@ -191,15 +195,16 @@ public class MailSpyWebSocketConfig {
             @Qualifier("mailSpyClientOutboundChannel") AbstractSubscribableChannel outboundChannel,
             @Qualifier("mailSpyBrokerChannel") AbstractSubscribableChannel brokerChannel,
             @Qualifier("mailSpyUserDestinationResolver") UserDestinationResolver userDestinationResolver) {
-        SimpleBrokerMessageHandler handler = new SimpleBrokerMessageHandler(inboundChannel, outboundChannel, brokerChannel,
-            List.of(BROKER_DESTINATION_PREFIX));
+        SimpleBrokerMessageHandler handler = new SimpleBrokerMessageHandler(
+                inboundChannel, outboundChannel, brokerChannel, List.of(BROKER_DESTINATION_PREFIX));
         handler.setSelectorHeaderName("selector");
         handler.setPreservePublishOrder(true);
         this.updateUserDestinationResolver(handler, userDestinationResolver);
         return handler;
     }
 
-    private void updateUserDestinationResolver(AbstractBrokerMessageHandler handler, UserDestinationResolver userDestinationResolver) {
+    private void updateUserDestinationResolver(
+            AbstractBrokerMessageHandler handler, UserDestinationResolver userDestinationResolver) {
         Collection<String> prefixes = handler.getDestinationPrefixes();
         if (!prefixes.isEmpty() && !prefixes.iterator().next().startsWith("/")) {
             ((DefaultUserDestinationResolver) userDestinationResolver).setRemoveLeadingSlash(true);
@@ -237,12 +242,14 @@ public class MailSpyWebSocketConfig {
     @Bean
     @Primary
     public SimpMessagingTemplate primaryBrokerMessagingTemplate(
-            @Qualifier("brokerMessagingTemplate") @Autowired(required = false) SimpMessagingTemplate brokerMessagingTemplate) {
+            @Qualifier("brokerMessagingTemplate") @Autowired(required = false)
+                    SimpMessagingTemplate brokerMessagingTemplate) {
         return brokerMessagingTemplate;
     }
 
     @Bean
-    public CompositeMessageConverter mailSpyBrokerMessageConverter(@Qualifier("mailSpyObjectMapper") ObjectMapper objectMapper) {
+    public CompositeMessageConverter mailSpyBrokerMessageConverter(
+            @Qualifier("mailSpyObjectMapper") ObjectMapper objectMapper) {
         List<MessageConverter> converters = new ArrayList<>();
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.setObjectMapper(objectMapper);
@@ -256,7 +263,8 @@ public class MailSpyWebSocketConfig {
     }
 
     @Bean
-    public UserDestinationResolver mailSpyUserDestinationResolver(@Qualifier("mailSpyUserRegistry") SimpUserRegistry userRegistry) {
+    public UserDestinationResolver mailSpyUserDestinationResolver(
+            @Qualifier("mailSpyUserRegistry") SimpUserRegistry userRegistry) {
         DefaultUserDestinationResolver resolver = new DefaultUserDestinationResolver(userRegistry);
         resolver.setUserDestinationPrefix(USER_DESTINATION_PREFIX);
         return resolver;
@@ -268,7 +276,10 @@ public class MailSpyWebSocketConfig {
     }
 
     private static class MailSpyWebMvcStompEndpointRegistry extends WebMvcStompEndpointRegistry {
-        public MailSpyWebMvcStompEndpointRegistry(WebSocketHandler webSocketHandler, WebSocketTransportRegistration transportRegistration, TaskScheduler defaultSockJsTaskScheduler) {
+        public MailSpyWebMvcStompEndpointRegistry(
+                WebSocketHandler webSocketHandler,
+                WebSocketTransportRegistration transportRegistration,
+                TaskScheduler defaultSockJsTaskScheduler) {
             super(webSocketHandler, transportRegistration, defaultSockJsTaskScheduler);
         }
 
@@ -277,5 +288,4 @@ public class MailSpyWebSocketConfig {
             super.setApplicationContext(applicationContext);
         }
     }
-
 }
