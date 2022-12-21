@@ -38,11 +38,11 @@ const APACHE_LICENSE = {
 const EPL1_LICENSE = {
     licenseName: "Eclipse Public License 1.0",
     licenseUrl: "https://spdx.org/licenses/EPL-1.0.html"
-}
+};
 const EPL2_LICENSE = {
     licenseName: "Eclipse Public License 2.0",
     licenseUrl: "https://spdx.org/licenses/EPL-2.0.html"
-}
+};
 
 @autobind
 export class AboutModal extends Component<AboutModalProps, Empty> {
@@ -74,227 +74,100 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                     <div className="about-attribution-list">
                         <ul>
                             <li>
-                                <Dependency
-                                    name="assert"
-                                    url="https://github.com/browserify/commonjs-assert"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="assert" url="https://github.com/browserify/commonjs-assert" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="autobind decorator"
-                                    url="https://github.com/andreypopp/autobind-decorator"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="autobind decorator" url="https://github.com/andreypopp/autobind-decorator" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Bootstrap"
-                                    url="https://getbootstrap.com/"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="Bootstrap" url="https://getbootstrap.com/" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="buffer"
-                                    url="https://github.com/feross/buffer"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="buffer" url="https://github.com/feross/buffer" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="crypto-browserify"
-                                    url="https://github.com/crypto-browserify/crypto-browserify"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="crypto-browserify" url="https://github.com/crypto-browserify/crypto-browserify" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="escape-html"
-                                    url="https://github.com/component/escape-html"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="escape-html" url="https://github.com/component/escape-html" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="FileSaver.js"
-                                    url="https://github.com/eligrey/FileSaver.js"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="FileSaver.js" url="https://github.com/eligrey/FileSaver.js" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Fort Awesome / react-fontawesome"
-                                    url="https://fortawesome.com/"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="Fort Awesome / react-fontawesome" url="https://fortawesome.com/" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="InversifyJS"
-                                    url="https://inversify.io/"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="InversifyJS" url="https://inversify.io/" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="inversify-react"
-                                    url="https://github.com/Kukkimonsuta/inversify-react"
-                                    {...APACHE_LICENSE}
-                                />
+                                <Dependency name="inversify-react" url="https://github.com/Kukkimonsuta/inversify-react" {...APACHE_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Jackson"
-                                    url="https://github.com/FasterXML/jackson"
-                                    {...APACHE_LICENSE}
-                                />
+                                <Dependency name="Jackson" url="https://github.com/FasterXML/jackson" {...APACHE_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Jakarta Annotations API"
-                                    url="https://projects.eclipse.org/projects/ee4j.ca"
-                                    {...EPL2_LICENSE}
-                                />
+                                <Dependency name="Jakarta Annotations API" url="https://projects.eclipse.org/projects/ee4j.ca" {...EPL2_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Jakarta Servlet API"
-                                    url="https://projects.eclipse.org/projects/ee4j.servlet"
-                                    {...EPL2_LICENSE}
-                                />
+                                <Dependency name="Jakarta Servlet API" url="https://projects.eclipse.org/projects/ee4j.servlet" {...EPL2_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Logback"
-                                    url="https://logback.qos.ch/"
-                                    {...EPL1_LICENSE}
-                                />
+                                <Dependency name="Logback" url="https://logback.qos.ch/" {...EPL1_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="mailparser"
-                                    url="https://github.com/nodemailer/mailparser"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="mailparser" url="https://github.com/nodemailer/mailparser" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Metadata Reflection API"
-                                    url="https://rbuckton.github.io/reflect-metadata/"
-                                    {...APACHE_LICENSE}
-                                />
+                                <Dependency name="Metadata Reflection API" url="https://rbuckton.github.io/reflect-metadata/" {...APACHE_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="mime-types"
-                                    url="https://github.com/jshttp/mime-types"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="mime-types" url="https://github.com/jshttp/mime-types" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="path-browserify"
-                                    url="https://github.com/browserify/path-browserify"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="path-browserify" url="https://github.com/browserify/path-browserify" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="process"
-                                    url="https://github.com/defunctzombie/node-process"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="process" url="https://github.com/defunctzombie/node-process" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Project Lombok"
-                                    url="https://projectlombok.org/"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="Project Lombok" url="https://projectlombok.org/" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="raf"
-                                    url="https://github.com/chrisdickinson/raf"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="raf" url="https://github.com/chrisdickinson/raf" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency name="React"
-                                    url="https://reactjs.org/"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="React" url="https://reactjs.org/" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="React-Bootstrap"
-                                    url="https://react-bootstrap.github.io/"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="React-Bootstrap" url="https://react-bootstrap.github.io/" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="setimmediate"
-                                    url="https://github.com/yuzujs/setImmediate"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="setimmediate" url="https://github.com/yuzujs/setImmediate" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="SLF4J"
-                                    url="https://www.slf4j.org/"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="SLF4J" url="https://www.slf4j.org/" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="SockJS-client"
-                                    url="https://github.com/sockjs/sockjs-client"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="SockJS-client" url="https://github.com/sockjs/sockjs-client" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Spring Boot"
-                                    url="https://spring.io/projects/spring-boot"
-                                    {...APACHE_LICENSE}
-                                />
+                                <Dependency name="Spring Boot" url="https://spring.io/projects/spring-boot" {...APACHE_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="Spring Framework"
-                                    url="https://spring.io/projects/spring-framework"
-                                    {...APACHE_LICENSE}
-                                />
+                                <Dependency name="Spring Framework" url="https://spring.io/projects/spring-framework" {...APACHE_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="STOMP.js"
-                                    url="https://github.com/stomp-js/stompjs"
-                                    {...APACHE_LICENSE}
-                                />
+                                <Dependency name="STOMP.js" url="https://github.com/stomp-js/stompjs" {...APACHE_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="stream-browserify"
-                                    url="https://github.com/browserify/stream-browserify"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="stream-browserify" url="https://github.com/browserify/stream-browserify" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="SubEtha SMTP"
-                                    url="https://github.com/voodoodyne/subethasmtp"
-                                    {...APACHE_LICENSE}
-                                />
+                                <Dependency name="SubEtha SMTP" url="https://github.com/voodoodyne/subethasmtp" {...APACHE_LICENSE} />
                             </li>
                             <li>
-                                <Dependency
-                                    name="uuid"
-                                    url="https://github.com/uuidjs/uuid"
-                                    {...MIT_LICENSE}
-                                />
+                                <Dependency name="uuid" url="https://github.com/uuidjs/uuid" {...MIT_LICENSE} />
                             </li>
                         </ul>
                     </div>
