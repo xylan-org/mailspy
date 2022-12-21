@@ -11,10 +11,15 @@
         "browser": true,
         "node": true
     },
-    "plugins": ["@typescript-eslint"],
-    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier", "react-app"],
+    "plugins": ["@typescript-eslint", "react"],
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier", "plugin:react/recommended"],
     "rules": {
         "@typescript-eslint/no-explicit-any": "off",
         "eqeqeq": "off"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

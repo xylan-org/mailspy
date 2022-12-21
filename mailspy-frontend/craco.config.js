@@ -20,7 +20,13 @@
  * SOFTWARE.
  */
 
+const fs = require("fs");
 const path = require("path");
+const webpack = require("webpack");
+const evalSourceMap = require("react-dev-utils/evalSourceMapMiddleware");
+const redirectServedPath = require("react-dev-utils/redirectServedPathMiddleware");
+const noopServiceWorker = require("react-dev-utils/noopServiceWorkerMiddleware");
+
 module.exports = {
     babel: {
         plugins: ["babel-plugin-transform-typescript-metadata"],
@@ -29,7 +35,36 @@ module.exports = {
     webpack: {
         configure: (webpackConfig, { env, paths }) => {
             paths.appBuild = webpackConfig.output.path = path.resolve("build", "webpack");
+            webpackConfig.resolve.fallback = Object.assign(webpackConfig.resolve.fallback || {}, {
+                stream: require.resolve("stream-browserify"),
+                path: require.resolve("path-browserify"),
+                crypto: require.resolve("crypto-browserify")
+            });
+            webpackConfig.plugins = (webpackConfig.plugins || []).concat([
+                new webpack.ProvidePlugin({
+                    process: "process/browser",
+                    Buffer: ["buffer", "Buffer"]
+                })
+            ]);
+            webpackConfig.ignoreWarnings = [/Failed to parse source map/];
             return webpackConfig;
         }
+    },
+    devServer: (devServerConfig, { env, paths }) => {
+        devServerConfig = {
+            onBeforeSetupMiddleware: undefined,
+            onAfterSetupMiddleware: undefined,
+            setupMiddlewares: (middlewares, devServer) => {
+                if (!devServer) {
+                    throw new Error("webpack-dev-server is not defined");
+                }
+                if (fs.existsSync(paths.proxySetup)) {
+                    require(paths.proxySetup)(devServer.app);
+                }
+                middlewares.push(evalSourceMap(devServer), redirectServedPath(paths.publicUrlOrPath), noopServiceWorker(paths.publicUrlOrPath));
+                return middlewares;
+            }
+        };
+        return devServerConfig;
     }
 };

@@ -25,6 +25,7 @@ import { shallow, ShallowWrapper } from "enzyme";
 import { Container, interfaces } from "inversify";
 import React from "react";
 import { Component, ComponentClass, ComponentState } from "react";
+import PropTypes from "prop-types";
 
 type TestBedInit<P, S> = {
     component: ComponentClass<P, S>;
@@ -38,7 +39,7 @@ type TestBedDependency<T> = {
 };
 
 @autobind
-export class TestBed<T extends Component<P, S>, P extends unknown = T["props"], S extends ComponentState = T["state"]> {
+export class TestBed<T extends Component<P, S>, P = T["props"], S extends ComponentState = T["state"]> {
     private componentType: ComponentClass<P, S>;
     private props: P;
     private container: Container;
@@ -71,10 +72,17 @@ export class TestBed<T extends Component<P, S>, P extends unknown = T["props"], 
 
     public render(): ShallowWrapper<P, S, T> {
         const element = React.createElement(this.componentType, this.props);
-        return shallow(element, {
-            context: {
-                container: this.container
-            }
+        this.componentType.contextTypes = [...Object.keys(this.container), ...Object.keys(Object.getPrototypeOf(this.container))]
+            .map((key: string) => {
+                return { [key]: PropTypes.any };
+            })
+            .reduce((accumulator: object, current: object) => {
+                return { ...accumulator, ...current };
+            });
+
+        const result: ShallowWrapper<P, S, T> = shallow(element, {
+            context: this.container
         });
+        return result;
     }
 }

@@ -24,6 +24,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "inversify-react";
 import container from "inversify.config";
+import "setimmediate";
 
 import { App } from "components/app/App";
 

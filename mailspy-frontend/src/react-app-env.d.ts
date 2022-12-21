@@ -34,7 +34,7 @@ declare module "mailparser" {
     export interface ParsedAttachment {
         filename?: string;
         contentType: string;
-        content: BlobPart;
+        content: Buffer;
     }
     export function simpleParser(source: Source, options?: Record<string, any>): Promise<ParsedMail>;
 }
