@@ -15,6 +15,8 @@ It supports Spring Boot applications via auto-configuration, and a standalone bu
 
 You can try out MailSpy on [this demo page](https://xylan.org/mailspy-demo/).
 
+Tested with **Spring Boot 2.7.6** on **Java 11**. In case of incompatibility, see the standalone build below.
+
 ## Using in Spring Boot applications
 Using Gradle:
 ```groovy
