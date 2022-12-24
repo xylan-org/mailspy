@@ -13,9 +13,10 @@ MailSpy is a development tool for the manual testing of email sending. It lets y
 
 It supports Spring Boot applications via auto-configuration, and a standalone build is also provided for apps based on other frameworks, or technological stacks.
 
-You can try out MailSpy on [this demo page](https://xylan.org/mailspy-demo/).
-
 Tested with **Spring Boot 2.7.6** on **Java 11**. In case of incompatibility, see the standalone build below.
+
+
+You can try out MailSpy on [this demo page](https://xylan.org/mailspy-demo/).
 
 ## Using in Spring Boot applications
 Using Gradle:
@@ -44,7 +45,7 @@ mailspy.enabled=true
 
 By default, MailSpy auto-configures a `JavaMailSenderImpl` pointing to the embedded SMTP server it hosts. If your app defines its own, or sends mails through a different solution, make sure it points to MailSpy's SMTP host (`localhost:2525` by default).
 
-You can view sent emails on MailSpy's Web UI, hosted by default on the `/mailspy` path, relative to you app's context root.
+You can view sent emails on MailSpy's Web UI, hosted by default on the `/devtools/mailspy` path, relative to you app's context root.
 
 ## Using the Standalone build
 Download the [latest release build](https://github.com/xylan-org/mailspy/releases/latest/) from our Releases page. You'll also need the [Standard Edition of Java Runtime Environment](https://www.oracle.com/java/technologies/java-se-glance.html), at least version 11.
@@ -71,7 +72,7 @@ Don't forget to point your application's mail sender client to the SMTP port you
 | `mailspy.smtp-bind-address` | localhost | localhost | The host of MailSpy's embedded SMTP server |
 | `mailspy.path` | /devtools/mailspy | / | The path for MailSpy's Web UI |
 | `mailspy.retain-emails` | 100 | 100 | The number of emails kept in memory |
-| `mailspy.enable-cors` | false | false | Enable [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for MailSpy's REST API |
+| `mailspy.enable-cors` | false | false | Enable [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for MailSpy |
 | `mailspy.websocket.max-message-bytes` | 524,288,000 | 524,288,000 | The maximum size of inbound WebSocket messages. |
 | `mailspy.websocket.max-send-buffer-bytes` | 524,288,000 | 524,288,000 | The maximum size of data buffer used when sending outbound messages on WebSocket. |
 
@@ -95,6 +96,10 @@ Please note that the above example assumes that MailSpy will only be used in a l
 ### XML namespace configuration
 
 If your host application's MVC configuration is done in XML, chances are, MailSpy won't be compatible with it, as it uses Java Based Configuration approach instead. We recommend porting obsolete XML namespace configs to Java.
+
+### Reverse proxies and WebSocket
+
+If you're serving your application behind a reverse proxy, it might not be configured to proxy WebSocket. Consult the documentation of your reverse proxy software to configure it correctly.
 
 ## See also
 

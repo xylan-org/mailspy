@@ -16,11 +16,13 @@
 * Dates are now rendered correctly regardless of OS
 * Attachment badge of mail list items will now appear white when the item is selected
 * Mail download now receives unescaped content, so that desktop mail clients can actually render it.
+* Integration tests won't run unit tests too anymore.
 
 ### Changed
 * Use WebSocket based on SockJS and STOMP instead of Server-Sent Events.
 * Front end build is now optional in Gradle to speed up back end build during development.
 Front end is built by the development server in this case anyway. Build with `-PincludeFrontend` to restore it.
+* Update project dependencies to eliminate vulnerabilities.
 
 ## [1.0.0] - 2022-10-02
 * Initial version
