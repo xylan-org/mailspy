@@ -1,5 +1,7 @@
 
 ## [Unreleased]
+
+## [1.1.0] - 2022-12-24
 ### Added
 * Demo
   * Cargo Gradle plugin for demo deployment
