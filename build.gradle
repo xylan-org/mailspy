@@ -262,7 +262,7 @@ task updateReadmeVersion {
     def versionRegex = "\\d+\\.\\d+\\.\\d+"
     doLast {
         replaceVersionInFile(file("README.md"), spotlessChangelog.versionNext, [
-            "(\"org\\.xylan:mailspy-core:)($versionRegex)(\")",
+            "(\"org\\.xylan\\.mailspy:mailspy-core:)($versionRegex)(\")",
             "(<version>)($versionRegex)(</version>)",
             "(mailspy-app-)($versionRegex)(\\.jar)"
         ])
