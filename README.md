@@ -22,10 +22,10 @@ You can try out MailSpy on [this demo page](https://xylan.org/mailspy-demo/).
 Using Gradle:
 ```groovy
 dependencies {
-    implementation "org.xylan.mailspy:mailspy-core:1.0.0"
+    implementation "org.xylan.mailspy:mailspy-core:1.1.0"
 
     // or using the Spring Boot Gradle plugin (excludes from production builds)
-    developmentOnly "org.xylan.mailspy:mailspy-core:1.0.0"
+    developmentOnly "org.xylan.mailspy:mailspy-core:1.1.0"
 }
 ```
 
