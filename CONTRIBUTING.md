@@ -12,7 +12,7 @@ Please make sure you've read our [Code of Conduct](./CODE_OF_CONDUCT.md), and of
 
 MailSpy is built of three parts:
 - **mailspy-frontend**: A React-based SPA front end, implementing the web user interface of MailSpy.
-- **mailspy-core**: A Spring Boot auto-configuration library, containing an embedded SMTP server, and MailSpy's REST API. Also hosts the front end resources.
+- **mailspy-core**: A Spring Boot auto-configuration library, containing an embedded SMTP server, and MailSpy's WebSocket broker. Also hosts the front end resources.
 - **mailspy-app**: A stand-alone Spring Boot web application that simply applies the previously mentioned auto-config. Can be used for development, or when technology stack of the client app is different.
 
 ## Getting started
