@@ -165,24 +165,32 @@ spotless {
         "mailspy-frontend/package-lock.json"
     ]
     format "licenseHeader", {
-        target "**/*.gradle", "**/*.java", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.css"
-        targetExclude exclusions
+        target fileTree(rootDir) {
+            include "**/*.gradle", "**/*.java", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.css"
+            exclude exclusions
+        }
         licenseHeaderFile file("$rootDir/config/license/c_like.txt"), "^(?!(\\/\\*| \\*| \\*\\/)).+"
     }
     format "generic", {
-        target "**/*.gradle", "**/*.java", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.css", "**/*.json", "**/*.properties", "**/*.yml"
-        targetExclude exclusions
+        target fileTree(rootDir) {
+            include "**/*.gradle", "**/*.java", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.css", "**/*.json", "**/*.properties", "**/*.yml"
+            exclude exclusions
+        }
         trimTrailingWhitespace()
         endWithNewline()
     }
     groovyGradle {
-        target "**/*.gradle"
-        targetExclude exclusions
+        target fileTree(rootDir) {
+            include "**/*.gradle"
+            exclude exclusions
+        }
         greclipse().configFile(file("$rootDir/config/greclipse.properties"))
     }
     java {
-        target "**/*.java"
-        targetExclude exclusions
+        target fileTree(rootDir) {
+            include "**/*.java"
+            exclude exclusions
+        }
         palantirJavaFormat(libs.versions.palantirformat.get())
     }
 }
