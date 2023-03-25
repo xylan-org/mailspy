@@ -1,5 +1,8 @@
 
 ## [Unreleased]
+### Fixed
+* Emails are now correctly ordered in the mail list.
+
 ### Changed
 * Update project dependencies, including Spring Boot to 2.7.10.
 
