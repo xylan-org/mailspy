@@ -1,5 +1,7 @@
 
 ## [Unreleased]
+### Changed
+* Update project dependencies, including Spring Boot to 2.7.10.
 
 ## [1.1.0] - 2022-12-24
 ### Added
