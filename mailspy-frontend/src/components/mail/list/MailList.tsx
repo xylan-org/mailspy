@@ -134,7 +134,9 @@ export class MailList extends Component<MailListProps, MailListState> {
     private addMail(mail: Mail): void {
         this.setState((prevState) => {
             return {
-                mails: [mail, ...prevState.mails]
+                mails: [mail, ...prevState.mails].sort(
+                    (mail1: Mail, mail2: Mail) => new Date(mail2.timeReceived).valueOf() - new Date(mail1.timeReceived).valueOf()
+                )
             };
         });
     }
