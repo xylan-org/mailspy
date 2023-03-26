@@ -1,4 +1,5 @@
 Please make sure to follow our guidelines before creating PRs:
+- Please target the `develop` branch
 - Read our [Code of Conduct](./CODE_OF_CONDUCT.md) and [Contribution Guide](./CONTRIBUTING.md) if you haven't yet
 - Please summarize your changes by adding a bullet-point to the `[Unreleased]` section of the [Changelog file](./CHANGELOG.md)
   - Depending on the kind of the change, use the `### Added`, `### Fixed`, or `### Changed` sub-section. Create them when missing.

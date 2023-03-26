@@ -80,6 +80,5 @@ Its steps in a nutshell are the following:
 - Publish to Sonatype OSSRH (libs with sources and JavaDocs)
   - **Manual step:** Close and Release repository (see [Sonatype guide](https://central.sonatype.org/publish/release/))
 - Publish to GitHub releases (app .jar and .war builds; see [Releases](https://github.com/xylan-org/mailspy/releases/))
-- Merge release branch back to master
-  - Set post-release snapshot version (`<releaseVersion>-SNAPSHOT`).
+- Merge release branch back into master
 - Deploy demo to [xylan.org/mailspy-demo](https://xylan.org/mailspy-demo/).
