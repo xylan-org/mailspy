@@ -16,7 +16,7 @@ jobs:
       - name: Check out develop branch
         uses: actions/checkout@v3
         with:
-          ref: develop
+          ref: develop-1.x
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
       - name: Set up JDK 11
         uses: actions/setup-java@v3
@@ -142,7 +142,7 @@ jobs:
       - name: Check out master branch
         uses: actions/checkout@v3
         with:
-          ref: master
+          ref: master-1.x
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
       - name: Setup git user
         uses: fregante/setup-git-user@v1
@@ -151,31 +151,3 @@ jobs:
           git fetch
           git merge origin/release/v${{ needs.createReleaseBranch.outputs.version }}
           git push -u
-  deployDemo:
-    runs-on: ubuntu-latest
-    needs: [createReleaseBranch, mergeReleaseBranch]
-    steps:
-      - name: Check out release branch
-        uses: actions/checkout@v3
-        with:
-          ref: "release/v${{ needs.createReleaseBranch.outputs.version }}"
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: "11"
-          distribution: "adopt"
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: mailspy-frontend/package-lock.json
-      - name: Deploy demo
-        uses: gradle/gradle-build-action@v2.3.0
-        with:
-          arguments: >
-            cargoRedeployRemote
-            -PincludeFrontend
-            -PcargoUsername=${{ secrets.CARGO_USERNAME }}
-            -PcargoPassword=${{ secrets.CARGO_PASSWORD }}
-            -PcargoUri=${{ secrets.CARGO_URI }}

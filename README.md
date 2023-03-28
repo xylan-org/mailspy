@@ -3,8 +3,8 @@
 </p>
 <hr>
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/xylan-org/mailspy/build-snapshot.yml?branch=master)
-![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/abelk2/e0159b67e62fe9b4c7657e58419b6cc1/raw/coverage_badge.json)
+![Build Status](https://img.shields.io/github/actions/workflow/status/xylan-org/mailspy/build-snapshot.yml?branch=master-1.x)
+![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/abelk2/e0159b67e62fe9b4c7657e58419b6cc1/raw/coverage_badge_1x.json)
 ![License](https://img.shields.io/github/license/xylan-org/mailspy?label=license)
 ![Latest Release](https://img.shields.io/github/v/release/xylan-org/mailspy)
 
