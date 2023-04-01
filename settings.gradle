@@ -75,7 +75,7 @@ dependencyResolutionManagement {
             library("spring-websocket", "org.springframework", "spring-websocket").versionRef("spring-framework")
             library("spring-test", "org.springframework", "spring-test").versionRef("spring-framework")
             library("slf4j-api", "org.slf4j", "slf4j-api").versionRef("slf4j")
-            library("subetha", "org.subethamail", "subethasmtp").versionRef("subetha")
+            library("subetha", "io.github.frshdn", "subethasmtp-java17").versionRef("subetha")
             library("apache-commons-io", "commons-io", "commons-io").versionRef("commons-io")
             library("jakarta-servletapi", "jakarta.servlet", "jakarta.servlet-api").versionRef("jakarta-servletapi")
             library("jakarta-annotationsapi", "jakarta.annotation", "jakarta.annotation-api").versionRef("jakarta-annotationsapi")

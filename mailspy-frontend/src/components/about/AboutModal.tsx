@@ -167,7 +167,7 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                                 <Dependency name="stream-browserify" url="https://github.com/browserify/stream-browserify" {...MIT_LICENSE} />
                             </li>
                             <li>
-                                <Dependency name="SubEtha SMTP" url="https://github.com/voodoodyne/subethasmtp" {...APACHE_LICENSE} />
+                                <Dependency name="SubEtha SMTP" url="https://github.com/FrshDn/subethasmtp" {...APACHE_LICENSE} />
                             </li>
                             <li>
                                 <Dependency name="uuid" url="https://github.com/uuidjs/uuid" {...MIT_LICENSE} />
