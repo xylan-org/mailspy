@@ -69,7 +69,7 @@ Document pages are not updated with snapshot version bumps - we always want to d
 
 _Please note that currently there's no fixed schedule for releases._
 
-The release process is almost fully automated (implemented by [build-release.yml](.github/workflows/build-release.yml)).
+The release process is almost fully automated (implemented by [build-release.yml](.github/workflows/build-release.yml)). Run this workflow on the `develop` branch for 2.x and on `develop-1.x` for 1.x.
 
 Its steps in a nutshell are the following:
 - Infer release version (see the _Versioning_ section)
