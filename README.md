@@ -53,7 +53,7 @@ By default, MailSpy auto-configures a `JavaMailSenderImpl` pointing to the embed
 You can view sent emails on MailSpy's Web UI, hosted by default on the `/devtools/mailspy` path, relative to you app's context root.
 
 ## Using the Standalone build
-Download the [latest release build](https://github.com/xylan-org/mailspy/releases/latest/) from our Releases page. You'll also need the [Standard Edition of Java Runtime Environment](https://www.oracle.com/java/technologies/java-se-glance.html), at least version 11.
+Download the [latest release build](https://github.com/xylan-org/mailspy/releases/latest/) from our Releases page. You'll also need the [Standard Edition of Java Runtime Environment](https://www.oracle.com/java/technologies/java-se-glance.html), at least version 17.
 
 Then lauch MailSpy:
 ```sh
