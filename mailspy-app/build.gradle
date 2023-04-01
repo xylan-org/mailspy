@@ -39,8 +39,8 @@ dependencies {
     implementation libs.logback.classic
     implementation libs.bundles.spring.boot.starters
     implementation libs.spring.context.support
-    compileOnly libs.javax.mail
-    compileOnly libs.javax.activation
+    implementation libs.jakarta.mail
+    implementation libs.jakarta.activation
     developmentOnly libs.spring.boot.devtools
 }
 

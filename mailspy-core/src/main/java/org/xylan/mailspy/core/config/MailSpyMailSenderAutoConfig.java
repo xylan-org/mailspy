@@ -23,12 +23,12 @@
 package org.xylan.mailspy.core.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
@@ -36,7 +36,7 @@ import org.xylan.mailspy.core.config.condition.ConditionalOnMailSpyEnabled;
 /**
  * Autoconfiguration for {@link JavaMailSenderImpl} that sets MailSpy's address and port automatically.
  */
-@Configuration
+@AutoConfiguration
 @ConditionalOnMailSpyEnabled
 @AutoConfigureAfter(MailSenderAutoConfiguration.class)
 @ConditionalOnProperty(name = "mailspy.sender.enabled", havingValue = "true", matchIfMissing = true)

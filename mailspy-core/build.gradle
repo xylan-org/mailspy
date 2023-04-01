@@ -52,8 +52,11 @@ dependencies {
     api libs.subetha
     api libs.apache.commons.io
     api libs.jackson.databind
-    compileOnly libs.jakarta.servletapi
-    compileOnly libs.jakarta.annotationsapi
+    api libs.angusmail
+    api libs.jakarta.activation
+    api libs.jakarta.mail
+    api libs.jakarta.servletapi
+    api libs.jakarta.annotationsapi
 }
 
 check {

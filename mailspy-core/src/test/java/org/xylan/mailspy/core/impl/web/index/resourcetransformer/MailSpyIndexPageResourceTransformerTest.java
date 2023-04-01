@@ -26,9 +26,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.testng.Assert.assertEquals;
 
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.mockito.InjectMocks;

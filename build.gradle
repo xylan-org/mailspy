@@ -99,7 +99,7 @@ subprojects {
     }
 
     tasks.withType(JavaCompile) {
-        options.release = 11
+        options.release = 17
         options.compilerArgs << "-Xlint:-processing" << "-Werror"
     }
 

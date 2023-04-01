@@ -3,6 +3,7 @@
 ### Changed
 * Change from GitHub Flow to GitFlow branching strategy. Read more [here](https://www.flagship.io/git-branching-strategies/). (#11)
 * Added compatibility matrix to README.
+* **BREAKING** Update project dependencies, including Spring Boot to 3.0.5.
 
 ## [1.1.1] - 2023-03-25
 ### Fixed
