@@ -74,6 +74,9 @@ export class AboutModal extends Component<AboutModalProps, Empty> {
                     <div className="about-attribution-list">
                         <ul>
                             <li>
+                                <Dependency name="Eclipse Angus Mail" url="https://eclipse-ee4j.github.io/angus-mail/" {...EPL2_LICENSE} />
+                            </li>
+                            <li>
                                 <Dependency name="assert" url="https://github.com/browserify/commonjs-assert" {...MIT_LICENSE} />
                             </li>
                             <li>
