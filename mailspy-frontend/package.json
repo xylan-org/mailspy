@@ -1,6 +1,6 @@
 {
     "name": "mailspy-frontend",
-    "version": "1.1.2-SNAPSHOT",
+    "version": "2.0.0-SNAPSHOT",
     "description": "Frontend module for MailSpy",
     "main": "index.tsx",
     "scripts": {
