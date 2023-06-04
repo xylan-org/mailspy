@@ -1,5 +1,7 @@
 
 ## [Unreleased]
+### Changed
+* Update project dependencies, including Spring Boot to 3.1.0.
 
 ## [2.0.0] - 2023-04-01
 ### Changed
