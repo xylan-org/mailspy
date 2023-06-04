@@ -1,5 +1,7 @@
 
 ## [Unreleased]
+
+## [1.1.2] - 2023-06-04
 ### Changed
 * Change from GitHub Flow to GitFlow branching strategy. Read more [here](https://www.flagship.io/git-branching-strategies/). (#11)
 * Introduce separate mainline branches master-1.x and develop-1.x for backports to prepare for 2.x with Spring Boot 3 support.
