@@ -14,7 +14,7 @@ MailSpy is a development tool for the manual testing of email sending. It lets y
 It supports Spring Boot applications via auto-configuration, and a standalone build is also provided for apps based on other frameworks, or technological stacks.
 
 
-It is recommended to use MailSpy with the Spring Boot version it was compiled and tested with. Matching the major version however is a must, please the table below. In case of compatibility issues, see the standalone build below.
+It is recommended to use MailSpy with the Spring Boot version it was compiled and tested with. Matching the major version however is a must, please see the table below. In case of compatibility issues, see the standalone build below.
 
 | MailSpy version | Spring Boot version | Tested with Boot version | Tested with Java version |
 | --------------- | ------------------- | ------------------------ | ------------------------ |
