@@ -27,10 +27,10 @@ You can try out MailSpy on [this demo page](https://xylan.org/mailspy-demo/).
 Using Gradle:
 ```groovy
 dependencies {
-    implementation "org.xylan.mailspy:mailspy-core:2.0.0"
+    implementation "org.xylan.mailspy:mailspy-core:2.0.1"
 
     // or using the Spring Boot Gradle plugin (excludes from production builds)
-    developmentOnly "org.xylan.mailspy:mailspy-core:2.0.0"
+    developmentOnly "org.xylan.mailspy:mailspy-core:2.0.1"
 }
 ```
 
@@ -39,7 +39,7 @@ Using Maven:
 <dependency>
     <groupId>org.xylan.mailspy</groupId>
     <artifactId>mailspy-core</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 </dependency>
 ```
 
@@ -57,7 +57,7 @@ Download the [latest release build](https://github.com/xylan-org/mailspy/release
 
 Then lauch MailSpy:
 ```sh
-java -jar mailspy-app-2.0.0.jar
+java -jar mailspy-app-2.0.1.jar
 ```
 
 By default, MailSpy listens on SMTP host `localhost:2525` and serves its Web UI on `localhost:8099`. The easiest way to change that is to create an `application.properties` file next to the jar:
