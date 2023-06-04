@@ -5,6 +5,7 @@
 * Introduce separate mainline branches master-1.x and develop-1.x for backports to prepare for 2.x with Spring Boot 3 support.
 * Added compatibility matrix to README.
 * Make year dynamic in about modal.
+* Update project dependencies, including Spring Boot to 2.7.12.
 
 ## [1.1.1] - 2023-03-25
 ### Fixed
