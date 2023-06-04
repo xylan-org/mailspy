@@ -5,7 +5,11 @@ on:
     branches: [ "develop-1.x" ]
     paths-ignore:
       - "docs/**"
-      - "**.md"
+      - "CODE_OF_CONDUCT.md"
+      - "CONTRIBUTING.md"
+      - "PULL_REQUEST_TEMPLATE.md"
+      - "README.md"
+      - "LICENSE"
 
 jobs:
   buildSnapshot:
