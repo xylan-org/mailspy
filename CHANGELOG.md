@@ -1,5 +1,7 @@
 
 ## [Unreleased]
+
+## [2.0.0] - 2023-04-01
 ### Changed
 * Change from GitHub Flow to GitFlow branching strategy. Read more [here](https://www.flagship.io/git-branching-strategies/). (#11)
 * Added compatibility matrix to README.
