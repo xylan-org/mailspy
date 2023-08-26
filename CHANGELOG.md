@@ -1,5 +1,7 @@
 
 ## [Unreleased]
+
+## [2.0.2] - 2023-08-26
 * Update project dependencies, including Spring Boot to 3.1.3.
 
 ## [2.0.1] - 2023-06-04
