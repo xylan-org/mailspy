@@ -18,8 +18,8 @@ It is recommended to use MailSpy with the Spring Boot version it was compiled an
 
 | MailSpy version | Spring Boot version | Tested with Boot version | Tested with Java version |
 | --------------- | ------------------- | ------------------------ | ------------------------ |
-| 1.x             | 2.x                 | 2.7.12                   | 11.0.7                   |
-| 2.x             | 3.x                 | 3.1.0                    | 17.0.3                   |
+| 1.x             | 2.x                 | 2.7.15                   | 11.0.7                   |
+| 2.x             | 3.x                 | 3.1.3                    | 17.0.3                   |
 
 You can try out MailSpy on [this demo page](https://xylan.org/mailspy-demo/).
 
