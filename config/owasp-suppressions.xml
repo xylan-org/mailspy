@@ -2,23 +2,23 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
     <suppress>
         <notes>
-            Affects only HttpInvoker support, which is not used by MailSpy.
-        </notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <suppress>
-        <notes>
-            CVE is about Apache Commons Net, not Apache Commons IO.
-        </notes>
-        <packageUrl regex="true">^pkg:maven/commons\-io/commons\-io@.*$</packageUrl>
-        <cve>CVE-2021-37533</cve>
-    </suppress>
-    <suppress>
-        <notes>
             SnakeYAML is only used by Spring to parse local YAML configuration files. Deserialization of insecure data is not a risk in this case.
         </notes>
         <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
         <vulnerabilityName>CVE-2022-1471</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes>
+            Invalid CVE, see https://github.com/FasterXML/jackson-databind/issues/3972.
+        </notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
+        <cve>CVE-2023-35116</cve>
+     </suppress>
+     <suppress>
+        <notes>
+            Used by @surma/rollup-plugin-off-main-thread, which does not provide untrusted input to ejs.render().
+        </notes>
+        <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
+        <vulnerabilityName>CVE-2023-29827</vulnerabilityName>
+     </suppress>
 </suppressions>
